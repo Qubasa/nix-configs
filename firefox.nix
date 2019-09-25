@@ -24,11 +24,6 @@ let
     font-fingerprint-defender
   ];
 
-  extraPrefs = ''
-    // This lessens screen tearing in firefox a bit if you have that problem
-    lockPref("general.smoothScroll.msdPhysics.enabled", false);
-    '';
-
   extraPolicies = {
     CaptivePortal = false;
   };
@@ -37,10 +32,12 @@ let
     disableFirefoxSync = true;
     allowNonSigned = true;
     clearDataOnShutdown = true;
+    disableDrmPlugin = true;
 
 };
 
 in {
+
 
 environment.systemPackages = with pkgs; [
    myFirefox

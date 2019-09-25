@@ -31,6 +31,8 @@ let
     , allowNonSigned ? false
     , disablePocket ? false
     , disableTelemetry ? true
+    , disableDrmPlugin ? false
+    , showPunycodeUrls ? true
     , disableFirefoxStudies ? true
     , disableFirefoxSync ? false
     , useSystemCertificates ? true
@@ -40,7 +42,7 @@ let
     , activateAntiTracking ? true
     , disableFeedbackCommands ? true
     , disableDNSOverHTTPS ? true
-    , disableGoogleSafebrowsing ? true
+    , disableGoogleSafebrowsing ? false
     , clearDataOnShutdown ? false
     , homepage ? "about:blank"
     # For more information about policies visit
@@ -114,7 +116,7 @@ let
         {
           ExtensionSettings = {
             "*" = {
-                blocked_install_message = "Manual addon installation has been disabled in your configuration";
+                blocked_install_message = "You can't have manual extension mixed with nix extensions";
                 installation_mode = "blocked";
               };
 
@@ -209,9 +211,41 @@ let
         // Deactivate first run homepage
         lockPref("browser.startup.firstrunSkipsHomepage", false);
 
+        // If true, don't show the privacy policy tab on first run
+        lockPref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);
+
         ${
           if allowNonSigned == true then
             ''lockPref("xpinstall.signatures.required", false)''
+          else
+            ""
+        }
+
+       ${
+        if showPunycodeUrls == true then
+          ''
+            lockPref("network.IDN_show_punycode", true);
+          ''
+          else
+            ""
+        }
+
+        ${
+          if disableManualExtensions == true then
+          ''
+            lockPref("extensions.getAddons.showPane", false);
+            lockPref("extensions.htmlaboutaddons.recommendations.enabled", false);
+            ''
+          else
+            ""
+        }
+
+        ${
+          if disableDrmPlugin == true then
+          ''
+            lockPref("media.gmp-gmpopenh264.enabled", false);
+            lockPref("media.gmp-widevinecdm.enabled", false);
+            ''
           else
             ""
         }
@@ -256,6 +290,7 @@ let
               lockPref("toolkit.telemetry.reportingpolicy.firstRun", false);
               lockPref("dom.push.enabled", false);
               lockPref("browser.newtabpage.activity-stream.feeds.snippets", false);
+              lockPref("security.ssl.errorReporting.enabled", false);
             ''
           else ""
         }
