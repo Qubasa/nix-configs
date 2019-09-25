@@ -5,6 +5,105 @@ let
 max-line-length = 125
     '';
 
+  coc_config = pkgs.writeText "coc-settings.json" ''
+    {
+      "languageserver": {
+          "golang": {
+            "command": "gopls",
+            "rootPatterns": ["go.mod"],
+            "filetypes": ["go"]
+          },
+          "python": {
+            "command": "pyls",
+            "args": [
+              "-vv",
+              "--log-file",
+              "/tmp/lsp_python.log"
+            ],
+            "trace.server": "verbose",
+            "filetypes": [
+              "python"
+            ],
+            "settings": {
+              "pyls": {
+                "enable": true,
+                "trace": {
+                  "server": "verbose"
+                },
+                "commandPath": "",
+                "configurationSources": [
+                  "pycodestyle"
+                ],
+                "plugins": {
+                  "jedi_completion": {
+                    "enabled": true
+                  },
+                  "jedi_hover": {
+                    "enabled": true
+                  },
+                  "jedi_references": {
+                    "enabled": true
+                  },
+                  "jedi_signature_help": {
+                    "enabled": true
+                  },
+                  "jedi_symbols": {
+                    "enabled": true,
+                    "all_scopes": true
+                  },
+                  "mccabe": {
+                    "enabled": true,
+                    "threshold": 15
+                  },
+                  "preload": {
+                    "enabled": true
+                  },
+                  "pycodestyle": {
+                    "enabled": true
+                  },
+                  "pydocstyle": {
+                    "enabled": false,
+                    "match": "(?!test_).*\\.py",
+                    "matchDir": "[^\\.].*"
+                  },
+                  "pyflakes": {
+                    "enabled": true
+                  },
+                  "rope_completion": {
+                    "enabled": true
+                  },
+                  "yapf": {
+                    "enabled": true
+                  }
+                }
+              }
+            }
+          },
+          "ccls": {
+              "command": "ccls",
+              "filetypes": [
+                  "c",
+                  "cpp",
+                  "objc",
+                  "objcpp"
+              ],
+              "rootPatterns": [
+                  ".ccls",
+                  "compile_commands.json",
+                  ".vim/",
+                  ".git/",
+                  ".hg/"
+              ],
+              "initializationOptions": {
+                  "cache": {
+                      "directory": "/tmp/ccls"
+                  }
+              }
+          }
+      }
+  }
+  '';
+
 unstable = import <nixos-unstable> {};
 in{
 
@@ -14,29 +113,28 @@ in{
   };
 
   nixpkgs.config.packageOverrides = pkgs: with pkgs;{
-    myNeovim = neovim.override
+    myNeovim = unstable.neovim.override
     {
       configure = {
-        customRC = builtins.readFile ./vimrc.conf;
+        customRC = builtins.readFile ./resources/vimrc.conf;
 
         packages.myVimPackage = with pkgs.vimPlugins;
         {
           # loaded on launch
           start = [
-            nerdtree # file manager
             commentary # comment stuff out based on language
-            fugitive # full git integration
             vim-airline-themes # lean & mean status/tabline
             vim-airline # status bar
             gitgutter # git diff in the gutter (sign column)
             vim-trailing-whitespace # trailing whitspaces in red
-            tagbar # F3 function overview
+            tagbar #  function overview window
             ReplaceWithRegister # For better copying/replacing
             polyglot # Language pack
-            vim-indent-guides # for displaying indent levels
-            deoplete-nvim # general autocompletion
-            deoplete-go
-            ale
+            unstable.vimPlugins.indentLine
+            unstable.vimPlugins.coc-json
+            unstable.vimPlugins.coc-html
+            unstable.vimPlugins.coc-css
+            unstable.vimPlugins.coc-nvim
             molokai # color scheme
           ];
           # manually loadable by calling `:packadd $plugin-name`
@@ -50,27 +148,24 @@ in{
 
   # Neovim dependencies
   environment.systemPackages = with pkgs; [
-    ctags # dependencie
+    ctags # dependencie for tagbar
     myNeovim # neovim with custom config
     jq # For fixing json files
-    xxd # .bin files will be displayed with xxd
     shellcheck # Shell linting
     ansible-lint # Ansible linting
     unzip # To vim into unzipped files
-    nodePackages.jsonlint # json linting
+    xxd # Show binary as hex
+    nodejs # coc dependencie
     python3
-    python36Packages.python-language-server # python linting
-    python36Packages.pyls-mypy # Python static type checker
-    python36Packages.black # Python code formatter
-    python37Packages.libxml2 # For fixing yaml files
+    python37Packages.jedi
+    python37Packages.python-language-server # python linting
+    python37Packages.pyls-mypy # Python static type checker
+    python37Packages.black # Python code formatter
+    python37Packages.libxml2 # This is Xmllint
     ccls # C/C++ language server
-    clang-tools # C++ fixer
-    cargo
-
-    # Go support
+    unstable.gotools
     go
-    gotools
-    gocode
+
   ];
 
 
@@ -78,6 +173,9 @@ in{
       ln -f -s ${pycodestyle} ${config.mainUserHome}/.config/pycodestyle
       chown -h ${config.mainUser}: ${config.mainUserHome}/.config/pycodestyle
 
+      mkdir -p ${config.mainUserHome}/.config/nvim
+      ln -f -s ${coc_config} ${config.mainUserHome}/.config/nvim/coc-settings.json
+      chown -R ${config.mainUser}: ${config.mainUserHome}/.config/nvim
   '';
 }
 

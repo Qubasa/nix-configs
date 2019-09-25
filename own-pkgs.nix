@@ -12,7 +12,7 @@ let
 in {
 
   environment.systemPackages = with pkgs; [
-    deezer-downloader
+    # deezer-downloader
     rmount
     hopper
   ];
