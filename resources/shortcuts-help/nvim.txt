@@ -1,0 +1,16 @@
+F1  --> Filetree find
+F2  --> Filetree toggle
+F3  --> Function overview
+F4  --> Toggle error bar
+F5  --> Remove trailing whitespaces
+F6  --> Reindent whole file
+F7  --> Fromat to lint file
+,i  --> Information about function
+,d  --> Jump to definition
+,r  --> Rename in all occurences
+,rf --> Find references of function/variable
+,e  --> Change current file
+,te --> Open file in new tab
+,sh --> Open terminal emulator in vim
+strg+f --> Find current selected word
+strg+d --> Replace current selected word

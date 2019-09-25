@@ -1,0 +1,7 @@
+Shift+Arrow --> Switch to left or right window
+Strg+b+c    --> New window
+Strg+b+d    --> Detach window
+Strg+b+v    --> Create vertical pane
+Strg+b+h    --> Create horizontal pane
+Strg+b+"+"  --> Maximise current pane
+Strg+b+"-"  --> Minimise maximised pane

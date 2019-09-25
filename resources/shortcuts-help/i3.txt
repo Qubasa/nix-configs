@@ -1,0 +1,20 @@
+ALT+space           --> Dismiss notification
+Shift+F12           --> Spawns two gnome-shells in one separate container
+Shift+F11           --> Closes all gnome-shells and spawns them anew
+WIN+number          --> Change workspace
+WIN+shift+number    --> Move program to workspace
+WIN+shit+arrows     --> Move container to arrow direction
+WIN+f               --> Fullscreen
+WIN+enter           --> Spawn terminal
+WIN+w               --> Change windows to tabbed
+WIN+e               --> Change windows to untabbed
+WIN+shift+k         --> Pull window out of container
+WIN+d               --> Application startup bar
+WIN+Next            --> Go to the right workspace
+WIN+Prior           --> Go to the left workspace
+WIN+Shift+Next      --> Move workspace to the right output
+WIN+Shift+Prior     --> Move workspace to the left output
+WIN+shift+q         --> Force quit application
+WIN+x               --> Window selector
+
+

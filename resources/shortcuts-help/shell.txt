@@ -1,0 +1,10 @@
+CTRL+z          --> Background process use fg to resume
+CTRL+r          --> Reverse search
+CTRL+a          --> Go to beginning of line
+CTRL+e          --> Go to end of line
+CTRL+l          --> Clear screen
+CTRL+shift+t    --> New tab
+ALT+number      --> Change  tab
+CTRL+shift+q    --> Close terminal
+CTRL+shift+c    --> Copy from terminal
+CTRL+shift+v    --> Paste to terminal
