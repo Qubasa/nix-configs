@@ -32,6 +32,8 @@ let
     clearDataOnShutdown = true;
     disableDrmPlugin = true;
 
+    gdkWayland = true;
+
 };
 
 in {

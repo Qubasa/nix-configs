@@ -186,12 +186,9 @@ let
     fi
   '';
 
-  random-wallpaper = pkgs.writeScript "random-wallpaper.sh" ''
-    #!/bin/sh
-    file=$(find ${config.wallpapers} -type f -print | shuf -n 1)
-    ${pkgs.feh}/bin/feh --bg-scale "$file"
+  xresources = pkgs.writeText "Xresources" ''
+    Xcursor.size: 16
     '';
-
 
   i3_conf_file =  pkgs.writeText "config" ''
     # Please see https://i3wm.org/docs/userguide.html for a complete reference!
@@ -547,5 +544,9 @@ in {
       mkdir -p ${config.mainUserHome}/.config/sway
       ln -f -s ${i3_conf_file} ${config.mainUserHome}/.config/sway/config
       chown -R ${config.mainUser}: ${config.mainUserHome}/.config/sway
+
+      # .Xresources for mouse
+      ln -f -s ${xresources} $CONFIG_FILE_PATH
+      chown -h ${config.mainUser}: $CONFIG_FILE_PATH
   '';
 }

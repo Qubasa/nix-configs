@@ -14,12 +14,10 @@ in
       ./hardware-specific.nix
       ./vpn-yubikey.nix
       ./aliases.nix
-      ./mouse.nix
       ./window-manager.nix
       ./nvim.nix
       ./gnome-utility.nix
       ./zsh.nix
-      ./screensaver.nix
       ./theme.nix
       ./virtualisation.nix
       ./tmux.nix
