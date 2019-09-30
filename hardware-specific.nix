@@ -18,10 +18,6 @@ in {
     }
   ];
 
-
-  # Set "intel" for intel cpus
-  services.xserver.videoDrivers = [ "amdgpu" ];
-
   # Enable grub
   boot.loader.grub.version = 2;
   boot.loader.grub.enable = true;

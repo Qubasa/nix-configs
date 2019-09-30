@@ -43,6 +43,7 @@ in
       ./tinc.nix
       ./termite.nix
       ./quasselclient.nix
+      ./firejail.nix
 ];
 
 ####################
@@ -81,10 +82,8 @@ environment.systemPackages = with pkgs; [
   alsaUtils # Console volume settings with alsamixer
   p7zip # Console archive tool
   fzf # fuzzy finder
-  xclip # Pipe from terminal into clipboard
   qrencode # Generate qrcodes out of strings
   wget
-  thunderbird
   git
   curl
   file
@@ -109,8 +108,8 @@ environment.systemPackages = with pkgs; [
   veracrypt # Disk encryption tool
   powershell # Powershell for linux
   valgrind # c checker tool
-  chromium
-  firejail
+  firejail # Containerisation tool for apps
+  wl-clipboard # Copy and paste from command line. Vim dependencie!
 
   # Java development
   eclipses.eclipse-sdk

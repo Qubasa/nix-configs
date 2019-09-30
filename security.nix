@@ -44,13 +44,6 @@ in
     };
   };
 
-  # https://www.kuketz-blog.de/firejail-linux-haerten-teil4/
-  programs.firejail.enable = true;
-  programs.firejail.wrappedBinaries = {
-
-    jailed_firefox = "--private-home=~/.mozilla ${pkgs.firefox}/bin/firefox";
-    jailed_thunderbird = "--private-home=~/.thunderbird ${pkgs.thunderbird}/bin/thunderbird";
-  };
 
   # Check if secrets are all non world readable
   system.activationScripts."check-permissions" = ''

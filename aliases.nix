@@ -116,8 +116,8 @@ in {
     shortcuts-tmux = "cat /etc/nixos/resources/shortcuts-help/tmux.txt";
 
     # Clipboard aliases
-    c = "xclip -selection clipboard"; # Copy to clipboard
-    v = "xclip -selection clipboard -o"; # Paste
+    c = "wl-copy"; # Copy to clipboard
+    v = "wl-copy -o"; # Paste
 
     fromByte = "numfmt --to=iec";
     toByte = "numfmt --from=iec";

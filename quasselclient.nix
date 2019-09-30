@@ -1,10 +1,9 @@
 { config, pkgs, lib, ... }:
-
 {
 
-environment.systemPackages = with pkgs; [
-  quasselClient # client for quasselcore
-];
+programs.firejail.wrappedBinaries = {
+  quasselClient = "--profile=quassel ${pkgs.quasselClient}/bin/quasselclient";
+};
 
 
 system.activationScripts.quasselCopy = ''

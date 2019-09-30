@@ -10,14 +10,12 @@ let
   audio-fingerprint-defender = pkgs.callPackage ./own-pkgs/audio-fingerprint-defender {};
   font-fingerprint-defender = pkgs.callPackage ./own-pkgs/font-fingerprint-defender {};
 
-
   wrapper = pkgs.callPackage ./overlays/firefox-with-config.nix { };
   myFirefox = wrapper pkgs.firefox-unwrapped {
 
   extraExtensions = [
     https-everywhere
     ublock-origin
-
     audio-fingerprint-defender
     canvas-fingerprint-defender
     webgl-fingerprint-defender
@@ -39,7 +37,14 @@ let
 in {
 
 
-environment.systemPackages = with pkgs; [
-   myFirefox
-  ];
+environment.variables = {
+  BROWSER = ["firefox"];
+};
+
+programs.firejail = {
+  enable = true;
+  wrappedBinaries = {
+    firefox = "${myFirefox}/bin/firefox";
+  };
+};
 }

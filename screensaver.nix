@@ -329,28 +329,28 @@ authWarningSlack:   20
 in {
 
 
-  # Executed bevor suspend. Locks the screen
-  systemd.services.pre_suspend_hook = {
-    description = "Pre suspend hook";
-    wantedBy = [ "suspend.target" ];
-    serviceConfig = {
-      ExecStart = "${select-screensaver}";
-      Type = "oneshot";
-      User = "${config.mainUser}";
-    };
-  };
+  # # Executed bevor suspend. Locks the screen
+  # systemd.services.pre_suspend_hook = {
+  #   description = "Pre suspend hook";
+  #   wantedBy = [ "suspend.target" ];
+  #   serviceConfig = {
+  #     ExecStart = "${select-screensaver}";
+  #     Type = "oneshot";
+  #     User = "${config.mainUser}";
+  #   };
+  # };
 
 
-  # Start xscreenserver to be able to lock the screen
-  systemd.user.services.xscreenserver = {
-    description = "Xscreenserver";
-    partOf = [ "graphical-session.target" ];
-    wantedBy = [ "graphical-session.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.xscreensaver}/bin/xscreensaver -no-splash ";
-      Restart = "always";
-    };
-  };
+  # # Start xscreenserver to be able to lock the screen
+  # systemd.user.services.xscreenserver = {
+  #   description = "Xscreenserver";
+  #   partOf = [ "graphical-session.target" ];
+  #   wantedBy = [ "graphical-session.target" ];
+  #   serviceConfig = {
+  #     ExecStart = "${pkgs.xscreensaver}/bin/xscreensaver -no-splash ";
+  #     Restart = "always";
+  #   };
+  # };
 
 
 

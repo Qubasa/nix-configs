@@ -7,13 +7,14 @@ let
     zle -N reverse_search
     reverse_search() zle -M "$(cat ~/.zsh_history | sed 's/^[^;]*;//g' | fzf --tac --no-sort)"
     bindkey '^r' reverse_search
+
   '';
 
   python_version = "3.7";
   nix_python_version = "python37Packages";
 
 
-  direnvrc = pkgs.writeText "direnvrc" ''
+  zshrc_local = pkgs.writeText "zshrc_local" ''
 # Usage: use nix_shell
 #
 # Works like use_nix, except that it's only rebuilt if the shell.nix or default.nix file changes.
@@ -53,6 +54,8 @@ use_nix() {
   direnv_load nix-shell "$drvfile" --run "$(join_args "$direnv" dump)"
   watch_file "$shellfile"
 }
+
+
   '';
 
 in {
@@ -165,7 +168,7 @@ environment.systemPackages = with pkgs; [
  environment.shellAliases.ns = "nix-shell --command zsh";
 
 system.activationScripts.copyZshConfig = ''
-    ln -f -s ${direnvrc} ${config.mainUserHome}/.zshrc
+    ln -f -s ${zshrc_local} ${config.mainUserHome}/.zshrc
     chown -h ${config.mainUser}: ${config.mainUserHome}/.zshrc
 '';
 

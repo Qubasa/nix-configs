@@ -12,16 +12,16 @@ in {
     emulateWheel = true;
   };
 
-  services.xserver.synaptics = {
-    enable = true;
-    maxSpeed = "1.7";
-    minSpeed = "1";
-    accelFactor = "0.02";
-    tapButtons = true;
-    vertTwoFingerScroll = true;
-    horizTwoFingerScroll = true;
-    palmDetect = true;
-  };
+  # services.xserver.synaptics = {
+  #   enable = true;
+  #   maxSpeed = "1.7";
+  #   minSpeed = "1";
+  #   accelFactor = "0.02";
+  #   tapButtons = true;
+  #   vertTwoFingerScroll = true;
+  #   horizTwoFingerScroll = true;
+  #   palmDetect = true;
+  # };
 
 
   system.activationScripts.copyMouseConfig = ''
