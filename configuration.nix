@@ -68,28 +68,22 @@ environment.systemPackages = with pkgs; [
   #                          #
   ############################
   man-pages
-  xorg.xorgdocs
   posix_man_pages # Use the posix standarized manpages with `man p <keyword>`
 
-
-  nix-prefetch # Sha256sum a link for nixos
-  ldns  # DNS tool
-  ncdu # Disk usage profiler
-  feh # Image viewer
-  moc # Console Music Player
-  alsaUtils # Console volume settings with alsamixer
-  p7zip # Console archive tool
-  fzf # fuzzy finder
-  qrencode # Generate qrcodes out of strings
   wget
   git
   curl
   file
+  nix-prefetch # Sha256sum a link for nixos
+  ldns  # DNS tool
+  alsaUtils # Console volume settings with alsamixer
+  p7zip # Console archive tool
+  fzf # fuzzy finder
   binutils # Binary inspection
   radare2 # Binary reversing
   nmap # Network discovery
   calc # Simple calculator
-  tree
+  tree # display files as tree
   gnupg # Email encryption
   ansible # Newest ansible automation tool
   nix-index # apt-file equivalent
@@ -99,15 +93,25 @@ environment.systemPackages = with pkgs; [
   #deluge # torrent client
   screen # For serial connections
   dos2unix # Convert win newlines to unix ones
-  xorg.xev # Capture keyboard inputs and print key name
   patchelf # Nixos packaging tool
-  gdb
-  taskwarrior # A task manager tool
+  gdb # elf debugging
+  (pkgs.mpv.override {
+    waylandSupport = true;
+    x11Support = false;
+    xineramaSupport = false;
+    xvSupport = false;
+    vulkanSupport = true;
+  })
+  moc # cli music streaming
+  grim # Wayland screenshot tool
+  ncdu # Disk usage
+  taskwarrior # Task list
   veracrypt # Disk encryption tool
   powershell # Powershell for linux
   valgrind # c checker tool
   firejail # Containerisation tool for apps
-  wl-clipboard # Copy and paste from command line. Vim dependencie!
+  wl-clipboard # Copy and paste from command line. Vim dependencies
+  sqlite-interactive # Sqlite cli
 
   # Java development
   eclipses.eclipse-sdk
@@ -125,7 +129,6 @@ environment.systemPackages = with pkgs; [
   speedtest-cli
 
   # Media
-  mpv # Video playback
   obs-studio # Screen capturing
   ffmpeg-full # Convert video formats
 
@@ -134,10 +137,6 @@ environment.systemPackages = with pkgs; [
   cifs-utils # Samba mount
   sshfs # Mount a filesystem through ssh
 
-  # Icons (Fallback)
-  gnome3.adwaita-icon-theme
-  gnome2.gnome_icon_theme
-  hicolor_icon_theme
 
   ############################
   #                          #
@@ -147,6 +146,7 @@ environment.systemPackages = with pkgs; [
 ];
 
 nixpkgs.config.allowUnfree = true;
+
 
 
 # Exfat support

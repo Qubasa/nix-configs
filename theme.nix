@@ -24,6 +24,9 @@ let
       adapta-gtk-theme
       lxappearance
       capitaine-cursors
+      gnome3.adwaita-icon-theme
+      gnome2.gnome_icon_theme
+      hicolor_icon_theme
     ];
 
     system.activationScripts.copyThemeConfig = ''

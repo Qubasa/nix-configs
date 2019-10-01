@@ -4,6 +4,7 @@ with pkgs;
 
 let
 
+  unstable = import <nixos-unstable> { };
   bar_update_interval = "1"; # In seconds
   terminal_pkg = "${pkgs.termite}/bin/termite";
   terminal_class = "Termite";
@@ -392,29 +393,13 @@ let
     bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
     bindsym XF86AudioMicMute exec --no-startup-id  amixer set Capture toggle
 
-#    #######################
-#    #                     #
-#    #      TTY KEYS       #
-#    #                     #
-#    #######################
-#
-#    bindsym Mod1+F1 exec --no-startup-id chvt 0
-#    bindsym Mod1+F2 exec --no-startup-id chvt 1
-#    bindsym Mod1+F3 exec --no-startup-id chvt 2
-#    bindsym Mod1+F4 exec --no-startup-id chvt 3
-#    bindsym Mod1+F5 exec --no-startup-id chvt 4
-#    bindsym Mod1+F6 exec --no-startup-id chvt 5
-#    bindsym Mod1+F7 exec --no-startup-id chvt 6
-#    bindsym Mod1+F8 exec --no-startup-id chvt 7
-#    bindsym Mod1+F9 exec --no-startup-id chvt 8
-#    bindsym Mod1+F10 exec --no-startup-id chvt 9
 
     #######################
     #                     #
     #     WALLPAPERS      #
     #                     #
     #######################
-    output * background /etc/nixos/resources/wallpapers/wallpaper.png stretch
+    output * background /etc/nixos/resources/wallpapers/pixel_space.jpg stretch
 
 
     #######################
@@ -422,7 +407,7 @@ let
     #       OUTPUT        #
     #                     #
     #######################
- #   output * pos 0 0 res 1920x1080
+    output eDP-1 pos 0 0 res 1920x1080
 
 
 
@@ -431,7 +416,7 @@ let
     #        INPUT        #
     #                     #
     #######################
-    input type:keyboard {
+    input 1:1:AT_Translated_Set_2_keyboard {
       xkb_layout de
     }
 
@@ -442,7 +427,6 @@ let
       natural_scroll disabled
       dwt enabled
       drag enabled
-      #click_method clickfinger
       scroll_method two_finger
     }
 
@@ -492,15 +476,15 @@ let
     #                     #
     #######################
     # Start firefox
-    exec systemd-cat -t firefox firefox
+    exec systemd-cat -t firefox ${pkgs.firefox}/bin/firefox
     # Quassel client
-    exec systemd-cat -t quassel quasselClient
+    exec systemd-cat -t quassel ${pkgs.quasselClient}/bin/quasselClient
 
     # Start Qt-Pass
     exec systemd-cat -t qtpass ${pkgs.qtpass}/bin/qtpass
 
     # Start mail client
-    exec systemd-cat -t thunderbird thunderbird '';
+    exec systemd-cat -t thunderbird ${pkgs.thunderbird}/bin/thunderbird '';
 
 in {
 
@@ -510,6 +494,10 @@ in {
   services.xserver.enable = true;
   services.xserver.layout = "de";
   programs.sway.enable = true;
+
+  nixpkgs.config.packageOverrides = super: {
+    sway = unstable.pkgs.sway;
+  };
 
   environment.systemPackages = with pkgs; [
     rofi     # Dmenu replacement

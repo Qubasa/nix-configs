@@ -30,18 +30,11 @@ in
   {
 
     environment.systemPackages = with pkgs; [
-      parted
-      gnome3.gnome-disk-utility
-      gnome3.gnome-screenshot
-      gptfdisk
-      # gnome3.gnome_terminal
       gnome3.dconf
     ];
 
-  # services.gnome3.gnome-terminal-server.enable = true;
-
-  systemd.user.services.terminal-dconf = {
-    description = "Terminal dconf";
+  systemd.user.services.dconf-settings = {
+    description = "Set dconf settings";
     partOf = [ "graphical-session.target" ];
     wantedBy = [ "graphical-session.target" ];
     serviceConfig = {

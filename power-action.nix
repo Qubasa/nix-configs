@@ -46,8 +46,4 @@ in {
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    espeak
-    ];
-
 }

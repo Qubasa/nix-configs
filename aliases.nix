@@ -26,12 +26,6 @@ let
       "$VM" -m 2G,maxmem=4G -smp 4
   '';
 
-  screenshot = pkgs.writeScriptBin "screenshot" ''
-    #!/bin/sh
-    export PATH=$PATH:${pkgs.coreutils}/bin
-    nohup ${pkgs.gnome3.gnome-screenshot}/bin/gnome-screenshot -i > /tmp/screenshot.log &
-    '';
-
 
   pdf = pkgs.writeScriptBin "pdf" ''
     #!/bin/sh
@@ -39,21 +33,10 @@ let
     ${pkgs.firefox}/bin/firefox &
     '';
 
-  img = pkgs.writeScriptBin "img" ''
-    #!/bin/sh
-    export PATH=$PATH:${pkgs.coreutils}/bin
-    ${pkgs.firefox}/bin/firefox &
-  '';
-
   disks = pkgs.writeScriptBin "disks" ''
     #!/bin/sh
     export PATH=$PATH:${pkgs.coreutils}/bin
     nohup ${pkgs.gnome3.gnome-disk-utility}/bin/gnome-disks > /tmp/disks.log &
-  '';
-
-  wifi = pkgs.writeScriptBin "wifi" ''
-    #!/bin/sh
-    ${pkgs.iwd}/bin/iwctl
   '';
 
 
@@ -80,30 +63,32 @@ in {
     m = "micro";
     ls = "ls --color=tty";
     ll = "ls -l";
-    nmtui = "TERM='xterm' nmtui";
     sudo = "sudo ";
-    rsync = ''rsync -Pav -e "ssh -i ${config.mainUserHome}/.ssh/id_rsa -F ${config.mainUserHome}/.ssh/config"'';
+    rsync = ''${pkgs.rsync}/bin/rsync -Pav -e "ssh -i ${config.mainUserHome}/.ssh/id_rsa -F ${config.mainUserHome}/.ssh/config"'';
 
     # Convenience aliases
-    qrcode = "qrencode -t UTF8";
-    pack-tar = "tar czvf";
-    unpack-tar = "tar xvfz";
-    music = "mocp";
-    disk-usage = "ncdu";
-    share-dir = "python3 -m http.server 1234";
-    t = "task";
-    video = "mpv";
+    qrcode = "${pkgs.qrencode}/bin/qrencode -t UTF8";
+    packtar = "tar czvf";
+    untar = "tar xvfz";
+    music = "${pkgs.moc}/bin/mocp";
+    disk-usage = "${pkgs.ncdu}/bin/ncdu";
+    share-dir = "${pkgs.python3}/bin/python3 -m http.server 1234";
+    t = "${pkgs.taskwarrior}/bin/task";
+    video = "${pkgs.mpv}/bin/mpv --keep-open";
+    img = "${pkgs.mpv}/bin/mpv --keep-open";
+    wifi = "${pkgs.iwd}/bin/iwctl";
+
 
     # Search aliases
-    search-file = '' fzf --preview="head -n $LINES {}" '';
-    search-string = "grep -rnw -e";
+    search-file = ''${pkgs.fzf}/bin/fzf --preview="head -n $LINES {}" '';
+    search-string = "${pkgs.gnugrep}/bin/grep -rnw -e";
 
     # Nix aliases
     nix-rebuild = "nixos-rebuild --fast --show-trace switch";
     nix-profiles = "nix-env --list-generations";
     nix-delete-old = "nix-collect-garbage -d && journalctl --vacuum-time=2d";
     nix-update = "nix-channel --update && nixos-rebuild switch";
-    aliases = "less /etc/nixos/aliases.nix";
+    aliases = "${pkgs.less}/bin/less /etc/nixos/aliases.nix";
 
     # Needed to overwrite the alias binary 'where' of which
     where = "${where}";
@@ -116,20 +101,17 @@ in {
     shortcuts-tmux = "cat /etc/nixos/resources/shortcuts-help/tmux.txt";
 
     # Clipboard aliases
-    c = "wl-copy"; # Copy to clipboard
-    v = "wl-copy -o"; # Paste
+    c = "${pkgs.wl-clipboard}/bin/wl-copy"; # Copy to clipboard
+    v = "${pkgs.wl-clipboard}/bin/wl-copy -o"; # Paste
 
-    fromByte = "numfmt --to=iec";
-    toByte = "numfmt --from=iec";
+    fromByte = "${pkgs.coreutils}/bin/numfmt --to=iec";
+    toByte = "${pkgs.coreutils}/bin/numfmt --from=iec";
   };
 
   environment.systemPackages = with pkgs; [
     nix-test
-    screenshot
     pdf
-    img
     disks
-    wifi
     kbd_backlight
   ];
 }
