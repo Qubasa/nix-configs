@@ -14,12 +14,12 @@ let
     [urgency=low]
     background-color=#282c30
     text-color=#888888
-    default-timeout=2000
+    default-timeout=20000
 
     [urgency=normal]
     background-color=#282c30
     text-color=#ffffff
-    default-timeout=3000
+    default-timeout=30000
 
     [urgency=high]
     background-color=#900000
@@ -35,7 +35,7 @@ in {
     enable = true;
     description =  "Mako notification daemon" ;
     after = [ "sway-session.target" ];
-    wants = [ "sway-session.target" ];
+    wantedBy = [ "sway-session.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.mako}/bin/mako";
     };

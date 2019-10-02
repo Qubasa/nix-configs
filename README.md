@@ -307,13 +307,13 @@ strg + space
 ```
 To create a shell script that sends notifications as another user use:
 ```
-    if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
-      ## if not found, launch a new one
-      eval $(dbus-launch --sh-syntax)
-      echo "D-Bus per-session daemon address is: $DBUS_SESSION_BUS_ADDRESS"
-    fi
+#!/bin/sh -e
 
-    notify-send "Screensaver" "Screensaver activates soon"
+SWAY_PID=$(ps -U $USER | grep sway-wrapped | awk '{ print $1  }')
+DBUS_SESSION_BUS_ADDRESS=$(xargs -0 -L1 -a "/proc/$SWAY_PID/environ" | grep "DBUS_SESSION_BUS_ADDRESS=" | sed 's/DBUS_SESSION_BUS_ADDRESS=//')
+export DBUS_SESSION_BUS_ADDRESS
+
+notify-send "Screensaver" "Screensaver activates soon" #&> notify.strace
 
 ```
 

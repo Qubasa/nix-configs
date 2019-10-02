@@ -78,6 +78,7 @@ in {
     wifi = "${pkgs.iwd}/bin/iwctl";
     img = "imv";
     screenshot = "grim";
+    logout-wayland = "kill -9 -1";
 
 
     # Search aliases
