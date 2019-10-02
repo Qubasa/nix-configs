@@ -7,8 +7,8 @@
 Host *
 AddKeysToAgent yes
 
-Match Host * exec "test $_ = /run/current-system/sw/bin/ssh"
-RemoteCommand export TERM="xterm-256color"; bash
+#Match Host * exec "test $_ = /run/current-system/sw/bin/ssh"
+#RemoteCommand export TERM="xterm-256color"; bash
 
     '';
 

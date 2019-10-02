@@ -13,6 +13,9 @@ in
     <nixpkgs/nixos/modules/profiles/hardened.nix>
   ];
 
+  environment.systemPackages = with pkgs; [
+    apparmor-profiles
+    ];
 
 
   # Disable this if you have problems with

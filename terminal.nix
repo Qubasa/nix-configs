@@ -5,9 +5,10 @@ let
 unstable = import <nixos-unstable> {};
 
 alacritty_config = pkgs.writeText "config" ''
-program: ${pkgs.zsh}/bin/zsh
-args:
-  - --login
+
+env:
+  TERM: xterm-256color
+
 
 scrolling:
   history: 100000

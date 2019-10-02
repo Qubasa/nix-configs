@@ -4,8 +4,8 @@ with pkgs;
 
 let
 
-  wallpaper_path = toString ./resources/wallpapers/pixel_space.jpg;
-  lock_wallpaper_path = toString ./resources/wallpapers/waterfall.jpg;
+  wallpaper_path = ./resources/wallpapers/pixel_space.jpg;
+  lock_wallpaper_path = ./resources/wallpapers/waterfall.jpg;
 
   unstable = import <nixos-unstable> { };
   bar_update_interval = "1"; # In seconds
@@ -423,10 +423,10 @@ let
     #                     #
     #######################
     exec --no-startup-id swayidle -w \
-        timeout 300 'swaylock -f -c 000000' \
+        timeout 300 '${lock_screen}' \
         timeout 600 'swaymsg "output * dpms off"' \
              resume 'swaymsg "output * dpms on"' \
-        before-sleep 'swaylock -f -c 000000'
+        before-sleep '${lock_screen}'
 
     #######################
     #                     #
