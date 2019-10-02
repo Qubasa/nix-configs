@@ -5,7 +5,17 @@
 { config, pkgs, lib, ... }:
 
 let
- # unstable = import <nixos-unstable> { };
+
+unstable = import <nixos-unstable> {};
+
+myMpv = pkgs.mpv.override {
+    waylandSupport = true;
+    x11Support = false;
+    xineramaSupport = false;
+    xvSupport = false;
+    vulkanSupport = true;
+  };
+
 in
   {
     imports = [
@@ -41,7 +51,6 @@ in
       ./tinc.nix
       ./termite.nix
       ./quasselclient.nix
-      ./firejail.nix
 ];
 
 ####################
@@ -91,17 +100,11 @@ environment.systemPackages = with pkgs; [
   libreoffice # Opening docs
   gimp # Editing pictures
   #deluge # torrent client
+  thunderbird
   screen # For serial connections
   dos2unix # Convert win newlines to unix ones
   patchelf # Nixos packaging tool
   gdb # elf debugging
-  (pkgs.mpv.override {
-    waylandSupport = true;
-    x11Support = false;
-    xineramaSupport = false;
-    xvSupport = false;
-    vulkanSupport = true;
-  })
   moc # cli music streaming
   grim # Wayland screenshot tool
   ncdu # Disk usage
@@ -109,8 +112,10 @@ environment.systemPackages = with pkgs; [
   veracrypt # Disk encryption tool
   powershell # Powershell for linux
   valgrind # c checker tool
-  firejail # Containerisation tool for apps
-  wl-clipboard # Copy and paste from command line. Vim dependencies
+  myMpv # Wayland compatbile mpv
+  imv # Wayland compatible image viewer
+  unstable.wl-clipboard # Copy and paste from command line. Vim dependencies
+  chromium
   sqlite-interactive # Sqlite cli
 
   # Java development

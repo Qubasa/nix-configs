@@ -43,10 +43,9 @@ environment.variables = {
   BROWSER = ["firefox"];
 };
 
-programs.firejail = {
-  enable = true;
-  wrappedBinaries = {
-    firefox = "${myFirefox}/bin/firefox";
-  };
-};
+
+environment.systemPackages = with pkgs; [
+  myFirefox
+];
+
 }

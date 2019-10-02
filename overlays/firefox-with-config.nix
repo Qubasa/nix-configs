@@ -235,6 +235,7 @@ let
           ''
             lockPref("extensions.getAddons.showPane", false);
             lockPref("extensions.htmlaboutaddons.recommendations.enabled", false);
+            lockPref("app.update.auto", false);
             ''
           else
             ""

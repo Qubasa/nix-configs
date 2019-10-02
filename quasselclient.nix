@@ -1,12 +1,10 @@
 { config, pkgs, lib, ... }:
 {
 
-programs.firejail.wrappedBinaries = {
-  quasselClient = "--profile=quassel ${pkgs.quasselClient}/bin/quasselclient";
-};
 
 environment.systemPackages = with pkgs; [
   breeze-icons
+  quasselClient
 ];
 
 system.activationScripts.quasselCopy = ''

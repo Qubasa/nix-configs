@@ -74,9 +74,9 @@ in {
     disk-usage = "${pkgs.ncdu}/bin/ncdu";
     share-dir = "${pkgs.python3}/bin/python3 -m http.server 1234";
     t = "${pkgs.taskwarrior}/bin/task";
-    video = "${pkgs.mpv}/bin/mpv --keep-open";
-    img = "${pkgs.mpv}/bin/mpv --keep-open";
+    video = "mpv --keep-open --really-quiet --pause";
     wifi = "${pkgs.iwd}/bin/iwctl";
+    img = "imv";
 
 
     # Search aliases

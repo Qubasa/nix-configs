@@ -2,10 +2,7 @@
 {config, lib, pkgs, stdenv, ... }:
 
 let
-
   unstable = import <nixos-unstable> { };
-  callPackage = pkgs.lib.callPackageWith (pkgs);
-  myrtlwifi_new = callPackage ./own-pkgs/rtlwifi_new { kernel = unstable.pkgs.linux_5_3; };
 in {
 
   # Use swap with random encryption on every reboot
@@ -29,9 +26,13 @@ in {
   # Enable nested virtualisation
   boot.extraModprobeConfig = "options kvm_amd nested=1";
 
-  # Use pinned working kernel version
-  boot.kernelPackages = unstable.pkgs.linuxPackages_5_3;
 
-  # Use own realtek driver
-  boot.extraModulePackages = [ myrtlwifi_new ];
+  # This change gives you a hardened 5.3 kernel
+  # but it has to be compiled on your machine locally
+  nixpkgs.config.packageOverrides = super: {
+    linuxPackages_latest = unstable.pkgs.linuxPackages_5_3;
+  };
+
+
+  boot.kernelPackages = pkgs.linuxPackages_latest_hardened;
 }

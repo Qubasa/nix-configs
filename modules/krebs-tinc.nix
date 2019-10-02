@@ -40,13 +40,6 @@ in {
       '';
     };
 
-    networking.retiolum.privKeyFile = mkOption {
-      type = types.str;
-      description = ''
-        Path to your Ed25519 tinc private key
-        generated with `$ tinc generate-ed25519-keys`
-      '';
-    };
     networking.retiolum.nodename = mkOption {
       type = types.str;
       default = config.networking.hostName;
@@ -60,7 +53,6 @@ in {
 
     services.tinc.networks.${netname} = {
       name = cfg.nodename;
-      ed25519PrivateKeyFile = cfg.privKeyFile;
       extraConfig = ''
         LocalDiscovery = yes
         AutoConnect = yes

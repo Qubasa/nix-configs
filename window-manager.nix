@@ -4,6 +4,9 @@ with pkgs;
 
 let
 
+  wallpaper_path = toString ./resources/wallpapers/pixel_space.jpg;
+  lock_wallpaper_path = toString ./resources/wallpapers/waterfall.jpg;
+
   unstable = import <nixos-unstable> { };
   bar_update_interval = "1"; # In seconds
   terminal_pkg = "${pkgs.termite}/bin/termite";
@@ -187,6 +190,11 @@ let
     fi
   '';
 
+  lock_screen = pkgs.writeScript "lock_screen.sh" ''
+  #!/bin/sh
+    ${pkgs.swaylock}/bin/swaylock -f -e -c 000000 -i ${lock_wallpaper_path}
+    '';
+
   xresources = pkgs.writeText "Xresources" ''
     Xcursor.size: 16
     '';
@@ -205,12 +213,12 @@ let
     # Font for window titles.
     font pango:Bitstream Vera Sans Mono 14
     font pango:Monospace 14, Icons 10
-    hide_edge_borders smart
+    hide_edge_borders --i3 smart
     default_floating_border pixel 3
     default_border pixel 3
 
     # Lockscreen shortcut
-    bindsym $mod+l exec xscreensaver-command -l
+    bindsym $mod+l exec ${lock_screen}
 
     # start a terminal
     bindsym $mod+Return exec ${terminal_pkg}
@@ -336,7 +344,7 @@ let
     set $workspace10 "10"
 
     assign [class="quassel"] $workspace3
-    assign [class="Firefox"] $workspace2
+    assign [app_id="firefox"] $workspace2
     assign [class="Daily"] $workspace5
 
     assign [class="VirtualBox Manager"] $workspace4
@@ -344,6 +352,9 @@ let
 
     assign [class="libreoffice"] $workspace6
     assign [class="Eclipse"] $workspace6
+
+    # Inhibit idle
+    for_window [app_id="firefox"] inhibit_idle fullscreen
 
     # Workspace lateral movement
     bindsym $mod+Next workspace next
@@ -399,7 +410,7 @@ let
     #     WALLPAPERS      #
     #                     #
     #######################
-    output * background /etc/nixos/resources/wallpapers/pixel_space.jpg stretch
+    output * background ${wallpaper_path} stretch
 
 
     #######################
@@ -409,7 +420,16 @@ let
     #######################
     output eDP-1 pos 0 0 res 1920x1080
 
-
+    #######################
+    #                     #
+    #      AUTOLOCK       #
+    #                     #
+    #######################
+    exec --no-startup-id swayidle -w \
+        timeout 300 'swaylock -f -c 000000' \
+        timeout 600 'swaymsg "output * dpms off"' \
+             resume 'swaymsg "output * dpms on"' \
+        before-sleep 'swaylock -f -c 000000'
 
     #######################
     #                     #
@@ -476,15 +496,16 @@ let
     #                     #
     #######################
     # Start firefox
-    exec systemd-cat -t firefox ${pkgs.firefox}/bin/firefox
+    exec systemd-cat -t firefox firefox
+
     # Quassel client
-    exec systemd-cat -t quassel ${pkgs.quasselClient}/bin/quasselClient
+    exec systemd-cat -t quassel quasselclient
 
     # Start Qt-Pass
-    exec systemd-cat -t qtpass ${pkgs.qtpass}/bin/qtpass
+    exec systemd-cat -t qtpass qtpass
 
     # Start mail client
-    exec systemd-cat -t thunderbird ${pkgs.thunderbird}/bin/thunderbird '';
+    exec systemd-cat -t thunderbird thunderbird '';
 
 in {
 
@@ -495,6 +516,7 @@ in {
   services.xserver.layout = "de";
   programs.sway.enable = true;
 
+  # Set sway to unstable package
   nixpkgs.config.packageOverrides = super: {
     sway = unstable.pkgs.sway;
   };

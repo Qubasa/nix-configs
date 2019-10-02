@@ -113,7 +113,7 @@ in{
   };
 
   nixpkgs.config.packageOverrides = pkgs: with pkgs;{
-    myNeovim = unstable.neovim.override
+    myNeovim = neovim.override
     {
       configure = {
         customRC = builtins.readFile ./resources/vimrc.conf;
