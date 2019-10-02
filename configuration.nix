@@ -49,7 +49,7 @@ in
       ./ssh.nix
       ./font-config.nix
       ./tinc.nix
-      ./termite.nix
+      ./terminal.nix
       ./quasselclient.nix
 ];
 

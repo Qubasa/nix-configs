@@ -9,9 +9,6 @@ let
 
   unstable = import <nixos-unstable> { };
   bar_update_interval = "1"; # In seconds
-  terminal_pkg = "${pkgs.termite}/bin/termite";
-  terminal_class = "Termite";
-  terminal_instance = "termite";
 
   i3_status_script = pkgs.writeScript "i3script.sh" ''
     #!/bin/sh
@@ -221,7 +218,7 @@ let
     bindsym $mod+l exec ${lock_screen}
 
     # start a terminal
-    bindsym $mod+Return exec ${terminal_pkg}
+    bindsym $mod+Return exec alacritty
 
     # class                 border  backgr. text    indicator child_border
     client.focused          #4fceea #285577 #ffffff #2e9ef4   #285577
