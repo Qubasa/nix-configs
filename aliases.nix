@@ -77,6 +77,7 @@ in {
     video = "mpv --keep-open --really-quiet --pause";
     wifi = "${pkgs.iwd}/bin/iwctl";
     img = "imv";
+    screenshot = "grim";
 
 
     # Search aliases

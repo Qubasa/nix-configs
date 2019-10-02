@@ -386,6 +386,9 @@ let
     bindsym $mod+Shift+0 move container to workspace $workspace10
 
 
+    # Dismiss mako notification
+    bindsym Control+Space exec --no-startup-id ${pkgs.mako}/bin/makoctl dismiss
+
     #######################
     #                     #
     #  FUNCTION KEYS      #
@@ -446,13 +449,6 @@ let
       drag enabled
       scroll_method two_finger
     }
-
-    #######################
-    #                     #
-    #  CONVENIENCE KEYS   #
-    #                     #
-    #######################
-    bindsym Mod1+Shift+3 exec screenshot
 
 
     #######################
@@ -530,6 +526,15 @@ in {
     }))
   ];
 
+  systemd.user.targets.sway-session = {
+    enable = true;
+    description = "sway compositor session";
+    documentation = ["man:systemd-special(7)"];
+    bindsTo = ["graphical-session.target"];
+    wants = ["graphical-session-pre.target"];
+    after = ["graphical-session-pre.target"];
+  };
+
   services.xserver.displayManager = {
     extraSessionFilePackages = [ pkgs.sway  ];
     session = lib.mkForce [{
@@ -548,12 +553,12 @@ in {
 
   system.activationScripts.copySwayConfig = ''
 
-      mkdir -p ${config.mainUserHome}/.config/sway
-      ln -f -s ${i3_conf_file} ${config.mainUserHome}/.config/sway/config
-      chown -R ${config.mainUser}: ${config.mainUserHome}/.config/sway
+    mkdir -p ${config.mainUserHome}/.config/sway
+    ln -f -s ${i3_conf_file} ${config.mainUserHome}/.config/sway/config
+    chown -R ${config.mainUser}: ${config.mainUserHome}/.config/sway
 
-      # .Xresources for mouse
-      ln -f -s ${xresources} $CONFIG_FILE_PATH
-      chown -h ${config.mainUser}: $CONFIG_FILE_PATH
+    # .Xresources for mouse
+    ln -f -s ${xresources} ${config.mainUserHome}/.Xresources
+    chown -h ${config.mainUser}: ${config.mainUserHome}/.Xresources
   '';
 }

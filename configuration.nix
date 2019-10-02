@@ -31,7 +31,7 @@ in
       ./theme.nix
       ./virtualisation.nix
       ./tmux.nix
-      ./dunst.nix
+      ./notify-daemon.nix
       ./users.nix
       ./options.nix
       ./power-action.nix
