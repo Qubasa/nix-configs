@@ -131,10 +131,10 @@ in{
             ReplaceWithRegister # For better copying/replacing
             polyglot # Language pack
             unstable.vimPlugins.indentLine
-            unstable.vimPlugins.coc-json
             unstable.vimPlugins.coc-html
             unstable.vimPlugins.coc-css
             unstable.vimPlugins.coc-nvim
+            ale
             molokai # color scheme
           ];
           # manually loadable by calling `:packadd $plugin-name`
@@ -156,6 +156,7 @@ in{
     unzip # To vim into unzipped files
     xxd # Show binary as hex
     nodejs # coc dependencie
+    nodePackages.jsonlint # json linting
     python3
     python37Packages.jedi
     python37Packages.python-language-server # python linting
@@ -163,9 +164,9 @@ in{
     python37Packages.black # Python code formatter
     python37Packages.libxml2 # This is Xmllint
     ccls # C/C++ language server
+    clang-tools # C++ fixer
     unstable.gotools
     go
-
   ];
 
 

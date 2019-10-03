@@ -13,7 +13,7 @@ in {
   services.restic.backups.thinkpad =
   {
     initialize = true;
-    paths = [ "/home/${config.mainUser}" "${config.secrets}" "/etc/nixos" "/etc/NetworkManager/system-connections" ];
+    paths = [ "/home/${config.mainUser}" "${config.secrets}" "/etc/nixos" "/var/lib/iwd"];
     user = "root";
     extraOptions = [ "sftp.command='ssh -p ${port} ${user}@${dest} -i ${config.secrets}/restic/restic_keys -s sftp'" ];
     repository = "sftp:${user}@${dest}:/home/${user}/${repo-path}";
