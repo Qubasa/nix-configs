@@ -103,8 +103,8 @@ in {
     shortcuts-tmux = "cat /etc/nixos/resources/shortcuts-help/tmux.txt";
 
     # Clipboard aliases
-    c = "${pkgs.wl-clipboard}/bin/wl-copy --primary"; # Copy to clipboard
-    v = "${pkgs.wl-clipboard}/bin/wl-paste --primary -n"; # Paste
+    c = "${pkgs.wl-clipboard}/bin/wl-copy"; # Copy to clipboard
+    v = "${pkgs.wl-clipboard}/bin/wl-paste"; # Paste
 
     fromByte = "${pkgs.coreutils}/bin/numfmt --to=iec";
     toByte = "${pkgs.coreutils}/bin/numfmt --from=iec";

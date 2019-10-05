@@ -115,7 +115,7 @@ environment.systemPackages = with pkgs; [
   valgrind # c checker tool
   myMpv # Wayland compatbile mpv
   imv # Wayland compatible image viewer
-  unstable.wl-clipboard # Copy and paste from command line. Vim dependencies
+  #unstable.wl-clipboard # Copy and paste from command line. Vim dependencies
   chromium
   sqlite-interactive # Sqlite cli
 
