@@ -82,6 +82,7 @@ environment.systemPackages = with pkgs; [
   wget
   git
   curl
+  pwgen # generates passwords
   file
   nix-prefetch # Sha256sum a link for nixos
   ldns  # DNS tool

@@ -344,8 +344,7 @@ let
     assign [app_id="firefox"] $workspace2
     assign [class="Daily"] $workspace5
 
-    assign [class="VirtualBox Manager"] $workspace4
-    assign [class="Virt-manager" title="Virtual Machine Manager"] $workspace4
+    assign [app_id="virt-manager"] $workspace4
 
     assign [class="libreoffice"] $workspace6
     assign [class="Eclipse"] $workspace6

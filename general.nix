@@ -22,7 +22,7 @@ i18n = {
 time.timeZone = "Europe/Berlin";
 
 # Can create USB issues
-powerManagement.powertop.enable = true;
+#powerManagement.powertop.enable = true;
 
 boot.loader.grub.extraConfig = ''
   set theme=($drive1)//themes/fallout-grub-theme/theme.txt
