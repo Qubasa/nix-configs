@@ -6,6 +6,8 @@ let
 
   wallpaper_path = ./resources/wallpapers/pixel_space.jpg;
   lock_wallpaper_path = ./resources/wallpapers/waterfall.jpg;
+  theme_path = ./resources/sddm-slice-1.5/slice;
+  rofi_config_path = ./resources/gruvbox-dark-soft.rasi;
 
   unstable = import <nixos-unstable> { };
   bar_update_interval = "1"; # In seconds
@@ -238,10 +240,10 @@ let
     bindsym $mod+Shift+q kill
 
     # start dmenu (a program launcher)
-    bindsym $mod+d exec ${pkgs.rofi}/bin/rofi -modi drun#run -combi-modi drun#run -show combi -show-icons -display-combi run -theme /etc/nixos/resources/gruvbox-dark-soft.rasi
+    bindsym $mod+d exec ${pkgs.rofi}/bin/rofi -modi drun#run -combi-modi drun#run -show combi -show-icons -display-combi run -theme ${rofi_config_path}
 
     # Switch windows
-    bindsym $mod+x exec ${pkgs.rofi}/bin/rofi -modi window -show window -auto-select -theme /etc/nixos/resources/gruvbox-dark-soft.rasi
+    bindsym $mod+x exec ${pkgs.rofi}/bin/rofi -modi window -show window -auto-select -theme ${rofi_config_path}
 
     # Arrow keys for focus navigation
     bindsym $mod+Left focus left
@@ -418,6 +420,8 @@ let
     #                     #
     #######################
     output eDP-1 pos 0 0 res 1920x1080
+    output HDMI-A-1 pos 1920 0 res 2560x1440
+
 
     #######################
     #                     #
@@ -435,12 +439,19 @@ let
     #        INPUT        #
     #                     #
     #######################
-    input 1:1:AT_Translated_Set_2_keyboard {
+    input * {
       xkb_layout de
+    }
+
+
+    input type:mouse {
+      accel_profile adaptive
+      pointer_accel 0.4
     }
 
     input type:touchpad {
       accel_profile adaptive
+      middle_emulation disabled
       tap enabled
       pointer_accel 0.4
       natural_scroll disabled
@@ -546,7 +557,7 @@ in {
     sddm = {
         enable = true;
         enableHidpi = true;
-        theme = toString ./resources/sddm-slice-1.5/slice;
+        theme = "${theme_path}";
     };
   };
 

@@ -7,6 +7,8 @@ max-line-length = 125
 
   coc_config = pkgs.writeText "coc-settings.json" ''
     {
+
+      "coc.preferences.useQuickfixForLocations":true,
       "languageserver": {
           "golang": {
             "command": "gopls",

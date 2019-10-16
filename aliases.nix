@@ -75,6 +75,7 @@ in {
     share-dir = "${pkgs.python3}/bin/python3 -m http.server 1234";
     t = "${pkgs.taskwarrior}/bin/task";
     video = "mpv --keep-open --really-quiet --pause";
+    audio = "mocp";
     wifi = "${pkgs.iwd}/bin/iwctl";
     img = "imv";
     screenshot = "grim";

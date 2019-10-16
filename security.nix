@@ -20,7 +20,7 @@ in
 
   # Disable this if you have problems with
   # drivers that do not load
-  security.lockKernelModules = true;
+  security.lockKernelModules = false;
 
   # if disabled you loose 30% of cpu power
   security.allowSimultaneousMultithreading = true;

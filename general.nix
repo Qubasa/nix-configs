@@ -24,15 +24,5 @@ time.timeZone = "Europe/Berlin";
 # Can create USB issues
 #powerManagement.powertop.enable = true;
 
-boot.loader.grub.extraConfig = ''
-  set theme=($drive1)//themes/fallout-grub-theme/theme.txt
-'';
 
-
-boot.loader.grub.splashImage = ./resources/fallout-grub-theme/background.png;
-
-system.activationScripts.copyGrubTheme = ''
-  mkdir -p /boot/themes
-  cp -R /etc/nixos/resources/fallout-grub-theme /boot/themes
-'';
 }
