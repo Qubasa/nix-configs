@@ -69,6 +69,17 @@ gitUser = "Luis Hebendanz";
 
 programs.wireshark.enable = true;
 
+# Add NUR packages from https://github.com/kalbasit/nur-packages
+# nixpkgs.config.packageOverrides = pkgs: {
+#     nur = import (builtins.fetchTarball rec {
+#     url =  "https://github.com/nix-community/NUR/archive/238f96e78a2b9ee33750c0dbdc5123701a54d378.tar.gz";
+#     sha256 = "1v7ngv673bxhq6scdfdhv975vsxi40jzg3hpb1vg042c7sp4y261";
+#   })
+#   {
+#     inherit pkgs;
+#   };
+# };
+
 environment.systemPackages = with pkgs; [
 
   ############################

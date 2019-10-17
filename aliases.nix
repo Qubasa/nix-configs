@@ -92,6 +92,7 @@ in {
     nix-delete-old = "nix-collect-garbage -d && journalctl --vacuum-time=2d";
     nix-update = "nix-channel --update && nixos-rebuild switch";
     aliases = "${pkgs.less}/bin/less /etc/nixos/aliases.nix";
+    n = "nix-shell --command zsh";
 
     # Needed to overwrite the alias binary 'where' of which
     where = "${where}";
