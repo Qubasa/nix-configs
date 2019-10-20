@@ -93,16 +93,6 @@ in {
       eval "$(direnv hook zsh)"
     '';
 
-    loginShellInit = ''
-        bindkey -e
-        zstyle ":completion:*" special-dirs true
-    '';
-
-    shellInit = ''
-      #disable config wizard
-      zsh-newuser-install() { :; }
-    '';
-
     ohMyZsh = {
       enable = true;
       theme = "gnzh";
@@ -119,6 +109,7 @@ environment.systemPackages = with pkgs; [
 ];
 
 system.activationScripts.copyZshConfig = ''
+    touch ${config.mainUserHome}/.zshrc
     ln -f -s ${direnv_rc} ${config.mainUserHome}/.direnvrc
     chown -h ${config.mainUser}: ${config.mainUserHome}/.direnvrc
 '';

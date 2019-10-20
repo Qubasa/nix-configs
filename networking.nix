@@ -4,6 +4,8 @@
 
 networking.wireless.iwd.enable = true;
 
+# networking.networkmanager.enable = true;
+
 networking.dhcpcd.denyInterfaces = [ "macvtap*" ];
 
 # Disable so no IPv6 leak on VPN usage

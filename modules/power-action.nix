@@ -17,7 +17,7 @@ let
       default = "BAT0";
     };
     user = mkOption {
-      type = types.string;
+      type = types.str;
       default = "power-action";
     };
     startAt = mkOption {

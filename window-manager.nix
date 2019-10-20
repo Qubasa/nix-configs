@@ -314,7 +314,7 @@ let
     for_window [class="usbguard-applet-qt"] floating enable
     for_window [class="Nm-connection-editor"] floating enable
     for_window [class="Gnome-disks"] floating enable
-    for_window [class="QtPass" title="QtPass"] move scratchpad
+    for_window [app_id="org.ijhack."] move scratchpad
 
     # Make the currently focused window a scratchpad
     bindsym $mod+Shift+minus move scratchpad
@@ -323,7 +323,7 @@ let
     bindsym $mod+minus scratchpad show
 
     # Show the sup-mail scratchpad window, if any.
-    bindsym $mod+Shift+s [class="QtPass" title="QtPass"] scratchpad show
+    bindsym $mod+Shift+s [app_id="org.ijhack."] scratchpad show
 
     #######################
     #                     #
@@ -342,7 +342,7 @@ let
     set $workspace9 "9"
     set $workspace10 "10"
 
-    assign [class="quassel"] $workspace3
+    assign [app_id="org.kde.quassel"] $workspace3
     assign [app_id="firefox"] $workspace2
     assign [class="Daily"] $workspace5
 
@@ -412,15 +412,6 @@ let
     #                     #
     #######################
     output * background ${wallpaper_path} stretch
-
-
-    #######################
-    #                     #
-    #       OUTPUT        #
-    #                     #
-    #######################
-    output eDP-1 pos 0 0 res 1920x1080
-    output HDMI-A-1 pos 1920 0 res 2560x1440
 
 
     #######################
@@ -498,8 +489,11 @@ let
     #       AUTORUNS      #
     #                     #
     #######################
+    # automatic display control
+    exec systemd-cat -t kanshi kanshi
+
     # Start firefox
-    exec systemd-cat -t firefox firefox
+    exec systemd-cat -t firefox firefox -P default-default
 
     # Quassel client
     exec systemd-cat -t quassel quasselclient

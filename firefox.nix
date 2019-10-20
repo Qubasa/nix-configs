@@ -34,6 +34,7 @@ let
     clearDataOnShutdown = true;
     disableDrmPlugin = true;
 
+    # Newline on copy problem: https://bugzilla.mozilla.org/show_bug.cgi?id=1547595
     gdkWayland = true;
 
 };

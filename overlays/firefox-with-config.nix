@@ -6,7 +6,6 @@
 , jrePlugin, icedtea_web
 , bluejeans, djview4, adobe-reader
 , google_talk_plugin, fribid, gnome3/*.gnome-shell*/
-, esteidfirefoxplugin
 , browserpass, chrome-gnome-shell, uget-integrator, plasma-browser-integration, bukubrow
 , udev
 , kerberos
@@ -87,7 +86,6 @@ let
           ++ lib.optional (cfg.enableGnomeExtensions or false) gnome3.gnome-shell
           ++ lib.optional (cfg.enableBluejeans or false) bluejeans
           ++ lib.optional (cfg.enableAdobeReader or false) adobe-reader
-          ++ lib.optional (cfg.enableEsteid or false) esteidfirefoxplugin
           ++ extraPlugins
         );
       nativeMessagingHosts =

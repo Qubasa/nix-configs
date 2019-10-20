@@ -90,6 +90,8 @@ environment.systemPackages = with pkgs; [
   man-pages
   posix_man_pages # Use the posix standarized manpages with `man p <keyword>`
 
+  wl-clipboard
+  kanshi # dynamic display control for wayland
   wget
   git
   curl

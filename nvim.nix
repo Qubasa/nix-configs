@@ -36,48 +36,6 @@ max-line-length = 125
                 "configurationSources": [
                   "pycodestyle"
                 ],
-                "plugins": {
-                  "jedi_completion": {
-                    "enabled": true
-                  },
-                  "jedi_hover": {
-                    "enabled": true
-                  },
-                  "jedi_references": {
-                    "enabled": true
-                  },
-                  "jedi_signature_help": {
-                    "enabled": true
-                  },
-                  "jedi_symbols": {
-                    "enabled": true,
-                    "all_scopes": true
-                  },
-                  "mccabe": {
-                    "enabled": true,
-                    "threshold": 15
-                  },
-                  "preload": {
-                    "enabled": true
-                  },
-                  "pycodestyle": {
-                    "enabled": true
-                  },
-                  "pydocstyle": {
-                    "enabled": false,
-                    "match": "(?!test_).*\\.py",
-                    "matchDir": "[^\\.].*"
-                  },
-                  "pyflakes": {
-                    "enabled": true
-                  },
-                  "rope_completion": {
-                    "enabled": true
-                  },
-                  "yapf": {
-                    "enabled": true
-                  }
-                }
               }
             }
           },
@@ -132,10 +90,10 @@ in{
             tagbar #  function overview window
             ReplaceWithRegister # For better copying/replacing
             polyglot # Language pack
-            unstable.vimPlugins.indentLine
-            unstable.vimPlugins.coc-html
-            unstable.vimPlugins.coc-css
-            unstable.vimPlugins.coc-nvim
+            vimPlugins.indentLine
+            vimPlugins.coc-html
+            vimPlugins.coc-css
+            vimPlugins.coc-nvim
             ale
             molokai # color scheme
           ];

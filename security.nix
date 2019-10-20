@@ -26,7 +26,7 @@ in
   security.allowSimultaneousMultithreading = true;
 
   # Clearing cache makes your cpu veery slow
-  security.virtualization.flushL1DataCache = "never";
+  security.virtualisation.flushL1DataCache = "never";
 
   security.allowUserNamespaces = true;
 
@@ -53,21 +53,22 @@ in
   nix.allowedUsers = ["${config.mainUser}"];
 
 
+  # Disabled because usbguard applet has been deprecated: https://github.com/USBGuard/usbguard/issues/334
   # Only allow specific usb devices
-  services.usbguard.enable = true;
-  services.usbguard.IPCAllowedUsers = [ "root" config.mainUser ];
-  services.usbguard.ruleFile = "${config.secrets}/usbguard/rules.conf";
+  # services.usbguard.enable = true;
+  # services.usbguard.IPCAllowedUsers = [ "root" config.mainUser ];
+  # services.usbguard.ruleFile = "${config.secrets}/usbguard/rules.conf";
 
-  systemd.user.services.usbguard-applet = {
-    description = "USBGuard applet";
-    partOf = [ "graphical-session.target" ];
-    wantedBy = [ "graphical-session.target" ];
-    path = [ "/run/current-system/sw/" ]; ### Fix empty PATH to find qt plugins
-    serviceConfig = {
-      ExecStart = "${pkgs.usbguard}/bin/usbguard-applet-qt";
-      Restart = "always";
-    };
-  };
+  # systemd.user.services.usbguard-applet = {
+  #   description = "USBGuard applet";
+  #   partOf = [ "graphical-session.target" ];
+  #   wantedBy = [ "graphical-session.target" ];
+  #   path = [ "/run/current-system/sw/" ]; ### Fix empty PATH to find qt plugins
+  #   serviceConfig = {
+  #     ExecStart = "${pkgs.usbguard}/bin/usbguard-applet-qt";
+  #     Restart = "always";
+  #   };
+  # };
 
 
   # Check if secrets are all non world readable
