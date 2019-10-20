@@ -169,7 +169,7 @@ nixpkgs.config.allowUnfree = true;
 
 
 # Exfat support
-#boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
+boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
 
 # This value determines the NixOS release with which your system is to be
 # compatible, in order to avoid breaking some software such as database

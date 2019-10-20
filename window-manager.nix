@@ -311,9 +311,8 @@ let
     }
 
     # Enable floating
-    for_window [class="usbguard-applet-qt"] floating enable
     for_window [class="Nm-connection-editor"] floating enable
-    for_window [class="Gnome-disks"] floating enable
+    for_window [app_id="gnome-disks"] floating enable
     for_window [app_id="org.ijhack."] move scratchpad
 
     # Make the currently focused window a scratchpad
