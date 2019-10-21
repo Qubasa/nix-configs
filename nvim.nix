@@ -1,10 +1,5 @@
 {pkgs, config,  ...}:
 let
-  pycodestyle = pkgs.writeText "pycodestyle" ''
-[pycodestyle]
-max-line-length = 125
-    '';
-
   coc_config = pkgs.writeText "coc-settings.json" ''
     {
 
@@ -34,8 +29,53 @@ max-line-length = 125
                 },
                 "commandPath": "",
                 "configurationSources": [
-                  "pycodestyle"
+                  "pylint"
                 ],
+                "plugins": {
+                  "autopep8":{
+                    "enabled": false
+                  },
+                  "pylint_lint": {
+                    "enabled": true
+                  },
+                  "jedi_completion": {
+                    "enabled": true
+                  },
+                  "jedi_hover": {
+                    "enabled": true
+                  },
+                  "jedi_references": {
+                    "enabled": true
+                  },
+                  "jedi_signature_help": {
+                    "enabled": true
+                  },
+                  "jedi_symbols": {
+                    "enabled": true,
+                    "all_scopes": true
+                  },
+                  "mccabe": {
+                    "enabled": true,
+                    "threshold": 15
+                  },
+                  "preload": {
+                    "enabled": true
+                  },
+                  "pydocstyle_lint": {
+                    "enabled": false,
+                    "match": "(?!test_).*\\.py",
+                    "matchDir": "[^\\.].*"
+                  },
+                  "pyflakes_lint": {
+                    "enabled": false
+                  },
+                  "rope_completion": {
+                    "enabled": true
+                  },
+                  "yapf": {
+                    "enabled": true
+                  }
+                }
               }
             }
           },
@@ -121,6 +161,7 @@ in{
     python37Packages.jedi
     python37Packages.python-language-server # python linting
     python37Packages.pyls-mypy # Python static type checker
+    python37Packages.pylint # Python linter
     python37Packages.black # Python code formatter
     python37Packages.libxml2 # This is Xmllint
     ccls # C/C++ language server
@@ -129,10 +170,16 @@ in{
     go
   ];
 
+  environment.etc."pylintrc" = {
+    text = ''
+      [MESSAGES CONTROL]
+      disable=missing-docstring, no-else-return
+      max-line-length=125
+      '';
+  };
+
 
   system.activationScripts.copyNvimConfig = ''
-      ln -f -s ${pycodestyle} ${config.mainUserHome}/.config/pycodestyle
-      chown -h ${config.mainUser}: ${config.mainUserHome}/.config/pycodestyle
 
       mkdir -p ${config.mainUserHome}/.config/nvim
       ln -f -s ${coc_config} ${config.mainUserHome}/.config/nvim/coc-settings.json

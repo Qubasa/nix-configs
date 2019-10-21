@@ -311,7 +311,7 @@ let
     }
 
     # Enable floating
-    for_window [class="Nm-connection-editor"] floating enable
+    for_window [app_id="nm-connection-editor"] floating enable
     for_window [app_id="gnome-disks"] floating enable
     for_window [app_id="org.ijhack."] move scratchpad
 
@@ -520,7 +520,6 @@ in {
   environment.systemPackages = with pkgs; [
     rofi     # Dmenu replacement
     acpilight # Replacement for xbacklight
-    arandr # Xrandr gui
     acpi
 
     # Add qtgraphicaleffects as dependencie

@@ -3,6 +3,8 @@
 let
 
   nix_python_version = "python37Packages";
+  python_version_long = "3.7.4";
+  python_version = "3.7";
 
 
   mic_direnv_rc =("${pkgs.fetchFromGitHub {
@@ -45,8 +47,11 @@ let
  nixify = pkgs.writers.writeDashBin "nixify" ''
   set -efuC
   if [ ! -e ./.envrc ]; then
-    echo use_nix > .envrc
-    echo "layout python-venv" >> .envrc
+    cat > .envrc <<'EOF'
+    use_nix
+    layout python-venv
+    export PYTHONPATH=".:$PWD/.direnv/python-venv-${python_version_long}/lib/${python_version}/site-packages:$PYTHONPATH"
+EOF
     direnv allow
   fi
   if [ ! -e shell.nix ]; then
