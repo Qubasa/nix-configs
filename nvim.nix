@@ -1,107 +1,112 @@
 {pkgs, config,  ...}:
 let
   coc_config = pkgs.writeText "coc-settings.json" ''
-    {
+      {
 
-      "coc.preferences.useQuickfixForLocations":true,
-      "languageserver": {
-          "golang": {
-            "command": "gopls",
-            "rootPatterns": ["go.mod"],
-            "filetypes": ["go"]
-          },
-          "python": {
-            "command": "pyls",
-            "args": [
-              "-vv",
-              "--log-file",
-              "/tmp/lsp_python.log"
-            ],
-            "trace.server": "verbose",
-            "filetypes": [
-              "python"
-            ],
-            "settings": {
-              "pyls": {
-                "enable": true,
-                "trace": {
-                  "server": "verbose"
+    "coc.preferences.useQuickfixForLocations":true,
+    "languageserver": {
+        "golang": {
+          "command": "gopls",
+          "rootPatterns": ["go.mod"],
+          "filetypes": ["go"]
+        },
+        "python": {
+          "command": "pyls",
+          "args": [
+            "-vv",
+            "--log-file",
+            "/tmp/lsp_python.log"
+          ],
+          "trace.server": "verbose",
+          "filetypes": [
+            "python"
+          ],
+          "settings": {
+            "pyls": {
+              "enable": true,
+              "trace": {
+                "server": "verbose"
+              },
+              "commandPath": "",
+              "configurationSources": [
+                "pylint"
+              ],
+              "plugins": {
+                "autopep8":{
+                  "enabled": false
                 },
-                "commandPath": "",
-                "configurationSources": [
-                  "pylint"
-                ],
-                "plugins": {
-                  "autopep8":{
-                    "enabled": false
-                  },
-                  "pylint_lint": {
-                    "enabled": true
-                  },
-                  "jedi_completion": {
-                    "enabled": true
-                  },
-                  "jedi_hover": {
-                    "enabled": true
-                  },
-                  "jedi_references": {
-                    "enabled": true
-                  },
-                  "jedi_signature_help": {
-                    "enabled": true
-                  },
-                  "jedi_symbols": {
-                    "enabled": true,
-                    "all_scopes": true
-                  },
-                  "mccabe": {
-                    "enabled": true,
-                    "threshold": 15
-                  },
-                  "preload": {
-                    "enabled": true
-                  },
-                  "pydocstyle_lint": {
-                    "enabled": false,
-                    "match": "(?!test_).*\\.py",
-                    "matchDir": "[^\\.].*"
-                  },
-                  "pyflakes_lint": {
-                    "enabled": false
-                  },
-                  "rope_completion": {
-                    "enabled": true
-                  },
-                  "yapf": {
-                    "enabled": true
-                  }
+                "pylint": {
+                  "enabled": true,
+                  "match": "(?!test_).*\\.py",
+                  "matchDir": "[^\\.].*"
+                },
+                "jedi_completion": {
+                  "enabled": true
+                },
+                "jedi_hover": {
+                  "enabled": true
+                },
+                "jedi_references": {
+                  "enabled": true
+                },
+                "jedi_signature_help": {
+                  "enabled": true
+                },
+                "jedi_symbols": {
+                  "enabled": true,
+                  "all_scopes": true
+                },
+                "mccabe": {
+                  "enabled": true,
+                  "threshold": 15
+                },
+                "preload": {
+                  "enabled": true
+                },
+                "pycodestyle":{
+                    "enabled":false
+                },
+                "pydocstyle": {
+                  "enabled": false,
+                  "match": "(?!test_).*\\.py",
+                  "matchDir": "[^\\.].*"
+                },
+                "pyflakes": {
+                  "enabled": false
+                },
+                "rope_completion": {
+                  "enabled": true
+                },
+                "yapf": {
+                  "enabled": true
                 }
               }
             }
-          },
-          "ccls": {
-              "command": "ccls",
-              "filetypes": [
-                  "c",
-                  "cpp",
-                  "objc",
-                  "objcpp"
-              ],
-              "rootPatterns": [
-                  ".ccls",
-                  "compile_commands.json",
-                  ".vim/",
-                  ".git/",
-                  ".hg/"
-              ],
-              "initializationOptions": {
-                  "cache": {
-                      "directory": "/tmp/ccls"
-                  }
-              }
           }
-      }
-  }
+        },
+        "ccls": {
+            "command": "ccls",
+            "filetypes": [
+                "c",
+                "cpp",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".ccls",
+                "compile_commands.json",
+                ".vim/",
+                ".git/",
+                ".hg/"
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                }
+            }
+        }
+    }
+}
   '';
 
 unstable = import <nixos-unstable> {};
@@ -173,7 +178,7 @@ in{
   environment.etc."pylintrc" = {
     text = ''
       [MESSAGES CONTROL]
-      disable=missing-docstring, no-else-return
+      disable=missing-docstring, no-else-return, broad-except, no-member
       max-line-length=125
       '';
   };

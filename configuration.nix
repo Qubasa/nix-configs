@@ -130,6 +130,7 @@ environment.systemPackages = with pkgs; [
   imv # Wayland compatible image viewer
   #unstable.wl-clipboard # Copy and paste from command line. Vim dependencies
   chromium
+  evince # pdf reader
   sqlite-interactive # Sqlite cli
 
   # Java development
@@ -155,7 +156,6 @@ environment.systemPackages = with pkgs; [
   jq # Json parsing in shell
   cifs-utils # Samba mount
   sshfs # Mount a filesystem through ssh
-
 
   ############################
   #                          #

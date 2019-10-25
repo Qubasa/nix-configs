@@ -27,12 +27,6 @@ let
   '';
 
 
-  pdf = pkgs.writeScriptBin "pdf" ''
-    #!/bin/sh
-    export PATH=$PATH:${pkgs.coreutils}/bin
-    ${pkgs.firefox}/bin/firefox &
-    '';
-
   disks = pkgs.writeScriptBin "disks" ''
     #!/bin/sh
     export PATH=$PATH:${pkgs.coreutils}/bin
@@ -80,6 +74,7 @@ in {
     img = "imv";
     screenshot = "grim";
     logout-wayland = "kill -9 -1";
+    pdf = "evince";
 
 
     # Search aliases
@@ -114,7 +109,6 @@ in {
 
   environment.systemPackages = with pkgs; [
     nix-test
-    pdf
     disks
     kbd_backlight
   ];
