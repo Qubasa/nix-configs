@@ -4,54 +4,45 @@ let
 
 unstable = import <nixos-unstable> {};
 
-alacritty_config = pkgs.writeText "config" ''
-
-env:
-  TERM: xterm-256color
-
-
-scrolling:
-  history: 100000
-
-font:
-  family: Bitstream Vera Sans
-  size: 14.0
-
-
-colors:
-  # Default colors
-  primary:
-    background: '0x2b2b2b'
-    foreground: '0xdedede'
-
-  # Normal colors
-  normal:
-    black:   '0x2e3436'
-    red:     '0xcc0000'
-    green:   '0x4e9a06'
-    yellow:  '0xc4a000'
-    blue:    '0x3465a4'
-    magenta: '0x75507b'
-    cyan:    '0x06989a'
-    white:   '0xd3d7cf'
-
-  # Bright colors
-  bright:
-    black:   '0x555753'
-    red:     '0xef2929'
-    green:   '0x8ae234'
-    yellow:  '0xfce94f'
-    blue:    '0x729fcf'
-    magenta: '0xad7fa8'
-    cyan:    '0x34e2e2'
-    white:   '0xeeeeec'
+# terminal.sexy tartan color scheme
+terminal_config = pkgs.writeText "config" ''
+[global_config]
+  borderless = True
+  title_font = Monospace 18
+  title_inactive_bg_color = "#555753"
+  title_inactive_fg_color = "#dedede"
+  title_transmit_bg_color = "#2e3436"
+  title_transmit_fg_color = "#dedede"
+  title_use_system_font = False
+[keybindings]
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    allow_bold = False
+    background_color = "#2b2b2b"
+    copy_on_selection = True
+    cursor_color = "#dedede"
+    font = Monospace 18
+    foreground_color = "#dedede"
+    rewrap_on_resize = False
+    scrollback_lines = 10000
+    scrollbar_position = hidden
+    use_system_font = False
   '';
 
 in {
 
   environment.systemPackages = with pkgs; [
-    unstable.alacritty
-    unstable.alacritty.terminfo
+    terminator
   ];
 
   environment.variables = {
@@ -59,8 +50,8 @@ in {
   };
 
   system.activationScripts.copyTermiteConfig = ''
-      mkdir -p ${config.mainUserHome}/.config/alacritty
-      ln -f -s ${alacritty_config} ${config.mainUserHome}/.config/alacritty/alacritty.yml
-      chown -R ${config.mainUser}: ${config.mainUserHome}/.config/alacritty
+      mkdir -p ${config.mainUserHome}/.config/terminator
+      ln -f -s ${terminal_config} ${config.mainUserHome}/.config/terminator/config
+      chown -R ${config.mainUser}: ${config.mainUserHome}/.config/terminator
   '';
 }

@@ -220,7 +220,7 @@ let
     bindsym $mod+l exec ${lock_screen}
 
     # start a terminal
-    bindsym $mod+Return exec alacritty
+    bindsym $mod+Return exec terminator
 
     # class                 border  backgr. text    indicator child_border
     client.focused          #4fceea #285577 #ffffff #2e9ef4   #285577
@@ -352,6 +352,9 @@ let
 
     # Inhibit idle
     for_window [app_id="firefox"] inhibit_idle fullscreen
+
+    # Disable title bar
+    for_window [app_id=".terminator-wrapped"] border none
 
     # Workspace lateral movement
     bindsym $mod+Next workspace next
