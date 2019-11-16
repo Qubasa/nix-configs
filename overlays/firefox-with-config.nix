@@ -27,6 +27,7 @@ let
     , extraPlugins ? []
     , extraPrefs ? ""
     , extraExtensions ? [ ]
+    , noNewProfileOnFFUpdate ? true
     , allowNonSigned ? false
     , disablePocket ? false
     , disableTelemetry ? true
@@ -34,6 +35,7 @@ let
     , showPunycodeUrls ? true
     , disableFirefoxStudies ? true
     , disableFirefoxSync ? false
+    , disableFirefoxUpdatePage ? true
     , useSystemCertificates ? true
     , dontCheckDefaultBrowser ? false
     # For more information about anti tracking
@@ -126,6 +128,14 @@ let
               }
             ) {} extraExtensions;
           }
+      ) // lib.optionalAttrs noNewProfileOnFFUpdate (
+        {
+          LegacyProfiles = true;
+        }
+      ) // lib.optionalAttrs disableFirefoxUpdatePage (
+        {
+          OverridePostUpdatePage = "";
+        }
       ) // lib.optionalAttrs disablePocket (
         {
           DisablePocket = true;

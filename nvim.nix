@@ -178,7 +178,7 @@ in{
   environment.etc."pylintrc" = {
     text = ''
       [MESSAGES CONTROL]
-      disable=missing-docstring, no-else-return, broad-except, no-member
+      disable=missing-docstring, no-else-return, broad-except, no-member, global-statement, invalid-name
       max-line-length=125
       '';
   };

@@ -67,7 +67,7 @@ gitEmail = "luis.nixos@gmail.com";
 gitUser = "Luis Hebendanz";
 
 
-programs.wireshark.enable = true;
+# programs.wireshark.enable = true;
 
 # Add NUR packages from https://github.com/kalbasit/nur-packages
 # nixpkgs.config.packageOverrides = pkgs: {
@@ -78,6 +78,26 @@ programs.wireshark.enable = true;
 #   {
 #     inherit pkgs;
 #   };
+# };
+
+# services.tftpd = {
+#   enable = true;
+#   path = "/tmp/tftp";
+# };
+
+# networking.firewall.enable = false;
+
+# services.dhcpd4 = {
+#   enable = true;
+#   interfaces = [ "enp2s0" ];
+#   extraConfig = ''
+# subnet 192.168.178.0 netmask 255.255.0.0 {
+#     next-server 192.168.178.43;
+#     option domain-name-servers 192.168.178.43;
+#     option routers 192.168.178.43;
+#     range 192.168.178.1 192.168.178.254;
+# }
+#     '';
 # };
 
 environment.systemPackages = with pkgs; [

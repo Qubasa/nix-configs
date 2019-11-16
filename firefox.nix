@@ -10,6 +10,7 @@ let
   audio-fingerprint-defender = pkgs.callPackage ./own-pkgs/audio-fingerprint-defender {};
   font-fingerprint-defender = pkgs.callPackage ./own-pkgs/font-fingerprint-defender {};
   user-agent-switcher = pkgs.callPackage ./own-pkgs/user-agent-switcher {};
+  dark-reader = pkgs.callPackage ./own-pkgs/dark-reader {};
 
   wrapper = pkgs.callPackage ./overlays/firefox-with-config.nix { };
   myFirefox = wrapper pkgs.firefox-unwrapped {
@@ -17,11 +18,8 @@ let
   extraExtensions = [
     https-everywhere
     ublock-origin
-    audio-fingerprint-defender
-    canvas-fingerprint-defender
-    webgl-fingerprint-defender
-    font-fingerprint-defender
     user-agent-switcher
+    dark-reader
   ];
 
   extraPolicies = {
@@ -33,6 +31,7 @@ let
     allowNonSigned = true;
     clearDataOnShutdown = true;
     disableDrmPlugin = true;
+    homepage = "https://google.com";
 
     # Newline on copy problem: https://bugzilla.mozilla.org/show_bug.cgi?id=1547595
     gdkWayland = true;

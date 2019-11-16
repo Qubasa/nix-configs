@@ -3,7 +3,7 @@
 let
 
   nix_python_version = "python37Packages";
-  python_version_long = "3.7.4";
+  python_version_long = "3.7.5";
   python_version = "3.7";
 
 
@@ -77,6 +77,12 @@ EOF
     echo ".direnv" >> .gitignore
   fi
 
+  if [ "$(grep -qxsF ".history" .gitignore)" != 0 ]; then
+    echo ".history" >> .gitignore
+  fi
+  if [ "$(grep -qxsF ".__pycache__" .gitignore)" != 0 ]; then
+    echo ".__pycache__" >> .gitignore
+  fi
   git init
   git add .gitignore
   git commit -m "Added .gitignore"
