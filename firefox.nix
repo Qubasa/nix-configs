@@ -18,7 +18,6 @@ let
   extraExtensions = [
     https-everywhere
     ublock-origin
-    user-agent-switcher
     dark-reader
   ];
 
@@ -30,8 +29,7 @@ let
     disableFirefoxSync = true;
     allowNonSigned = true;
     clearDataOnShutdown = true;
-    disableDrmPlugin = true;
-    homepage = "https://google.com";
+    disableDrmPlugin = false;
 
     # Newline on copy problem: https://bugzilla.mozilla.org/show_bug.cgi?id=1547595
     gdkWayland = true;

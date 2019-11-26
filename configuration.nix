@@ -134,6 +134,7 @@ environment.systemPackages = with pkgs; [
   libreoffice # Opening docs
   gimp # Editing pictures
   #deluge # torrent client
+  bat # Cat with syntax highlighting
   thunderbird
   screen # For serial connections
   dos2unix # Convert win newlines to unix ones

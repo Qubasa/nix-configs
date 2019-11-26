@@ -1,16 +1,18 @@
-{ stdenv, lib, pkgs, makeDesktopItem, makeWrapper, lndir, replace, config
+{ stdenv, lib, makeDesktopItem, makeWrapper, lndir, config, replace
 
 ## various stuff that can be plugged in
 , flashplayer, hal-flash
-, MPlayerPlugin, ffmpeg, xorg, libpulseaudio, libcanberra-gtk2
-, jrePlugin, icedtea_web
+, MPlayerPlugin, ffmpeg, xorg, libpulseaudio, libcanberra-gtk2, libglvnd
+, jrePlugin, adoptopenjdk-icedtea-web
 , bluejeans, djview4, adobe-reader
 , google_talk_plugin, fribid, gnome3/*.gnome-shell*/
 , browserpass, chrome-gnome-shell, uget-integrator, plasma-browser-integration, bukubrow
+, tridactyl-native
 , udev
 , kerberos
-
 }:
+
+
 
 ## configurability of the wrapper itself
 
@@ -18,13 +20,18 @@ browser:
 
 let
   wrapper =
-    { browserName ? browser.browserName or (builtins.parseDrvName browser.name).name
-    , name ? (browserName + "-" + (builtins.parseDrvName browser.name).version)
+  {  browserName ? browser.browserName or (lib.getName browser)
+    , pname ? browserName
+    , version ? lib.getVersion browser
     , desktopName ? # browserName with first letter capitalized
       (lib.toUpper (lib.substring 0 1 browserName) + lib.substring 1 (-1) browserName)
     , nameSuffix ? ""
     , icon ? browserName
     , extraPlugins ? []
+    , extraNativeMessagingHosts ? []
+    , gdkWayland ? false
+    , cfg ? config.${browserName} or {}
+
     , extraPrefs ? ""
     , extraExtensions ? [ ]
     , noNewProfileOnFFUpdate ? true
@@ -45,12 +52,11 @@ let
     , disableDNSOverHTTPS ? true
     , disableGoogleSafebrowsing ? false
     , clearDataOnShutdown ? false
-    , homepage ? "about:blank"
+    , homepage ? "about:home"
+    , enableDarkTheme ? true
     # For more information about policies visit
     # https://github.com/mozilla/policy-templates#enterprisepoliciesenabled
     , extraPolicies ? {}
-    , extraNativeMessagingHosts ? []
-    , gdkWayland ? false
     }:
 
     assert gdkWayland -> (browser ? gtk3); # Can only use the wayland backend if gtk3 is being used
@@ -60,7 +66,6 @@ let
       # If extraExtensions has been set disable manual extensions
       disableManualExtensions = if lib.count (x: true) extraExtensions > 0 then true else false;
 
-      cfg = config.${browserName} or {};
       enableAdobeFlash = cfg.enableAdobeFlash or false;
       ffmpegSupport = browser.ffmpegSupport or false;
       gssSupport = browser.gssSupport or false;
@@ -72,6 +77,7 @@ let
         stdenv.hostPlatform.system == "armv7l-linux" ||
         stdenv.hostPlatform.system == "aarch64-linux";
 
+
       plugins =
         assert !(jre && icedtea);
         if builtins.hasAttr "enableVLC" cfg
@@ -82,7 +88,7 @@ let
           ++ lib.optional (cfg.enableDjvu or false) (djview4)
           ++ lib.optional (cfg.enableMPlayer or false) (MPlayerPlugin browser)
           ++ lib.optional (supportsJDK && jre && jrePlugin ? mozillaPlugin) jrePlugin
-          ++ lib.optional icedtea icedtea_web
+          ++ lib.optional icedtea adoptopenjdk-icedtea-web
           ++ lib.optional (cfg.enableGoogleTalkPlugin or false) google_talk_plugin
           ++ lib.optional (cfg.enableFriBIDPlugin or false) fribid
           ++ lib.optional (cfg.enableGnomeExtensions or false) gnome3.gnome-shell
@@ -90,6 +96,7 @@ let
           ++ lib.optional (cfg.enableAdobeReader or false) adobe-reader
           ++ extraPlugins
         );
+
       nativeMessagingHosts =
         ([ ]
           ++ lib.optional (cfg.enableBrowserpass or false) (lib.getBin browserpass)
@@ -99,14 +106,17 @@ let
           ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma-browser-integration
           ++ extraNativeMessagingHosts
         );
+
       libs =   lib.optional stdenv.isLinux udev
             ++ lib.optional ffmpegSupport ffmpeg
             ++ lib.optional gssSupport kerberos
+            ++ lib.optional gdkWayland libglvnd
             ++ lib.optionals (cfg.enableQuakeLive or false)
             (with xorg; [ stdenv.cc libX11 libXxf86dga libXxf86vm libXext libXt alsaLib zlib ])
             ++ lib.optional (enableAdobeFlash && (cfg.enableAdobeFlashDRM or false)) hal-flash
             ++ lib.optional (config.pulseaudio or true) libpulseaudio;
       gtk_modules = [ libcanberra-gtk2 ];
+
 
       enterprisePolicies =
       {
@@ -210,7 +220,7 @@ let
         (builtins.toJSON enterprisePolicies);
 
       mozillaCfg = builtins.toFile "mozilla.cfg" ''
-        // First line must be a comment
+// First line must be a comment
 
         // Remove default top sites
         lockPref("browser.newtabpage.pinned", "");
@@ -223,8 +233,22 @@ let
         lockPref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);
 
         ${
+          if enableDarkTheme == true then
+          ''
+            //TODO: activeThemeID does not work. Enterprise Policies seem to
+            // have an option for that
+            // lockPref("extensions.activeThemeID","firefox-compact-dark@mozilla.org");
+            lockPref("devtools.theme","dark");
+          ''
+          else
+            ""
+        }
+
+        ${
           if allowNonSigned == true then
-            ''lockPref("xpinstall.signatures.required", false)''
+          ''
+            lockPref("xpinstall.signatures.required", false);
+          ''
           else
             ""
         }
@@ -278,7 +302,7 @@ let
 
              // This option is currently not usable because of bug:
              // https://bugzilla.mozilla.org/show_bug.cgi?id=1557620
-              // lockPref("privacy.resistFingerprinting", true);
+               lockPref("privacy.resistFingerprinting", true);
             ''
             else ""
         }
@@ -325,7 +349,7 @@ let
         ${extraPrefs}
       '';
     in stdenv.mkDerivation {
-      inherit name;
+      inherit pname version;
 
       desktopItem = makeDesktopItem {
         name = browserName;
@@ -403,8 +427,14 @@ let
           oldExe="$(readlink -v --canonicalize-existing "$executablePath")"
         fi
 
+        if [ ! -x "${browser}${browser.execdir or "/bin"}/${browserName}" ]
+        then
+            echo "cannot find executable file \`${browser}${browser.execdir or "/bin"}/${browserName}'"
+            exit 1
+        fi
 
-        makeWrapper "$oldExe" "$out${browser.execdir or "/bin"}/${browserName}${nameSuffix}" \
+        makeWrapper "$oldExe" \
+          "$out${browser.execdir or "/bin"}/${browserName}${nameSuffix}" \
             --suffix-each MOZ_PLUGIN_PATH ':' "$plugins" \
             --suffix LD_LIBRARY_PATH ':' "$libs" \
             --suffix-each GTK_PATH ':' "$gtk_modules" \
@@ -413,6 +443,9 @@ let
             --suffix PATH ':' "$out${browser.execdir or "/bin"}" \
             --set MOZ_APP_LAUNCHER "${browserName}${nameSuffix}" \
             --set MOZ_SYSTEM_DIR "$out/lib/mozilla" \
+            --set SNAP_NAME "firefox" \
+            --set MOZ_LEGACY_PROFILES 1 \
+            --set MOZ_ALLOW_DOWNGRADE 1 \
             ${lib.optionalString gdkWayland ''
               --set GDK_BACKEND "wayland" \
             ''}${lib.optionalString (browser ? gtk3)
