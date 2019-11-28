@@ -28,8 +28,10 @@ let
     disablePocket = true;
     disableFirefoxSync = true;
     allowNonSigned = true;
+    noNewProfileOnFFUpdate = true;
     clearDataOnShutdown = true;
     disableDrmPlugin = false;
+    enableDarkDevTools = true;
 
     # Newline on copy problem: https://bugzilla.mozilla.org/show_bug.cgi?id=1547595
     gdkWayland = true;

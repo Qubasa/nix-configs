@@ -12,57 +12,55 @@
 , kerberos
 }:
 
-
-
 ## configurability of the wrapper itself
 
 browser:
 
 let
-  wrapper =
-  {  browserName ? browser.browserName or (lib.getName browser)
-    , pname ? browserName
-    , version ? lib.getVersion browser
-    , desktopName ? # browserName with first letter capitalized
-      (lib.toUpper (lib.substring 0 1 browserName) + lib.substring 1 (-1) browserName)
-    , nameSuffix ? ""
-    , icon ? browserName
-    , extraPlugins ? []
-    , extraNativeMessagingHosts ? []
-    , gdkWayland ? false
-    , cfg ? config.${browserName} or {}
+  wrapper = {
+    browserName ? browser.browserName or (lib.getName browser)
+  , pname ? browserName
+  , version ? lib.getVersion browser
+  , desktopName ? # browserName with first letter capitalized
+    (lib.toUpper (lib.substring 0 1 browserName) + lib.substring 1 (-1) browserName)
+  , nameSuffix ? ""
+  , icon ? browserName
+  , extraPlugins ? []
+  , extraNativeMessagingHosts ? []
+  , gdkWayland ? false
+  , cfg ? config.${browserName} or {}
 
-    , extraPrefs ? ""
-    , extraExtensions ? [ ]
-    , noNewProfileOnFFUpdate ? true
-    , allowNonSigned ? false
-    , disablePocket ? false
-    , disableTelemetry ? true
-    , disableDrmPlugin ? false
-    , showPunycodeUrls ? true
-    , disableFirefoxStudies ? true
-    , disableFirefoxSync ? false
-    , disableFirefoxUpdatePage ? true
-    , useSystemCertificates ? true
-    , dontCheckDefaultBrowser ? false
-    # For more information about anti tracking
-    # vist https://wiki.kairaven.de/open/app/firefox
-    , activateAntiTracking ? true
-    , disableFeedbackCommands ? true
-    , disableDNSOverHTTPS ? true
-    , disableGoogleSafebrowsing ? false
-    , clearDataOnShutdown ? false
-    , homepage ? "about:home"
-    , enableDarkTheme ? true
-    # For more information about policies visit
-    # https://github.com/mozilla/policy-templates#enterprisepoliciesenabled
-    , extraPolicies ? {}
-    }:
+  , extraPrefs ? ""
+  , extraExtensions ? [ ]
+  , noNewProfileOnFFUpdate ? false
+  , allowNonSigned ? false
+  , disablePocket ? false
+  , disableTelemetry ? true
+  , disableDrmPlugin ? false
+  , showPunycodeUrls ? true
+  , enableUserchromeCSS ? false
+  , disableFirefoxStudies ? true
+  , disableFirefoxSync ? false
+  , disableFirefoxUpdatePage ? true
+  , useSystemCertificates ? true
+  , dontCheckDefaultBrowser ? false
+  # For more information about anti tracking (german website)
+  # vist https://wiki.kairaven.de/open/app/firefox
+  , activateAntiTracking ? true
+  , disableFeedbackCommands ? true
+  , disableDNSOverHTTPS ? true
+  , disableGoogleSafebrowsing ? true
+  , clearDataOnShutdown ? false
+  , homepage ? "about:home"
+  , enableDarkDevTools ? false
+  # For more information about policies visit
+  # https://github.com/mozilla/policy-templates#enterprisepoliciesenabled
+  , extraPolicies ? {}
+  }:
 
     assert gdkWayland -> (browser ? gtk3); # Can only use the wayland backend if gtk3 is being used
 
     let
-
       # If extraExtensions has been set disable manual extensions
       disableManualExtensions = if lib.count (x: true) extraExtensions > 0 then true else false;
 
@@ -76,7 +74,6 @@ let
         stdenv.hostPlatform.system == "x86_64-linux" ||
         stdenv.hostPlatform.system == "armv7l-linux" ||
         stdenv.hostPlatform.system == "aarch64-linux";
-
 
       plugins =
         assert !(jre && icedtea);
@@ -96,17 +93,16 @@ let
           ++ lib.optional (cfg.enableAdobeReader or false) adobe-reader
           ++ extraPlugins
         );
-
       nativeMessagingHosts =
         ([ ]
           ++ lib.optional (cfg.enableBrowserpass or false) (lib.getBin browserpass)
           ++ lib.optional (cfg.enableBukubrow or false) bukubrow
+          ++ lib.optional (cfg.enableTridactylNative or false) tridactyl-native
           ++ lib.optional (cfg.enableGnomeExtensions or false) chrome-gnome-shell
           ++ lib.optional (cfg.enableUgetIntegrator or false) uget-integrator
           ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma-browser-integration
           ++ extraNativeMessagingHosts
         );
-
       libs =   lib.optional stdenv.isLinux udev
             ++ lib.optional ffmpegSupport ffmpeg
             ++ lib.optional gssSupport kerberos
@@ -116,7 +112,6 @@ let
             ++ lib.optional (enableAdobeFlash && (cfg.enableAdobeFlashDRM or false)) hal-flash
             ++ lib.optional (config.pulseaudio or true) libpulseaudio;
       gtk_modules = [ libcanberra-gtk2 ];
-
 
       enterprisePolicies =
       {
@@ -233,7 +228,16 @@ let
         lockPref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);
 
         ${
-          if enableDarkTheme == true then
+          if enableUserchromeCSS == true then
+          ''
+            lockPref("toolkit.legacyUserProfileCustomizations.stylesheets", "true");
+          ''
+          else
+          ""
+        }
+
+        ${
+          if enableDarkDevTools == true then
           ''
             //TODO: activeThemeID does not work. Enterprise Policies seem to
             // have an option for that
@@ -300,9 +304,9 @@ let
               lockPref("network.http.referer.hideOnionSource", true);
               lockPref(" privacy.spoof_english", true);
 
-             // This option is currently not usable because of bug:
-             // https://bugzilla.mozilla.org/show_bug.cgi?id=1557620
-               lockPref("privacy.resistFingerprinting", true);
+              // This option is currently not usable because of bug:
+              // https://bugzilla.mozilla.org/show_bug.cgi?id=1557620
+              lockPref("privacy.resistFingerprinting", true);
             ''
             else ""
         }
@@ -378,6 +382,12 @@ let
         cp -R --no-preserve=mode,ownership ${browser}/Applications/${browserName}.app $out/Applications
         rm -f $out${browser.execdir or "/bin"}/${browserName}
       '' + ''
+        if [ ! -x "${browser}${browser.execdir or "/bin"}/${browserName}" ]
+        then
+            echo "cannot find executable file \`${browser}${browser.execdir or "/bin"}/${browserName}'"
+            exit 1
+        fi
+
 
         # Link the runtime. The executable itself has to be copied,
         # because it will resolve paths relative to its true location.
@@ -432,6 +442,8 @@ let
             echo "cannot find executable file \`${browser}${browser.execdir or "/bin"}/${browserName}'"
             exit 1
         fi
+
+
 
         makeWrapper "$oldExe" \
           "$out${browser.execdir or "/bin"}/${browserName}${nameSuffix}" \
