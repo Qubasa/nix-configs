@@ -8,82 +8,66 @@ unstable = import <nixos-unstable> {};
 # to create new default layout set your layout
 # and press "save" under setttings->Profile->default
 terminal_config = pkgs.writeText "config" ''
-[global_config]
-  borderless = True
-  title_font = Monospace 16
-  title_inactive_bg_color = "#555753"
-  title_inactive_fg_color = "#dedede"
-  title_transmit_bg_color = "#2e3436"
-  title_transmit_fg_color = "#dedede"
-  title_use_system_font = False
-[keybindings]
-[layouts]
-  [[default]]
-    [[[child0]]]
-      fullscreen = False
-      last_active_term = 969787e8-ea67-4ff9-8bd3-899b00644d9f
-      last_active_window = True
-      maximised = True
-      order = 0
-      parent = ""
-      position = 0:0
-      size = 1920, 1026
-      title = man terminator_config
-      type = Window
-    [[[child1]]]
-      order = 0
-      parent = child0
-      position = 957
-      ratio = 0.499738903394
-      type = HPaned
-    [[[child2]]]
-      order = 0
-      parent = child1
-      position = 511
-      ratio = 0.500489715965
-      type = VPaned
-    [[[terminal3]]]
-      order = 0
-      parent = child2
-      profile = default
-      type = Terminal
-      uuid = 969787e8-ea67-4ff9-8bd3-899b00644d9f
-    [[[terminal4]]]
-      order = 1
-      parent = child2
-      profile = default
-      type = Terminal
-      uuid = 998bc397-f4fb-4985-ae2e-2fcfa41dc68b
-    [[[terminal5]]]
-      order = 1
-      parent = child1
-      profile = default
-      type = Terminal
-      uuid = 51b057a9-233e-4b6a-88cf-4884b076fce7
-[plugins]
-[profiles]
-  [[default]]
-    allow_bold = False
-    background_color = "#2b2b2b"
-    copy_on_selection = True
-    cursor_color = "#dedede"
-    font = Monospace 16
-    foreground_color = "#dedede"
-    rewrap_on_resize = False
-    scrollback_lines = 10000
-    scrollbar_position = hidden
-    show_titlebar = False
-    use_system_font = False
+font_family      monospace
+font_size        16.0
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+
+scrollback_lines 10000
+scrollback_pager less --chop-long-lines --RAW-CONTROL-CHARS +INPUT_LINE_NUMBER
+
+mouse_hide_wait 3.0
+
+copy_on_select yes
+draw_minimal_borders yes
+window_padding_width 0.1
+inactive_text_alpha 0.8
+
+active_border_color   #1a1919
+inactive_border_color #1a1919
+
+foreground #dedede
+background #2b2b2b
+
+color0 #2e3436
+color1 #cc0000
+color2 #4e9a06
+color3 #c4a000
+color4 #3465a4
+color5 #75507b
+color6 #06989a
+color7 #d3d7cf
+color8 #555753
+color9 #ef2929
+color10 #8ae234
+color11 #fce94f
+color12 #729fcf
+color13 #ad7fa8
+color14 #34e2e2
+color15 #eeeeec
+
+enabled_layouts grid
+
+map ctrl+shift+left resize_window narrower
+map ctrl+shift+right resize_window wider
+map ctrl+shift+up resize_window taller
+map ctrl+shift+down resize_window shorter 3
+
+map ctrl+down           next_window
+map ctrl+up             previous_window
+map ctrl+enter          new_window
   '';
 
 in {
 
   environment.systemPackages = with pkgs; [
-    terminator
+    kitty
   ];
 
   environment.variables = {
-    TERM = [ "xterm-256color" ];
+    # TERM = [ "xterm-256color" ];
+    TERM = ["xterm-kitty"];
   };
 
   system.activationScripts.copyTermiteConfig = ''

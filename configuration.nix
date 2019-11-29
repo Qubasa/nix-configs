@@ -152,6 +152,7 @@ environment.systemPackages = with pkgs; [
   #unstable.wl-clipboard # Copy and paste from command line. Vim dependencies
   chromium
   evince # pdf reader
+  pavucontrol # audio device switcher per programm!
   sqlite-interactive # Sqlite cli
 
   # Java development

@@ -71,6 +71,7 @@ in {
     t = "${pkgs.taskwarrior}/bin/task";
     video = "mpv --keep-open --really-quiet --pause";
     audio = "mocp";
+    audio-switch = "nohup pavucontrol";
     wifi = "${pkgs.iwd}/bin/iwctl";
     img = "imv";
     screenshot = "grim";
