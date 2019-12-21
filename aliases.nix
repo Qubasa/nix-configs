@@ -54,7 +54,6 @@ in {
     # Default aliases
     l = "ls -alh";
     vim = "nvim";
-    cat = "bat";
     m = "micro";
     ls = "ls --color=tty";
     ll = "ls -l";

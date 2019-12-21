@@ -16,7 +16,6 @@ let
   myFirefox = wrapper pkgs.firefox-unwrapped {
 
   extraExtensions = [
-    https-everywhere
     ublock-origin
     dark-reader
   ];
@@ -32,8 +31,9 @@ let
     clearDataOnShutdown = true;
     disableDrmPlugin = false;
     enableDarkDevTools = true;
+    # blockMixedSSLPage = true;
 
-    # Newline on copy problem: https://bugzilla.mozilla.org/show_bug.cgi?id=1547595
+ #   Newline on copy problem: https://bugzilla.mozilla.org/show_bug.cgi?id=1547595
     gdkWayland = true;
 
 };

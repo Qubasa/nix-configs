@@ -51,6 +51,7 @@ in
       ./tinc.nix
       ./terminal.nix
       ./quasselclient.nix
+      ./bsprak.nix
 ];
 
 ####################
@@ -67,7 +68,7 @@ gitEmail = "luis.nixos@gmail.com";
 gitUser = "Luis Hebendanz";
 
 
-# programs.wireshark.enable = true;
+programs.wireshark.enable = true;
 
 # Add NUR packages from https://github.com/kalbasit/nur-packages
 # nixpkgs.config.packageOverrides = pkgs: {
@@ -78,26 +79,6 @@ gitUser = "Luis Hebendanz";
 #   {
 #     inherit pkgs;
 #   };
-# };
-
-# services.tftpd = {
-#   enable = true;
-#   path = "/tmp/tftp";
-# };
-
-# networking.firewall.enable = false;
-
-# services.dhcpd4 = {
-#   enable = true;
-#   interfaces = [ "enp2s0" ];
-#   extraConfig = ''
-# subnet 192.168.178.0 netmask 255.255.0.0 {
-#     next-server 192.168.178.43;
-#     option domain-name-servers 192.168.178.43;
-#     option routers 192.168.178.43;
-#     range 192.168.178.1 192.168.178.254;
-# }
-#     '';
 # };
 
 environment.systemPackages = with pkgs; [
@@ -136,7 +117,8 @@ environment.systemPackages = with pkgs; [
   #deluge # torrent client
   bat # Cat with syntax highlighting
   thunderbird
-  screen # For serial connections
+  picocom # For serial connections
+  # close it with strg+a & strg+q
   dos2unix # Convert win newlines to unix ones
   patchelf # Nixos packaging tool
   gdb # elf debugging

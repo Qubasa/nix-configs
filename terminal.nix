@@ -4,6 +4,21 @@ let
 
 unstable = import <nixos-unstable> {};
 
+kitty_zoom = pkgs.writeText "zoom_toggle.py" ''
+def main(args):
+   pass
+
+def handle_result(args, answer, target_window_id, boss):
+   tab = boss.active_tab
+   if tab is not None:
+      if tab.current_layout.name == 'stack':
+         tab.last_used_layout()
+      else:
+         tab.goto_layout('stack')
+
+handle_result.no_ui = True
+'';
+
 # terminal.sexy tartan color scheme
 # to create new default layout set your layout
 # and press "save" under setttings->Profile->default
@@ -17,7 +32,11 @@ bold_italic_font auto
 scrollback_lines 10000
 scrollback_pager less --chop-long-lines --RAW-CONTROL-CHARS +INPUT_LINE_NUMBER
 
+term xterm-256color
 mouse_hide_wait 3.0
+
+touch_scroll_multiplier 5.0
+touch_scroll_multiplier 4.0
 
 copy_on_select yes
 draw_minimal_borders yes
@@ -47,12 +66,13 @@ color13 #ad7fa8
 color14 #34e2e2
 color15 #eeeeec
 
-enabled_layouts grid
+enabled_layouts grid, stack
 
 map ctrl+shift+left resize_window narrower
 map ctrl+shift+right resize_window wider
 map ctrl+shift+up resize_window taller
 map ctrl+shift+down resize_window shorter 3
+map f11 kitten zoom_toggle.py
 
 map ctrl+down           next_window
 map ctrl+up             previous_window
@@ -66,13 +86,14 @@ in {
   ];
 
   environment.variables = {
-    # TERM = [ "xterm-256color" ];
-    TERM = ["xterm-kitty"];
+    TERM = [ "xterm-256color" ];
+    # TERM = ["xterm-kitty"];
   };
 
   system.activationScripts.copyTermiteConfig = ''
-      mkdir -p ${config.mainUserHome}/.config/terminator
-      ln -f -s ${terminal_config} ${config.mainUserHome}/.config/terminator/config
-      chown -R ${config.mainUser}: ${config.mainUserHome}/.config/terminator
+      mkdir -p ${config.mainUserHome}/.config/kitty
+      ln -f -s ${terminal_config} ${config.mainUserHome}/.config/kitty/kitty.conf
+      cp -f ${kitty_zoom} ${config.mainUserHome}/.config/kitty/zoom_toggle.py
+      chown -R ${config.mainUser}: ${config.mainUserHome}/.config/kitty/kitty.conf
   '';
 }

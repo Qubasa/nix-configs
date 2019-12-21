@@ -15,6 +15,7 @@ let
     }}/home/.direnvrc");
 
   direnv_rc = pkgs.writeText "direnvrc" ''
+    # ${mic_direnv_rc}
     ${builtins.readFile mic_direnv_rc}
 
     realpath() {

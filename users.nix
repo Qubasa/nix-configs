@@ -6,7 +6,7 @@
     name = config.mainUser;
     isNormalUser = true;
     uid = 1000;
-    extraGroups = ["wheel" "networkmanager" "video" "audio" "wireshark" ];
+    extraGroups = ["wheel" "networkmanager" "video" "audio" "wireshark" "dialout"];
   };
 
 }

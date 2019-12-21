@@ -227,10 +227,18 @@ let
         // If true, don't show the privacy policy tab on first run
         lockPref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);
 
+        // Disable copy and paste event
+        lockPref("dom.event.clipboardevents.enabled", true);
+
+        // Show more ssl cert infos
+        lockPref("security.identityblock.show_extended_validation", true);
+
+        // More secure hsts
+        lockPref("security.cert_pinning.enforcement_level", 2);
         ${
           if enableUserchromeCSS == true then
           ''
-            lockPref("toolkit.legacyUserProfileCustomizations.stylesheets", "true");
+            lockPref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
           ''
           else
           ""
@@ -291,6 +299,7 @@ let
           if activateAntiTracking == true then
             ''
               // Tracking
+              lockPref("beacon.enabled", false);
               lockPref("browser.send_pings", false);
               lockPref("browser.send_pings.require_same_host", true);
               lockPref("network.dns.disablePrefetch", true);
@@ -302,7 +311,11 @@ let
               lockPref("privacy.firstparty.isolate.restrict_opener_access", false);
               lockPref("network.http.referer.XOriginPolicy", 1);
               lockPref("network.http.referer.hideOnionSource", true);
-              lockPref(" privacy.spoof_english", true);
+              lockPref(" privacy.spoof_english", false);
+
+              //lockPref("browser.display.use_document_fonts", 0);
+              lockPref("font.blacklist.underline_offset", "");
+              lockPref("gfx.downloadable_fonts.enabled", true);
 
               // This option is currently not usable because of bug:
               // https://bugzilla.mozilla.org/show_bug.cgi?id=1557620
