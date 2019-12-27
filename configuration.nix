@@ -136,6 +136,7 @@ environment.systemPackages = with pkgs; [
   evince # pdf reader
   pavucontrol # audio device switcher per programm!
   sqlite-interactive # Sqlite cli
+  godot # Game engine
 
   # Java development
   eclipses.eclipse-sdk

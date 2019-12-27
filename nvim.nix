@@ -2,7 +2,7 @@
 let
   coc_config = pkgs.writeText "coc-settings.json" ''
       {
-
+    "coc.preferences.currentFunctionSymbolAutoUpdate": true,
     "coc.preferences.useQuickfixForLocations":true,
     "languageserver": {
         "golang": {
@@ -36,9 +36,7 @@ let
                   "enabled": false
                 },
                 "pylint": {
-                  "enabled": true,
-                  "match": "(?!test_).*\\.py",
-                  "matchDir": "[^\\.].*"
+                  "enabled": true
                 },
                 "jedi_completion": {
                   "enabled": true
@@ -136,8 +134,6 @@ in{
             ReplaceWithRegister # For better copying/replacing
             polyglot # Language pack
             vimPlugins.indentLine
-            vimPlugins.coc-html
-            vimPlugins.coc-css
             vimPlugins.coc-nvim
             ale
             molokai # color scheme

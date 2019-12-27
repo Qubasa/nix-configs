@@ -319,7 +319,7 @@ let
 
               // This option is currently not usable because of bug:
               // https://bugzilla.mozilla.org/show_bug.cgi?id=1557620
-              lockPref("privacy.resistFingerprinting", true);
+              // lockPref("privacy.resistFingerprinting", true);
             ''
             else ""
         }
