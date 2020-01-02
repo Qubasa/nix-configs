@@ -25,7 +25,7 @@ in
       ./vpn-yubikey.nix
       ./aliases.nix
       ./window-manager.nix
-      ./nvim.nix
+      ./kakoune.nix
       ./gnome-utility.nix
       ./zsh.nix
       ./theme.nix

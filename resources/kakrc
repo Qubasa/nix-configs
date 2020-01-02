@@ -1,0 +1,87 @@
+# Set colorscheme
+colorscheme desertex
+
+set-option global ui_options ncurses_assistant=none
+
+# Enable tab completion picker
+hook global InsertCompletionShow .* %{
+    try %{
+        # this command temporarily removes cursors preceded by whitespace;
+        # if there are no cursors left, it raises an error, does not
+        # continue to execute the mapping commands, and the error is eaten
+        # by the `try` command so no warning appears.
+        execute-keys -draft 'h<a-K>\h<ret>'
+        map window insert <tab> <c-n>
+        map window insert <s-tab> <c-p>
+    }
+}
+hook global InsertCompletionHide .* %{
+    unmap window insert <tab> <c-n>
+    unmap window insert <s-tab> <c-p>
+}
+
+
+# Yanking copies content to system buffer
+hook global NormalKey y|d|c %{ nop %sh{
+      printf %s "$kak_main_reg_dquote" | wl-copy > /dev/null 2>&1 &
+}}
+
+
+# With ,p or ,P paste from system clipboard
+map global user P '!wl-paste -n<ret>' -docstring "system paste prev"
+map global user p '<a-!>wl-paste -n<ret>'  -docstring "system paste after"
+
+
+#####################
+#                   #
+#      kak-lsp      #
+#                   #
+#####################
+# Enable lsp
+eval %sh{kak-lsp --kakoune -s $kak_session}
+hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %{
+        lsp-enable-window
+	lsp-auto-hover-enable
+	nop %sh{ (kak-lsp -s $kak_session -vvv ) > /tmp/kak-lsp.log 2>&1 < /dev/null & }
+}
+set-option global lsp_server_configuration pyls.configurationSources=["flake8"]
+
+map global user d ":lsp-definition<ret>"   -docstring "goto definition"
+map global user f ":lsp-formatting<ret>"   -docstring "format file"
+map global user c ":lsp-references<ret>"   -docstring "find references"
+map global user r ":lsp-rename-prompt<ret>"       -docstring "rename var"
+map global user e ":lsp-diagnostics<ret>"  -docstring "see all warnings"
+map global user s ":lsp-signature-help<ret>" -docstring "function signature"
+map global user h ":lsp-highlight-references<ret>" -docstring "highlight"
+
+map global user n ":lsp-find-error<ret>" -docstring "next error"
+map global user p ":lsp-find-error --previous<ret>" -docstring "prev error"
+
+
+#####################
+#                   #
+#    kak-buffers    #
+#                   #
+#####################
+hook global WinDisplay .* info-buffers
+map global normal <#>  ':enter-buffers-mode<ret>'              -docstring 'buffers…'
+
+
+#####################
+#                   #
+#  kak-auto-pairs   #
+#                   #
+#####################
+hook global WinCreate .* %{
+      auto-pairs-enable
+}
+
+
+#####################
+#                   #
+#      kak-fzf      #
+#                   #
+#####################
+map global normal <c-p> ': fzf-mode<ret>'
+
+

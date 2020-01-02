@@ -53,7 +53,6 @@ in {
   environment.shellAliases = {
     # Default aliases
     l = "ls -alh";
-    vim = "nvim";
     m = "micro";
     ls = "ls --color=tty";
     ll = "ls -l";
@@ -97,7 +96,6 @@ in {
     # Shorcuts help
     shortcuts-shell = "cat /etc/nixos/resources/shortcuts-help/shell.txt";
     shortcuts-i3 = "cat /etc/nixos/resources/shortcuts-help/i3.txt";
-    shortcuts-vim = "cat /etc/nixos/resources/shortcuts-help/nvim.txt";
     shortcuts-tmux = "cat /etc/nixos/resources/shortcuts-help/tmux.txt";
 
     # Clipboard aliases
