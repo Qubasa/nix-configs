@@ -62,7 +62,7 @@ map global user s ":lsp-signature-help<ret>" -docstring "function signature"
 map global user h ":lsp-highlight-references<ret>" -docstring "highlight"
 
 map global user n ":lsp-find-error<ret>" -docstring "next error"
-map global user p ":lsp-find-error --previous<ret>" -docstring "prev error"
+map global user v ":lsp-find-error --previous<ret>" -docstring "prev error"
 
 
 #####################
