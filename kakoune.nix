@@ -13,8 +13,8 @@ in
 
 
 environment.systemPackages = with pkgs; [
- ccls
-
+    ccls
+    python3
     (python37Packages.python-language-server.override {
 	providers=["mccabe" "rope" "yapf" "pyflakes"];
     })

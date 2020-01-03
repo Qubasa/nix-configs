@@ -1,7 +1,14 @@
 # Set colorscheme
 colorscheme desertex
 
+# Remove clippy
 set-option global ui_options ncurses_assistant=none
+
+# Break text on overflow
+addhl global/ wrap
+
+# Add line number gutter
+addhl global/ number-lines
 
 # Enable tab completion picker
 hook global InsertCompletionShow .* %{
