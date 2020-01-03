@@ -22,10 +22,10 @@ environment.systemPackages = with pkgs; [
     python37Packages.pyls-isort
     python37Packages.pyls-mypy
     rls
-    kak-lsp
-    (kakoune.override {
+    unstable.kak-lsp
+    (unstable.kakoune.override {
     configure = {
-        plugins = with pkgs.kakounePlugins; [ 
+        plugins = with unstable.pkgs.kakounePlugins; [ 
           kak-powerline
           kak-buffers # Easy buffer management
           kak-auto-pairs # Auto close parenthesis
