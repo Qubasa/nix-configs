@@ -88,7 +88,7 @@ EOF
   git add .gitignore
   git commit -m "Added .gitignore"
 
-  ''${EDITOR:-vim} shell.nix
+  ''${EDITOR:-kak} shell.nix
 '';
 
 in {

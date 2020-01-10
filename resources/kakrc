@@ -1,6 +1,17 @@
 # Set colorscheme
 colorscheme desertex
 
+# Set indentwith 
+set-option global indentwidth 4
+hook global WinSetOption filetype=c %{
+  set-option window indentwidth 2
+}
+
+# Use spaces instead of tabs
+hook global InsertChar \t %{ try %{
+      execute-keys -draft "h<a-h><a-k>\A\h+\z<ret><a-;>;%opt{indentwidth}@"
+}}
+
 # Remove clippy
 set-option global ui_options ncurses_assistant=none
 

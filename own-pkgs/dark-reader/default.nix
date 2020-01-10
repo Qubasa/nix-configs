@@ -2,14 +2,14 @@
 
 stdenv.mkDerivation rec {
     pname = "dark-reader-${version}";
-    version = "4.8.4";
+    version = "4.8.6";
 
     extid = "addon@darkreader.org";
     signed = true;
 
     src = fetchurl {
-      url = "https://addons.mozilla.org/firefox/downloads/file/3436917/dark_reader-${version}-an+fx.xpi";
-      sha256 = "07aqvslfa6appda0m5bszzsbmypivcy9srya7bhdv7ssg2836ffg";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3461726/dark_reader-${version}-an+fx.xpi";
+      sha256 = "05mmyfhl0xynzbsncpfj24rajv945zj57pjlid3bar97w0xshfi4";
     };
 
     phases = [ "installPhase" ];

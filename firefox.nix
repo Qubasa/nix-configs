@@ -14,6 +14,7 @@ let
 
   wrapper = pkgs.callPackage ./overlays/firefox-with-config.nix { };
   myFirefox = wrapper pkgs.firefox-unwrapped {
+  browserName = "firefox";
 
   extraExtensions = [
     ublock-origin

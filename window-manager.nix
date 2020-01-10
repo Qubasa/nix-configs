@@ -516,9 +516,9 @@ in {
   programs.sway.enable = true;
 
   # Set sway to unstable package
-  nixpkgs.config.packageOverrides = super: {
-    sway = unstable.pkgs.sway;
-  };
+ # nixpkgs.config.packageOverrides = super: {
+ #   sway = pkgs.sway;
+ # };
 
   environment.systemPackages = with pkgs; [
     rofi     # Dmenu replacement

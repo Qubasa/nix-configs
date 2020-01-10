@@ -33,6 +33,12 @@ let
     nohup ${pkgs.gnome3.gnome-disk-utility}/bin/gnome-disks > /tmp/disks.log &
   '';
 
+  screenshot = pkgs.writeScriptBin "screenshot" ''
+  #!/bin/sh
+
+   grim -g "$(${pkgs.slurp}/bin/slurp)" $(${pkgs.xdg-user-dirs}/bin/xdg-user-dir PICTURES)/$(date +'%s_grim.png')
+
+  '';
 
   wcd = pkgs.writeScript "wcd" ''
 #!/bin/sh
@@ -72,7 +78,6 @@ in {
     audio-switch = "nohup pavucontrol";
     wifi = "${pkgs.iwd}/bin/iwctl";
     img = "imv";
-    screenshot = "grim";
     logout-wayland = "kill -9 -1";
     pdf = "evince";
 
@@ -109,6 +114,7 @@ in {
   environment.systemPackages = with pkgs; [
     nix-test
     disks
+    screenshot
     kbd_backlight
   ];
 }
