@@ -31,7 +31,6 @@ environment.systemPackages = with pkgs; [
         plugins = with unstable.pkgs.kakounePlugins; [ 
           kak-powerline
           kak-buffers # Easy buffer management
-          kak-auto-pairs # Auto close parenthesis
           kak-fzf # Intergrated fzf
         ];
      };

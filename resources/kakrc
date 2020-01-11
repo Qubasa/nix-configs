@@ -84,17 +84,6 @@ map global user v ":lsp-find-error --previous<ret>" -docstring "prev error"
 hook global WinDisplay .* info-buffers
 map global normal <#>  ':enter-buffers-mode<ret>'              -docstring 'buffers…'
 
-
-#####################
-#                   #
-#  kak-auto-pairs   #
-#                   #
-#####################
-hook global WinCreate .* %{
-      auto-pairs-enable
-}
-
-
 #####################
 #                   #
 #      kak-fzf      #
