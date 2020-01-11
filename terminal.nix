@@ -31,6 +31,7 @@ bold_italic_font auto
 
 scrollback_lines 10000
 scrollback_pager less --chop-long-lines --RAW-CONTROL-CHARS +INPUT_LINE_NUMBER
+focus_follows_mouse yes
 
 term xterm-256color
 mouse_hide_wait 3.0

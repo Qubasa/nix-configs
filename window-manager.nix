@@ -214,6 +214,7 @@ let
     font pango:Monospace 14, Icons 10
     hide_edge_borders --i3 smart
     default_floating_border pixel 3
+    titlebar_border_thickness 3
     default_border pixel 3
 
     # Lockscreen shortcut
@@ -315,6 +316,11 @@ let
     for_window [app_id="gnome-disks"] floating enable
     for_window [app_id="org.ijhack."] move scratchpad
 
+    # Browser specific
+    # Enable firefox picture in picture mode
+    for_window [title="Picture-in-Picture" app_id="firefox"] floating enable
+    for_window [class="Chromium-browser" app_id="firefox"] title_format "%class %app_id"
+
     # Make the currently focused window a scratchpad
     bindsym $mod+Shift+minus move scratchpad
 
@@ -351,7 +357,7 @@ let
     assign [class="Eclipse"] $workspace6
 
     # Inhibit idle
-    for_window [app_id="firefox"] inhibit_idle fullscreen
+    for_window [title=".*"] inhibit_idle fullscreen
 
     # Disable title bar
     for_window [app_id="kitty"] border none
@@ -413,15 +419,18 @@ let
     #     WALLPAPERS      #
     #                     #
     #######################
-    output * background ${wallpaper_path} stretch
+    # Disable swaybg
+    #swaybg_command -
+    #output * background ${wallpaper_path} stretch
 
+    exec_always --no-startup-id "sleep 2 && swaymsg output '*' background  ${wallpaper_path} stretch"
 
     #######################
     #                     #
     #      AUTOLOCK       #
     #                     #
     #######################
-    exec --no-startup-id swayidle -w \
+    exec_always swayidle -w \
         timeout 300 '${lock_screen}' \
         timeout 600 'swaymsg "output * dpms off"' \
              resume 'swaymsg "output * dpms on"' \
@@ -465,7 +474,7 @@ let
         position top
         tray_output none
 
-        font pango:Font Awesome 5 Free-Regular-400 14
+        font pango:Font Awesome 5 Free-Regular-400 5
         font pango:Andale Mono 14
 
         # Scrolling on bar changes volume
@@ -492,7 +501,7 @@ let
     #                     #
     #######################
     # automatic display control
-    exec systemd-cat -t kanshi kanshi
+    exec_always systemd-cat -t kanshi kanshi
 
     # Start firefox
     exec systemd-cat -t firefox firefox -P default-default
@@ -514,11 +523,6 @@ in {
   services.xserver.enable = true;
   services.xserver.layout = "de";
   programs.sway.enable = true;
-
-  # Set sway to unstable package
- # nixpkgs.config.packageOverrides = super: {
- #   sway = pkgs.sway;
- # };
 
   environment.systemPackages = with pkgs; [
     rofi     # Dmenu replacement
