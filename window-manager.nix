@@ -423,7 +423,7 @@ let
     #swaybg_command -
     #output * background ${wallpaper_path} stretch
 
-    exec_always --no-startup-id "sleep 2 && swaymsg output '*' background  ${wallpaper_path} stretch"
+    exec_always --no-startup-id "sleep 0.5 && swaymsg output '*' background  ${wallpaper_path} stretch"
 
     #######################
     #                     #
