@@ -319,6 +319,7 @@ let
     # Browser specific
     # Enable firefox picture in picture mode
     for_window [title="Picture-in-Picture" app_id="firefox"] floating enable
+    for_window [title="Password Required" app_id="firefox"] floating enable
     for_window [class="Chromium-browser" app_id="firefox"] title_format "%class %app_id"
 
     # Make the currently focused window a scratchpad

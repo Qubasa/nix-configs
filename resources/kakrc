@@ -1,9 +1,9 @@
 # Set colorscheme
-colorscheme desertex
+colorscheme gruvbox
 
 # Set indentwith 
 set-option global indentwidth 4
-hook global WinSetOption filetype=c %{
+hook global WinSetOption filetype=c|filetype=cpp %{
   set-option window indentwidth 2
 }
 
