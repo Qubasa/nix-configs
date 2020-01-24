@@ -85,6 +85,7 @@ in {
     # Search aliases
     search-file = ''${pkgs.fzf}/bin/fzf --preview="head -n $LINES {}" '';
     search-string = "${pkgs.gnugrep}/bin/grep -rnw -e";
+    search-npm = "nix-env -qaPA 'nixos.nodePackages'";
 
     # Nix aliases
     nix-rebuild = "nixos-rebuild --fast --show-trace switch";

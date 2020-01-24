@@ -5,6 +5,10 @@ let
 unstable = import <nixos-unstable> {};
 
 kak_lsp_conf = pkgs.writeText "kak-lsp.toml" ''
+[language.typescript]
+filetypes = ["typescript"]
+roots = ["package.json", "tsconfig.json"]
+command = "javascript-typescript-stdio"
 '';
 
 kak_config = pkgs.writeText "kakrc" ''
@@ -21,6 +25,7 @@ environment.systemPackages = with pkgs; [
     (python37Packages.python-language-server.override {
 	providers=["mccabe" "rope" "yapf" "pyflakes"];
     })
+    nodePackages.javascript-typescript-langserver
     python37Packages.pyls-black
     python37Packages.pyls-isort
     python37Packages.pyls-mypy
@@ -42,8 +47,8 @@ system.activationScripts.copyKakouneConfig = ''
  mkdir -p "${config.mainUserHome}"/.config/kak
  ln -s -f ${kak_config} "${config.mainUserHome}"/.config/kak/kakrc
 
-# mkdir -p "${config.mainUserHome}"/.config/kak-lsp
-# ln -s -f ${kak_lsp_conf} "${config.mainUserHome}"/.config/kak-lsp/kak-lsp.toml
+mkdir -p "${config.mainUserHome}"/.config/kak-lsp
+ln -s -f ${kak_lsp_conf} "${config.mainUserHome}"/.config/kak-lsp/kak-lsp.toml
 
 '';
 
