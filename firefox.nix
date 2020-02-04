@@ -11,6 +11,7 @@ let
   font-fingerprint-defender = pkgs.callPackage ./own-pkgs/font-fingerprint-defender {};
   user-agent-switcher = pkgs.callPackage ./own-pkgs/user-agent-switcher {};
   dark-reader = pkgs.callPackage ./own-pkgs/dark-reader {};
+  tree_style_tabs = pkgs.callPackage ./own-pkgs/tree-tab {};
 
   wrapper = pkgs.callPackage ./overlays/firefox-with-config.nix { };
   myFirefox = wrapper pkgs.firefox-unwrapped {
@@ -19,6 +20,7 @@ let
   extraExtensions = [
     ublock-origin
     dark-reader
+    tree_style_tabs
   ];
 
   extraPolicies = {
@@ -26,6 +28,7 @@ let
   };
 
     disablePocket = true;
+    enableUserchromeCSS = true;
     disableFirefoxSync = true;
     allowNonSigned = true;
     noNewProfileOnFFUpdate = true;
