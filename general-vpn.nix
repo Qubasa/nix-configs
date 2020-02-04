@@ -17,11 +17,11 @@
   #   });
   # };
 
-  environment.systemPackages = with pkgs; [
-    opensc
-    openvpn
-    yubikey-manager
-  ];
+  #environment.systemPackages = with pkgs; [
+  #  opensc
+  #  openvpn
+  #  yubikey-manager
+  #];
 
 
   # Executed after awaking. Restarts openvpn services
@@ -37,12 +37,13 @@
   };
 
 
-  services.pcscd.enable = true;
+  # services.pcscd.enable = true;
+  
 
   # for thunderbird yubikey support
-  environment.etc."opensc" = {
-    source = "${pkgs.opensc}";
-  };
+  #environment.etc."opensc" = {
+  #  source = "${pkgs.opensc}";
+  #};
 
   # To start the vpn manually execute
   # $ openvpn --config clien.ovpn

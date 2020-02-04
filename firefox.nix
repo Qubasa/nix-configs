@@ -2,6 +2,7 @@
 
 let
 
+  unstable = import <nixos-unstable> { };
   # Firefox addons
   https-everywhere = pkgs.callPackage ./own-pkgs/https-everywhere {};
   ublock-origin = pkgs.callPackage ./own-pkgs/ublock-origin {};
@@ -14,7 +15,7 @@ let
   tree_style_tabs = pkgs.callPackage ./own-pkgs/tree-tab {};
 
   wrapper = pkgs.callPackage ./overlays/firefox-with-config.nix { };
-  myFirefox = wrapper pkgs.firefox-unwrapped {
+  myFirefox = wrapper unstable.firefox-unwrapped {
   browserName = "firefox";
 
   extraExtensions = [

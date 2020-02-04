@@ -7,7 +7,7 @@ let
   wallpaper_path = ./resources/wallpapers/pixel_space.jpg;
   lock_wallpaper_path = ./resources/wallpapers/waterfall.jpg;
   theme_path = ./resources/sddm-slice-1.5/slice;
-  rofi_config_path = ./resources/gruvbox-dark-soft.rasi;
+  wofi_config_path = ./resources/wofi.conf;
 
   unstable = import <nixos-unstable> { };
   bar_update_interval = "1"; # In seconds
@@ -241,10 +241,7 @@ let
     bindsym $mod+Shift+q kill
 
     # start dmenu (a program launcher)
-    bindsym $mod+d exec ${pkgs.rofi}/bin/rofi -modi drun#run -combi-modi drun#run -show combi -show-icons -display-combi run -theme ${rofi_config_path}
-
-    # Switch windows
-    bindsym $mod+x exec ${pkgs.rofi}/bin/rofi -modi window -show window -auto-select -theme ${rofi_config_path}
+    bindsym $mod+d exec ${unstable.wofi}/bin/wofi --conf ${wofi_config_path}
 
     # Arrow keys for focus navigation
     bindsym $mod+Left focus left
@@ -501,9 +498,6 @@ let
     #       AUTORUNS      #
     #                     #
     #######################
-    # automatic display control
-    exec_always systemd-cat -t kanshi kanshi
-
     # Start firefox
     exec systemd-cat -t firefox firefox -P default-default
 
@@ -514,7 +508,11 @@ let
     exec systemd-cat -t qtpass qtpass
 
     # Start mail client
-    exec systemd-cat -t thunderbird thunderbird '';
+    exec systemd-cat -t thunderbird thunderbird
+
+    # automatic display control
+    exec_always systemd-cat -t kanshi kanshi
+    '';
 
 in {
 
@@ -526,7 +524,7 @@ in {
   programs.sway.enable = true;
 
   environment.systemPackages = with pkgs; [
-    rofi     # Dmenu replacement
+    unstable.wofi     # Dmenu replacement
     acpilight # Replacement for xbacklight
     acpi
 

@@ -22,7 +22,7 @@ in
       ./own-pkgs.nix
       ./hardware-configuration.nix
       ./hardware-specific.nix
-      ./vpn-yubikey.nix
+      ./general-vpn.nix
       ./aliases.nix
       ./window-manager.nix
       ./kakoune.nix
@@ -39,7 +39,6 @@ in
       ./networking.nix
       ./general.nix
       ./pass.nix
-      # ./path-check.nix
       ./restic.nix
       ./hackedswitch.nix
       ./home-vpn.nix
