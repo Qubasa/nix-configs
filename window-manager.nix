@@ -419,9 +419,9 @@ let
     #######################
     # Disable swaybg
     #swaybg_command -
-    #output * background ${wallpaper_path} stretch
+    output * background ${wallpaper_path} stretch
 
-    exec_always --no-startup-id "sleep 0.5 && swaymsg output '*' background  ${wallpaper_path} stretch"
+    #exec_always --no-startup-id "sleep 0.5 && swaymsg output '*' background  ${wallpaper_path} stretch"
 
     #######################
     #                     #
@@ -499,16 +499,16 @@ let
     #                     #
     #######################
     # Start firefox
-    exec systemd-cat -t firefox firefox -P default-default
+    exec systemd-cat -t firefox firefox -P default-default &
 
     # Quassel client
-    exec systemd-cat -t quassel quasselclient
+    exec systemd-cat -t quassel quasselclient &
 
     # Start Qt-Pass
-    exec systemd-cat -t qtpass qtpass
+    exec systemd-cat -t qtpass qtpass &
 
     # Start mail client
-    exec systemd-cat -t thunderbird thunderbird
+    exec systemd-cat -t thunderbird thunderbird &
 
     # automatic display control
     exec_always systemd-cat -t kanshi kanshi
