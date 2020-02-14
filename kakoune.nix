@@ -10,6 +10,12 @@ filetypes = ["typescript", "javascript"]
 roots = ["package.json", "tsconfig.json"]
 command = "javascript-typescript-stdio"
 
+#[language.typescript]
+#filetypes = ["typescript", "typescript.tsx"]
+#roots = ["package.json"]
+#command = "typescript-language-server"
+#args = ["--stdio"]
+
 [language.python]
 filetypes = ["python"]
 roots = ["requirements.txt", "setup.py", ".git", ".hg"]
@@ -55,6 +61,7 @@ environment.systemPackages = with pkgs; [
 	providers=["mccabe" "rope" "yapf" "pyflakes"];
     })
     nodePackages.javascript-typescript-langserver
+    nodePackages.typescript-language-server
     nodePackages.bash-language-server
     python37Packages.pyls-black
     python37Packages.pyls-isort
@@ -72,6 +79,11 @@ environment.systemPackages = with pkgs; [
      };
    })
 ];
+
+environment.variables = {
+    EDITOR = "kak";
+    VISUAL = "kak";
+};
 
 system.activationScripts.copyKakouneConfig = ''
 

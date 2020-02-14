@@ -22,6 +22,7 @@ in
       ./own-pkgs.nix
       ./hardware-configuration.nix
       ./hardware-specific.nix
+      ./mitmproxy.nix
       ./general-vpn.nix
       ./aliases.nix
       ./window-manager.nix
@@ -116,7 +117,6 @@ environment.systemPackages = with pkgs; [
   #deluge # torrent client
   bat # Cat with syntax highlighting
   thunderbird
-  picocom # For serial connections
   # close it with strg+a & strg+q
   dos2unix # Convert win newlines to unix ones
   patchelf # Nixos packaging tool
@@ -153,7 +153,7 @@ environment.systemPackages = with pkgs; [
   speedtest-cli
 
   # Media
-  obs-studio # Screen capturing
+  wf-recorder# Screen capturing
   ffmpeg-full # Convert video formats
 
   ## Rmount dependencies

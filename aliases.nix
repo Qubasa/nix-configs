@@ -30,7 +30,7 @@ let
   disks = pkgs.writeScriptBin "disks" ''
     #!/bin/sh
     export PATH=$PATH:${pkgs.coreutils}/bin
-    nohup ${pkgs.gnome3.gnome-disk-utility}/bin/gnome-disks > /tmp/disks.log &
+    nohup ${pkgs.gnome3.gnome-disk-utility}/bin/gnome-disks > /dev/zero &
   '';
 
   screenshot = pkgs.writeScriptBin "screenshot" ''
@@ -80,6 +80,7 @@ in {
     img = "imv";
     logout-wayland = "kill -9 -1";
     pdf = "evince";
+    less = "bat";
 
 
     # Search aliases
@@ -98,11 +99,6 @@ in {
     # Needed to overwrite the alias binary 'where' of which
     where = "${where}";
     wcd = "source ${wcd}";
-
-    # Shorcuts help
-    shortcuts-shell = "cat /etc/nixos/resources/shortcuts-help/shell.txt";
-    shortcuts-i3 = "cat /etc/nixos/resources/shortcuts-help/i3.txt";
-    shortcuts-tmux = "cat /etc/nixos/resources/shortcuts-help/tmux.txt";
 
     # Clipboard aliases
     c = "${pkgs.wl-clipboard}/bin/wl-copy"; # Copy to clipboard
