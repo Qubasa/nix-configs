@@ -22,7 +22,6 @@ in
       ./own-pkgs.nix
       ./hardware-configuration.nix
       ./hardware-specific.nix
-      ./mitmproxy.nix
       ./general-vpn.nix
       ./aliases.nix
       ./window-manager.nix
@@ -51,7 +50,6 @@ in
       ./tinc.nix
       ./terminal.nix
       ./quasselclient.nix
-      ./bsprak.nix
 ];
 
 ####################
@@ -70,16 +68,6 @@ gitUser = "Luis Hebendanz";
 
 programs.wireshark.enable = true;
 
-# Add NUR packages from https://github.com/kalbasit/nur-packages
-# nixpkgs.config.packageOverrides = pkgs: {
-#     nur = import (builtins.fetchTarball rec {
-#     url =  "https://github.com/nix-community/NUR/archive/238f96e78a2b9ee33750c0dbdc5123701a54d378.tar.gz";
-#     sha256 = "1v7ngv673bxhq6scdfdhv975vsxi40jzg3hpb1vg042c7sp4y261";
-#   })
-#   {
-#     inherit pkgs;
-#   };
-# };
 
 environment.systemPackages = with pkgs; [
 
@@ -91,8 +79,8 @@ environment.systemPackages = with pkgs; [
   man-pages
   posix_man_pages # Use the posix standarized manpages with `man p <keyword>`
 
-  wl-clipboard
   kanshi # dynamic display control for wayland
+  ranger
   wget
   git
   curl
@@ -102,6 +90,7 @@ environment.systemPackages = with pkgs; [
   ldns  # DNS tool
   alsaUtils # Console volume settings with alsamixer
   p7zip # Console archive tool
+  unzip
   fzf # fuzzy finder
   binutils # Binary inspection
   radare2 # Binary reversing
@@ -119,7 +108,6 @@ environment.systemPackages = with pkgs; [
   thunderbird
   # close it with strg+a & strg+q
   dos2unix # Convert win newlines to unix ones
-  patchelf # Nixos packaging tool
   gdb # elf debugging
   moc # cli music streaming
   grim # Wayland screenshot tool
@@ -130,17 +118,13 @@ environment.systemPackages = with pkgs; [
   valgrind # c checker tool
   myMpv # Wayland compatbile mpv
   imv # Wayland compatible image viewer
-  #unstable.wl-clipboard # Copy and paste from command line. Vim dependencies
-  chromium
+  wl-clipboard # Copy and paste from command line. Vim dependencies
   evince # pdf reader
   pavucontrol # audio device switcher per programm!
   sqlite-interactive # Sqlite cli
   godot # Game engine
-
-  # Java development
-  eclipses.eclipse-sdk
-  #eclipses.eclipse-modeling
-  # astah-community
+  unstable.qutebrowser # Browser with vim bindings
+  mitmproxy # Great to debug https traffic
 
   # Network debugging
   traceroute
@@ -150,7 +134,7 @@ environment.systemPackages = with pkgs; [
   remmina # Remote Desktop application
 
   # Check internet speed
-  speedtest-cli
+  #  speedtest-cli
 
   # Media
   wf-recorder# Screen capturing
@@ -174,7 +158,6 @@ nixpkgs.config.allowUnfree = true;
 
 # Exfat support
 boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
-
 # This value determines the NixOS release with which your system is to be
 # compatible, in order to avoid breaking some software such as database
 # servers. You should change this only after NixOS release notes say you

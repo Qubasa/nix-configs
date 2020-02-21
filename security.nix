@@ -32,7 +32,7 @@ in
 
   # Auto upgrade
   system.autoUpgrade.enable = true;
-  system.autoUpgrade.dates = "0/2:00:00"; # Check every 2 hours for updates
+  system.autoUpgrade.dates = "0/3:00:00"; # Check every 3 hours for updates
 
   # Check for updates 5 minutes after restart
   # systemd.timers."nixos-upgrade".timerConfig = {

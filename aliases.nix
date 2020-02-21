@@ -2,7 +2,6 @@
 
 let
 
-
   kbd_backlight = pkgs.writeScriptBin "backlight-kbd" ''
     #!/bin/sh
 
@@ -69,13 +68,12 @@ in {
     qrcode = "${pkgs.qrencode}/bin/qrencode -t UTF8";
     packtar = "tar czvf";
     untar = "tar xvfz";
-    music = "${pkgs.moc}/bin/mocp";
+    music = "mocp";
     disk-usage = "${pkgs.ncdu}/bin/ncdu";
     share-dir = "${pkgs.python3}/bin/python3 -m http.server 1234";
     t = "${pkgs.taskwarrior}/bin/task";
     video = "mpv --keep-open --really-quiet --pause";
-    audio = "mocp";
-    audio-switch = "nohup pavucontrol";
+    audio-ctrl = "nohup pavucontrol";
     wifi = "${pkgs.iwd}/bin/iwctl";
     img = "imv";
     logout-wayland = "kill -9 -1";

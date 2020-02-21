@@ -20,6 +20,12 @@ in {
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/nvme0n1";
 
+  # Tried to get bios working with hdmi output
+  # boot.initrd.availableKernelModules = [ "drm"  ];
+  # boot.loader.grub = {
+  #     gfxpayloadBios = "bios";
+  #     gfxmodeBios = "auto";
+  # };
   # Enable closed source firmware
   hardware.enableRedistributableFirmware = true;
 

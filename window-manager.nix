@@ -499,7 +499,7 @@ let
     #                     #
     #######################
     # Start firefox
-    exec systemd-cat -t firefox firefox -P default-default &
+    exec systemd-cat -t qutebrowser qutebrowser &
 
     # Quassel client
     exec systemd-cat -t quassel quasselclient &

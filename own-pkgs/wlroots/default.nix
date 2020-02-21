@@ -6,13 +6,13 @@
 
 stdenv.mkDerivation rec {
   pname = "wlroots";
-  version = "0.10.0";
+  version = "0.9.0";
 
   src = fetchFromGitHub {
     owner = "swaywm";
     repo = "wlroots";
     rev = version;
-    sha256 = "0c0q1p9yss5kx4430ik3n89drqpmm2bvgl8fjlf6prac1a7xzqn8";
+    sha256 = "0sifcrqs82kg9zxqnlr1pl4cw9v9qqakyg3rkysywc9svbikd1g3";
   };
 
   # $out for the library and $examples for the example programs (in examples):
@@ -29,6 +29,7 @@ stdenv.mkDerivation rec {
   mesonFlags = [
     "-Dlibcap=enabled" "-Dlogind=enabled" "-Dxwayland=enabled" "-Dx11-backend=enabled"
     "-Dxcb-icccm=enabled" "-Dxcb-errors=enabled"
+    "-Dfreerdp=disabled"
   ];
 
   postInstall = ''

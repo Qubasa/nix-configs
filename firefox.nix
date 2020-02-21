@@ -6,41 +6,33 @@ let
   # Firefox addons
   https-everywhere = pkgs.callPackage ./own-pkgs/https-everywhere {};
   ublock-origin = pkgs.callPackage ./own-pkgs/ublock-origin {};
-  webgl-fingerprint-defender = pkgs.callPackage ./own-pkgs/webgl-fingerprint-defender {};
-  canvas-fingerprint-defender = pkgs.callPackage ./own-pkgs/canvas-fingerprint-defender {};
-  audio-fingerprint-defender = pkgs.callPackage ./own-pkgs/audio-fingerprint-defender {};
-  font-fingerprint-defender = pkgs.callPackage ./own-pkgs/font-fingerprint-defender {};
   user-agent-switcher = pkgs.callPackage ./own-pkgs/user-agent-switcher {};
   dark-reader = pkgs.callPackage ./own-pkgs/dark-reader {};
   tree_style_tabs = pkgs.callPackage ./own-pkgs/tree-tab {};
+  userjs-hardened = pkgs.callPackage ./own-pkgs/userjs-hardenend {};
 
-  wrapper = pkgs.callPackage ./overlays/firefox-with-config.nix { };
-  myFirefox = wrapper unstable.firefox-unwrapped {
-  browserName = "firefox";
+  wrapper = pkgs.callPackage ./overlays/firefox-with-config.nix {};
+    hardenedFirefox= wrapper unstable.firefox-unwrapped {
+    browserName = "firefox";
 
-  extraExtensions = [
+    extraExtensions = [
     ublock-origin
-    dark-reader
-    tree_style_tabs
-  ];
+    ];
 
-  extraPolicies = {
+    extraPolicies = {
     CaptivePortal = false;
-  };
+    };
 
-    disablePocket = true;
-    enableUserchromeCSS = true;
-    disableFirefoxSync = true;
-    allowNonSigned = true;
     noNewProfileOnFFUpdate = true;
     clearDataOnShutdown = true;
-    disableDrmPlugin = false;
+    disableDrmPlugin = true;
     enableDarkDevTools = true;
-    # blockMixedSSLPage = true;
+    disablePocket = true;
+    disableFirefoxSync = true;
+    extraPrefs = builtins.readFile "${userjs-hardened}/firefox-profile/user.js";
 
  #   Newline on copy problem: https://bugzilla.mozilla.org/show_bug.cgi?id=1547595
-    gdkWayland = true;
-
+    #gdkWayland = false;
 };
 
 in {
@@ -52,7 +44,7 @@ environment.variables = {
 
 
 environment.systemPackages = with pkgs; [
-  myFirefox
+  hardenedFirefox
 ];
 
 }

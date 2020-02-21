@@ -53,7 +53,6 @@ kak_config = pkgs.writeText "kakrc" ''
 in
 {
 
-
 environment.systemPackages = with pkgs; [
     cquery
     python3
@@ -89,6 +88,9 @@ system.activationScripts.copyKakouneConfig = ''
 
 mkdir -p "${config.mainUserHome}"/.config/kak
 ln -s -f ${kak_config} "${config.mainUserHome}"/.config/kak/kakrc
+
+mkdir -p /root/.config/kak
+ln -s -f ${kak_config} /root/.config/kak/kakrc
 
 mkdir -p "${config.mainUserHome}"/.config/kak-lsp
 ln -s -f ${kak_lsp_conf} "${config.mainUserHome}"/.config/kak-lsp/kak-lsp.toml

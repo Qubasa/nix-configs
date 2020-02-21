@@ -3,7 +3,7 @@ colorscheme gruvbox
 
 # Set indentwith 
 set-option global indentwidth 4
-hook global WinSetOption filetype=c|filetype=cpp %{
+hook global WinSetOption filetype=c|filetype=cpp|filetype=nix %{
   set-option window indentwidth 2
 }
 
