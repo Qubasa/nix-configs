@@ -70,6 +70,9 @@ color15 #eeeeec
 enabled_layouts grid, stack
 
 map ctrl+shift+left resize_window narrower
+map ctrl+plus change_font_size current + 1.0
+map ctrl+minus change_font_size current - 1.0
+map ctrl+0 change_font_size current 0
 map ctrl+shift+right resize_window wider
 map ctrl+shift+up resize_window taller
 map ctrl+shift+down resize_window shorter 3
@@ -78,6 +81,9 @@ map f11 kitten zoom_toggle.py
 map ctrl+down           next_window
 map ctrl+up             previous_window
 map ctrl+enter          new_window
+
+map ctrl+e launch --type=tab --location=neighbor kitty
+
   '';
 
 in {

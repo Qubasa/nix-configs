@@ -14,9 +14,23 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
-    apparmor-profiles
+    apparmor-utils
     ];
 
+  security.apparmor = {
+   enable = true;
+   profiles = [ /etc/apparmor.d/firefox.armor ];
+
+   };
+
+  services.journald.forwardToSyslog = true;
+  services.rsyslogd = {
+    enable = true;
+    extraConfig = ''
+  $ModLoad imklog
+  kern.*			     -/var/log/messages
+    '';
+  };
 
   # Disable this if you have problems with
   # drivers that do not load

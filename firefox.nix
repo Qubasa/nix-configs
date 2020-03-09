@@ -37,7 +37,6 @@ let
 
 in {
 
-
 environment.variables = {
   BROWSER = ["firefox"];
 };
