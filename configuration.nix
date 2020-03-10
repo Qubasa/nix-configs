@@ -155,7 +155,6 @@ environment.systemPackages = with pkgs; [
 nixpkgs.config.allowUnfree = true;
 
 
-
 # Exfat support
 boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
 # This value determines the NixOS release with which your system is to be

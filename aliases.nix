@@ -39,26 +39,63 @@ let
 
   '';
 
-  wcd = pkgs.writeScript "wcd" ''
-#!/bin/sh
-
-export PATH=$PATH:${pkgs.coreutils}/bin
-
-cd "$(readlink "$(${pkgs.which}/bin/which --skip-alias "$1")" | ${pkgs.findutils}/bin/xargs dirname)/.."
-    '';
-
   where = pkgs.writeScript "where.sh" ''
-#!/bin/sh
+    #!/bin/sh
 
-export PATH=$PATH:${pkgs.coreutils}/bin
+    export PATH=$PATH:${pkgs.nix}/bin:${pkgs.jq}/bin:${pkgs.coreutils}/bin
 
-${pkgs.coreutils}/bin/readlink "$(${pkgs.which}/bin/which --skip-alias "$1")" | ${pkgs.findutils}/bin/xargs ${pkgs.coreutils}/bin/dirname
-    '';
+    WH=$(which "$1" 2>/dev/null)
+    if [ "$?" = "0" ]; then
+        echo "$(readlink "$WH" | xargs dirname)/.."
+    else
+      DRV=$(nix-instantiate '<nixpkgs>' -A "$1" --quiet --quiet 2>/dev/null)
+
+      if [ "$?" = "0" ]; then
+        OUT=$(nix show-derivation "$DRV" | jq -r ".[\"$DRV\"].env.out")
+
+        if [ -d "$OUT"  ]; then
+            echo "$OUT"
+        else
+          echo "[-] Packet '$1' is not installed!"
+          exit 1
+        fi
+      else
+          echo "[-] Packet '$1' does not exist!"
+          exit 1
+      fi
+   fi
+'';
+
+  wcd = pkgs.writeScript "wcd" ''
+    #!/bin/sh
+
+    export PATH=$PATH:${pkgs.nix}/bin:${pkgs.jq}/bin:${pkgs.coreutils}/bin
+
+    WH=$(which "$1")
+    if [ "$?" = "0" ]; then
+        cd "$(readlink "$WH" | xargs dirname)/.."
+    else
+      DRV=$(nix-instantiate '<nixpkgs>' -A "$1" --quiet --quiet 2>/dev/null)
+
+      if [ "$?" = "0" ]; then
+        OUT=$(nix show-derivation "$DRV" | jq -r ".[\"$DRV\"].env.out")
+
+        if [ -d "$OUT"  ]; then
+            cd "$OUT"
+        else
+          echo "[-] Packet '$1' is not installed!"
+        fi
+      else
+          echo "[-] Packet '$1' does not exist!"
+      fi
+   fi
+'';
+
+
 in {
   environment.shellAliases = {
     # Default aliases
     l = "ls -alh";
-    m = "micro";
     ls = "ls --color=tty";
     ll = "ls -l";
     sudo = "sudo ";
@@ -76,9 +113,8 @@ in {
     audio-ctrl = "nohup pavucontrol";
     wifi = "${pkgs.iwd}/bin/iwctl";
     img = "imv";
-    logout-wayland = "kill -9 -1";
+    logout = "kill -9 -1";
     pdf = "evince";
-    less = "bat";
 
 
     # Search aliases
