@@ -17,14 +17,6 @@ let
 
     '';
 
-  nix-test = pkgs.writeScriptBin "nix-test" ''
-    #!/bin/sh
-
-     VM=$(/run/current-system/sw/bin/nixos-rebuild --fast build-vm 2>&1 | ${pkgs.coreutils}/bin/tail -n1 | ${pkgs.gawk}/bin/awk '{ print $10 }')
-     echo "$VM"
-      "$VM" -m 2G,maxmem=4G -smp 4
-  '';
-
 
   disks = pkgs.writeScriptBin "disks" ''
     #!/bin/sh
@@ -135,15 +127,14 @@ in {
     wcd = "source ${wcd}";
 
     # Clipboard aliases
-    c = "${pkgs.wl-clipboard}/bin/wl-copy"; # Copy to clipboard
-    v = "${pkgs.wl-clipboard}/bin/wl-paste"; # Paste
+    c = "wl-copy"; # Copy to clipboard
+    v = "wl-paste"; # Paste
 
     fromByte = "${pkgs.coreutils}/bin/numfmt --to=iec";
     toByte = "${pkgs.coreutils}/bin/numfmt --from=iec";
   };
 
   environment.systemPackages = with pkgs; [
-    nix-test
     disks
     screenshot
     kbd_backlight

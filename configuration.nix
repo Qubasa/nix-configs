@@ -20,6 +20,7 @@ in
   {
     imports = [
       ./own-pkgs.nix
+      ./nix_test.nix
       ./hardware-configuration.nix
       ./hardware-specific.nix
       ./general-vpn.nix
@@ -79,7 +80,6 @@ environment.systemPackages = with pkgs; [
   man-pages
   posix_man_pages # Use the posix standarized manpages with `man p <keyword>`
 
-  kanshi # dynamic display control for wayland
   ranger
   wget
   git
@@ -118,7 +118,6 @@ environment.systemPackages = with pkgs; [
   valgrind # c checker tool
   myMpv # Wayland compatbile mpv
   imv # Wayland compatible image viewer
-  wl-clipboard # Copy and paste from command line. Vim dependencies
   evince # pdf reader
   pavucontrol # audio device switcher per programm!
   sqlite-interactive # Sqlite cli
