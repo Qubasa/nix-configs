@@ -83,6 +83,14 @@ let
    fi
 '';
 
+  x11-spawn = pkgs.writeScriptBin "x11-spawn" ''
+    #!/bin/sh
+
+    export WAYLAND_DISPLAY=""
+    export DISPLAY=:0
+    "$@"
+  '';
+
 
 in {
   environment.shellAliases = {
@@ -135,6 +143,7 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    x11-spawn
     disks
     screenshot
     kbd_backlight
