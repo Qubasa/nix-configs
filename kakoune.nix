@@ -2,8 +2,6 @@
 
 let
 
-unstable = import <nixos-unstable> {};
-
 kak_lsp_conf = pkgs.writeText "kak-lsp.toml" ''
 [language.typescript]
 filetypes = ["typescript", "javascript"]
@@ -66,11 +64,11 @@ environment.systemPackages = with pkgs; [
     python37Packages.pyls-isort
     python37Packages.pyls-mypy
     rls
-    unstable.texlab # Latex language server
-    unstable.kak-lsp
-    (unstable.kakoune.override {
+#    unstable.texlab # Latex language server
+    pkgs.unstable.kak-lsp
+    (pkgs.unstable.kakoune.override {
     configure = {
-        plugins = with unstable.pkgs.kakounePlugins; [ 
+        plugins = with pkgs.unstable.pkgs.kakounePlugins; [
           kak-powerline # Neat colored status bar
           kak-buffers # Easy buffer management
           kak-fzf # Intergrated fzf
@@ -92,8 +90,12 @@ ln -s -f ${kak_config} "${config.mainUserHome}"/.config/kak/kakrc
 mkdir -p /root/.config/kak
 ln -s -f ${kak_config} /root/.config/kak/kakrc
 
+chown -R -h "${config.mainUser}": "${config.mainUserHome}"/.config/kak
+
 mkdir -p "${config.mainUserHome}"/.config/kak-lsp
 ln -s -f ${kak_lsp_conf} "${config.mainUserHome}"/.config/kak-lsp/kak-lsp.toml
+
+chown -R -h "${config.mainUser}": "${config.mainUserHome}"/.config/kak-lsp
 
 '';
 

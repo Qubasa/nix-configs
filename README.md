@@ -192,6 +192,13 @@ $ reboot
 ```
 And hope to boot into your nixos.
 
+# Error nixos-unstable channel not found
+If this error occurs when you do a `nixos-install` then
+execute instead:
+```
+$ nixos-install -I nixos-unstable=channel:nixos-unstable
+```
+
 
 ## After Installation
 
@@ -257,8 +264,3 @@ man configuration.nix
 Or go to: [Nixos Options](https://nixos.org/nixos/options.html#)
 
 
-### Aliases
-Aliases are defined globally for every user in aliases.nix. To view your aliases configuration from the commandline just type 'aliases' which executes:
-```
-less /etc/nixos/aliases.nix
-```

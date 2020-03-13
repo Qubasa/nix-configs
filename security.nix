@@ -2,9 +2,6 @@
 
 with lib;
 
-let
-  unstable = import <nixos-unstable> { };
-in
 {
   # Import hardening profile here
   # override some changes down below
@@ -19,8 +16,7 @@ in
 
   security.apparmor = {
    enable = true;
-   profiles = [ /etc/apparmor.d/firefox.armor ];
-
+#   profiles = [ /etc/apparmor.d/firefox.armor ];
    };
 
   services.journald.forwardToSyslog = true;

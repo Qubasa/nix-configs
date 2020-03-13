@@ -1,12 +1,9 @@
 { pkgs, config, lib, ... }:
 
-let
-  unstable = import <nixos-unstable> {};
-in
 {
 
   environment.systemPackages = with pkgs; [
-    unstable.git-secrets
+    pkgs.unstable.git-secrets
     gitAndTools.diff-so-fancy
   ];
 

@@ -2,7 +2,6 @@
 
 let
 
-unstable = import <nixos-unstable> {};
 
 kitty_zoom = pkgs.writeText "zoom_toggle.py" ''
 def main(args):
@@ -19,10 +18,19 @@ def handle_result(args, answer, target_window_id, boss):
 handle_result.no_ui = True
 '';
 
+default_session = pkgs.writeText "default_session" ''
+
+launch fish
+
+'';
+
 # terminal.sexy tartan color scheme
 # to create new default layout set your layout
 # and press "save" under setttings->Profile->default
 terminal_config = pkgs.writeText "config" ''
+
+#startup_session ${default_session}
+
 font_family      monospace
 font_size        16.0
 bold_font        auto
@@ -82,14 +90,13 @@ map ctrl+down           next_window
 map ctrl+up             previous_window
 map ctrl+enter          new_window
 
-map ctrl+e launch --type=tab --location=neighbor kitty
-
   '';
 
 in {
 
   environment.systemPackages = with pkgs; [
     kitty
+    xdg_utils # Tool to query system defaults
   ];
 
   environment.variables = {

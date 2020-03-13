@@ -55,7 +55,7 @@ system.activationScripts.copyMakoConfig = ''
 
     mkdir -p ${config.mainUserHome}/.config/mako
     ln -f -s ${mako_config} ${config.mainUserHome}/.config/mako/config
-    chown -R ${config.mainUser}: ${config.mainUserHome}/.config/mako
+    chown -h -R ${config.mainUser}: ${config.mainUserHome}/.config/mako
 
 '';
 }

@@ -6,8 +6,6 @@
 
 let
 
-unstable = import <nixos-unstable> {};
-
 myMpv = pkgs.mpv.override {
     waylandSupport = true;
     x11Support = false;
@@ -52,7 +50,6 @@ in
       ./terminal.nix
       ./quasselclient.nix
 ];
-
 ####################
 #                  #
 #     OPTIONS      #
@@ -66,6 +63,24 @@ screenlock_imgs = "/etc/nixos/resources/wallpapers";
 gitEmail = "luis.nixos@gmail.com";
 gitUser = "Luis Hebendanz";
 
+# This allows the global use of unstable channel through
+# pkgs.unstable.<package-name>!!
+nixpkgs.config = 
+{
+    # Allow proprietary packages
+    allowUnfree = true;
+
+    # Create an alias for the unstable channel
+    packageOverrides = pkgs: 
+    {
+        unstable = import <nixos-unstable> 
+            { 
+                # pass the nixpkgs config to the unstable alias
+                # to ensure `allowUnfree = true;` is propagated:
+                config = config.nixpkgs.config; 
+            };
+    };
+};
 
 programs.wireshark.enable = true;
 
@@ -122,7 +137,6 @@ environment.systemPackages = with pkgs; [
   pavucontrol # audio device switcher per programm!
   sqlite-interactive # Sqlite cli
   godot # Game engine
-  unstable.qutebrowser # Browser with vim bindings
   mitmproxy # Great to debug https traffic
 
   # Network debugging
@@ -150,9 +164,6 @@ environment.systemPackages = with pkgs; [
   #                          #
   ############################
 ];
-
-nixpkgs.config.allowUnfree = true;
-
 
 # Exfat support
 boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];

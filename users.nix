@@ -10,5 +10,8 @@
     extraGroups = ["wheel" "networkmanager" "video" "audio" "input" "wireshark" "dialout"];
   };
 
-
+  users.users.firefox = {
+    name = "firefox";
+    isNormalUser = true;
+  };
 }

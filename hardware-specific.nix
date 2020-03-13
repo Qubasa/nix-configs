@@ -1,9 +1,7 @@
 
 {config, lib, pkgs, stdenv, ... }:
 
-let
-  unstable = import <nixos-unstable> { };
-in {
+{
 
   # Use swap with random encryption on every reboot
   swapDevices = [
@@ -36,7 +34,7 @@ in {
   # This change gives you a hardened 5.3 kernel
   # but it has to be compiled on your machine locally
   nixpkgs.config.packageOverrides = super: {
-    linuxPackages_latest = unstable.pkgs.linuxPackages_5_3;
+    linuxPackages_latest = pkgs.unstable.pkgs.linuxPackages_5_3;
   };
 
 

@@ -4,7 +4,6 @@ with pkgs;
 
 let
 
-  unstable = import <nixos-unstable> { };
   callPackage = pkgs.lib.callPackageWith (pkgs);
 
   waybar_renderer = callPackage ./own-pkgs/waybar_renderer {};
@@ -91,7 +90,7 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    unstable.wofi     # Dmenu replacement
+    pkgs.unstable.wofi     # Dmenu replacement
     wl-copy
     wl-paste
     startsway
@@ -149,11 +148,11 @@ in {
  
   mkdir -p ${config.mainUserHome}/.config/wofi
   ln -s -f ${./resources/wofi.conf} ${config.mainUserHome}/.config/wofi/config
-  chown -h ${config.mainUser}: ${config.mainUserHome}/.config/wofi/config
+  chown -h -R ${config.mainUser}: ${config.mainUserHome}/.config/wofi
 
   mkdir -p ${config.mainUserHome}/.config/kanshi
   ln -s -f ${./resources/kanshi.conf} ${config.mainUserHome}/.config/kanshi/config
-  chown -h ${config.mainUser}: ${config.mainUserHome}/.config/kanshi/config
+  chown -h -R ${config.mainUser}: ${config.mainUserHome}/.config/kanshi
 
   # .Xresources for mouse
   ln -f -s ${xresources} ${config.mainUserHome}/.Xresources

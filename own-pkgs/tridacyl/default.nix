@@ -1,14 +1,14 @@
 { stdenv, fetchurl  }:
 
 stdenv.mkDerivation rec {
-    pname = "dark-reader-${version}";
-    version = "4.8.10";
+    pname = "tridactyl-${version}";
+    version = "1.17.1";
 
-    extid = "addon@darkreader.org";
+    extid = "tridactyl.vim@cmcaine.co.uk";
     signed = true;
     src = fetchurl {
-      url = "https://addons.mozilla.org/firefox/downloads/file/3519548/dark_reader-4.8.10-an+fx.xpi";
-      sha256 = "14py96jdl1c5xhcva8z4p7d33fdfj1p1iqahxyx4glkrdq1i0yal";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3441168/tridactyl-1.17.1-an+fx.xpi";
+      sha256 = "0v5rlzpzsi0zq6da5yi5n1rjc7ra07vjr0rn1v1sjssqfjagl9wl";
     };
 
     phases = [ "installPhase" ];

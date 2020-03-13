@@ -2,7 +2,6 @@
 
 let
 
-  unstable = import <nixos-unstable> {};
   # Allow callPackage to fill in the pkgs argument
   callPackage = pkgs.lib.callPackageWith (pkgs);
 

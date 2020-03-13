@@ -18,7 +18,8 @@ browser:
 
 let
   wrapper = {
-    browserName ? browser.browserName or (lib.getName browser)
+    browserName ? "firefox"
+  , firefoxLibName ? "firefox"
   , pname ? browserName
   , version ? lib.getVersion browser
   , desktopName ? # browserName with first letter capitalized
@@ -223,6 +224,10 @@ let
 
         // Deactivate first run homepage
         lockPref("browser.startup.firstrunSkipsHomepage", false);
+
+        // Disable welcome popup (does not work)
+        lockPref("trailhead.firstrun.didSeeAboutWelcome", true);
+        lockPref("startup.homepage_welcome_url", "about:home");
 
         // If true, don't show the privacy policy tab on first run
         lockPref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);
@@ -504,27 +509,29 @@ let
         echo ${browser} > $out/nix-support/propagated-user-env-packages
 
         # user customization
-        mkdir -p $out/lib/firefox
+        mkdir -p $out/lib/${firefoxLibName}
 
         # creating policies.json
-        mkdir -p "$out/lib/firefox/distribution"
+        mkdir -p "$out/lib/${firefoxLibName}/distribution"
 
-        cat > "$out/lib/firefox/distribution/policies.json" < ${policiesJson}
+        POL_PATH="$out/lib/${firefoxLibName}/distribution/policies.json"
+        rm -f "$POL_PATH"
+        cat ${policiesJson} >> "$POL_PATH"
 
         # preparing for autoconfig
-        mkdir -p "$out/lib/firefox/defaults/pref"
+        mkdir -p "$out/lib/${firefoxLibName}/defaults/pref"
 
-        cat > "$out/lib/firefox/defaults/pref/autoconfig.js" <<EOF
+        cat > "$out/lib/${firefoxLibName}/defaults/pref/autoconfig.js" <<EOF
           pref("general.config.filename", "mozilla.cfg");
           pref("general.config.obscure_value", 0);
         EOF
 
-        cat > "$out/lib/firefox/mozilla.cfg" < ${mozillaCfg}
+        cat > "$out/lib/${firefoxLibName}/mozilla.cfg" < ${mozillaCfg}
 
-        mkdir -p $out/lib/firefox/distribution/extensions
+        mkdir -p $out/lib/${firefoxLibName}/distribution/extensions
 
         for i in ${toString extensions}; do
-          ln -s -t $out/lib/firefox/distribution/extensions $i/*
+          ln -s -t $out/lib/${firefoxLibName}/distribution/extensions $i/*
         done
       '';
 
