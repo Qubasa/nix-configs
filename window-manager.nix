@@ -9,7 +9,7 @@ let
   waybar_renderer = callPackage ./own-pkgs/waybar_renderer {};
   
   wallpaper_path = ./resources/wallpapers/pixel_space.jpg;
-  lock_wallpaper_path = ./resources/wallpapers/waterfall.jpg;
+  lock_wallpaper_path = ./resources/lockscreen.jpg;
 
   # This propagates root clipboard to mainUser clipboard
   wl-copy = pkgs.writeScriptBin "wl-copy" ''
@@ -23,8 +23,12 @@ let
   '';
  
   lock_screen = pkgs.writeScriptBin "lock_screen" ''
-  #!/bin/sh
+    #!/bin/sh
     ${pkgs.swaylock}/bin/swaylock -f -e -c 000000 -i ${lock_wallpaper_path}
+  
+    if [ "$?" != "0" ]; then
+     kill -9 -1 || shutdown now;
+    fi
     '';
 
   xresources = pkgs.writeText "Xresources" ''
@@ -44,6 +48,16 @@ let
     systemctl --user import-environment
     # then start the service
     exec systemctl --user start sway.service
+  '';
+
+  sway_dbus = pkgs.writeScript "sway_dbus.sh" ''
+    #!/bin/sh
+   
+    ${pkgs.dbus}/bin/dbus-run-session ${pkgs.sway}/bin/sway
+
+    if [ "$?" != "0"  ]; then
+      kill -9 -1 || shutdown now;
+    fi
   '';
 
   random_background = pkgs.writeScriptBin "random_background" ''
@@ -81,7 +95,6 @@ in {
       export MOZ_ENABLE_WAYLAND=1
     '';
   };
-  programs.waybar.enable = true;
 
   environment = {
     etc = {
@@ -105,6 +118,14 @@ in {
     after = [ "graphical-session-pre.target" ];
   };
 
+  systemd.user.services.panic-logout = {
+    description = "Panic logout";
+    script = ''
+      #!/bin/sh
+      ${pkgs.utillinux}/bin/kill -9 -1 || shutdown now;
+    '';
+  };
+
   systemd.user.services.sway = {
     description = "Sway - Wayland window manager";
     documentation = [ "man:sway(5)" ];
@@ -114,13 +135,13 @@ in {
     # We explicitly unset PATH here, as we want it to be set by
     # systemctl --user import-environment in startsway
     environment.PATH = lib.mkForce null;
+
+   # unitConfig = {
+   #   OnFailure="panic-logout.service";
+   # };
     serviceConfig = {
+      ExecStart=sway_dbus;
       Type = "simple";
-      ExecStart = ''
-        ${pkgs.dbus}/bin/dbus-run-session ${pkgs.sway}/bin/sway '';
-      Restart = "on-failure";
-      RestartSec = 1;
-      TimeoutStopSec = 10;
     };
   };
 
@@ -129,7 +150,6 @@ in {
     # Redshift with wayland support isn't present in nixos-19.09 atm. You have to cherry-pick the commit from https://github.com/NixOS/nixpkgs/pull/68285 to do that.
  #   package = pkgs.redshift-wlr;
  # };
-
 
   systemd.user.services.kanshi = {
     description = "Kanshi output autoconfig ";

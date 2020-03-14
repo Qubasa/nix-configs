@@ -19,13 +19,6 @@ dconf-virt-manager-vmlist-fields = pkgs.writeText "dconf-virt-manager-vmlist-fie
     enable-disk-poll=true
 '';
 
-  dconf_script = pkgs.writeScript "dconf-script.sh" ''
-    #!/bin/sh
-    set -xe
-    ${pkgs.libudev}/bin/systemctl --user import-environment
-    ${pkgs.gnome3.dconf}/bin/dconf load /org/virt-manager/virt-manager/ < ${dconf-virt-manager-stats}
-    ${pkgs.gnome3.dconf}/bin/dconf load /org/virt-manager/virt-manager/ < ${dconf-virt-manager-vmlist-fields}
-    '';
 in
   {
 
@@ -36,11 +29,17 @@ in
 
   systemd.user.services.dconf-settings = {
     description = "Set dconf settings";
-    partOf = [ "graphical-session.target" ];
-    wantedBy = [ "graphical-session.target" ];
-    serviceConfig = {
-      ExecStart = "${dconf_script}";
-    };
+    partOf = [ "sway-session.target" ];
+    wantedBy = [ "sway-session.target" ];
+    after = ["sway-session.target"];
+    wants = ["sway-session.target"];
+    script = ''
+      #!/bin/sh
+      set -xe
+      ${pkgs.libudev}/bin/systemctl --user import-environment
+      ${pkgs.gnome3.dconf}/bin/dconf load /org/virt-manager/virt-manager/ < ${dconf-virt-manager-stats}
+      ${pkgs.gnome3.dconf}/bin/dconf load /org/virt-manager/virt-manager/ < ${dconf-virt-manager-vmlist-fields}
+    '';
   };
 
   }
