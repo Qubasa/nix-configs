@@ -26,9 +26,9 @@ let
     #!/bin/sh
     ${pkgs.swaylock}/bin/swaylock -f -e -c 000000 -i ${lock_wallpaper_path}
   
-    if [ "$?" != "0" ]; then
-     kill -9 -1 || shutdown now;
-    fi
+   # if [ "$?" != "0" ]; then
+   #  kill -9 -1 || shutdown now;
+   # fi
     '';
 
   xresources = pkgs.writeText "Xresources" ''

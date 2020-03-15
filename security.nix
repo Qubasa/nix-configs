@@ -8,25 +8,28 @@ with lib;
   # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/profiles/hardened.nix
   imports = [
     <nixpkgs/nixos/modules/profiles/hardened.nix>
+    ./modules/apparmor.nix
   ];
-
-  environment.systemPackages = with pkgs; [
-    apparmor-utils
-    ];
+  disabledModules = [ "security/apparmor.nix"  ];
 
   security.apparmor = {
    enable = true;
-#   profiles = [ /etc/apparmor.d/firefox.armor ];
+   profiles = [ /etc/nixos/resources/apparmor/firefox.armor ];
    };
 
-  services.journald.forwardToSyslog = true;
-  services.rsyslogd = {
-    enable = true;
-    extraConfig = ''
-  $ModLoad imklog
-  kern.*			     -/var/log/messages
-    '';
-  };
+  # This is done so that we can store our apparmor profiles in
+  # resources but we can still use aa-logprof to automatically
+  # update our profiles
+  system.activationScripts.copyApparmor = ''
+    FOLD="/etc/nixos/resources/apparmor"
+    if [ ! -d "$FOLD"  ]; then
+      echo "Missing folder $FOLD"
+      exit -1
+    fi
+
+    cp -r /etc/apparmor.d/abstractions /etc/nixos/resources/apparmor/
+    cp -r /etc/apparmor.d/tunables /etc/nixos/resources/apparmor/
+  '';
 
   # Disable this if you have problems with
   # drivers that do not load
