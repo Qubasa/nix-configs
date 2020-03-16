@@ -1,4 +1,4 @@
-# Last Modified: Sun Mar 15 18:06:21 2020
+# Last Modified: Mon Mar 16 12:08:30 2020
 #include <tunables/global>
 
 # vim:syntax=apparmor
@@ -27,6 +27,7 @@
     #include <abstractions/audio>
     #include <abstractions/base>
     #include <abstractions/dri-common>
+    #include <abstractions/mesa>
     #include <abstractions/nameservice>
     #include <abstractions/user-tmp>
 
@@ -40,9 +41,8 @@
     /nix/store/** mr,
     /nix/store/*-firefox-*/lib/firefox/firefox mrix,
     /sys/devices/pci*/** r,
-    /sys/devices/system/node/node0/meminfo r,
-    /tmp/** w,
-    @{PROC}/*/mounts r,
+    /dev/video[0-9]* rw,
+
     @{PROC}/cpuinfo r,
     @{PROC}/devices/pci*/** r,
     @{PROC}/filesystems r,
@@ -51,13 +51,12 @@
     @{sys}/devices/system/node/ r,
     @{sys}/devices/system/node/node[0-9]/meminfo r,
     owner /dev/shm/snap.firefox.org.mozilla.ipc.* rw,
-    owner /home/*/.local/share/recently-used.xbel r,
     owner /run/user/*/mozilla-shared-* rw,
     owner /run/user/@{pid}/dconf/user rw,
     owner @{HOME}/.Xauthority r,
+    owner @{HOME}/.local/share/recently-used.xbel r,
     owner @{HOME}/.cache/fontconfig/** rwl,
-    owner @{HOME}/.cache/mesa_shader_cache/* rw,
-    owner @{HOME}/.cache/mozilla/firefox/** rw,
+    owner @{HOME}/.cache/mozilla/firefox/** krw,
     owner @{HOME}/.config/dconf/user r,
     owner @{HOME}/.config/mimeapps.list r,
     owner @{HOME}/.local/share/applications/ r,
@@ -84,6 +83,9 @@
     owner @{PROC}/@{pid}/net/ipv6_route r,
     owner @{PROC}/@{pid}/stat r,
     owner @{PROC}/@{pid}/status r,
+    owner @{PROC}/@{pid}/smaps r,
+    owner @{PROC}/@{pid}/statm r,
+    owner @{PROC}/@{pid}/mounts r,
     owner @{PROC}/@{pid}/task/*/stat r,
 
   }

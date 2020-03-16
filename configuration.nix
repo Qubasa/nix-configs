@@ -93,6 +93,7 @@ environment.systemPackages = with pkgs; [
   fzf # fuzzy finder
   binutils # Binary inspection
   radare2 # Binary reversing
+  unstable.radare2-cutter # QT GUI for radare2
   nmap # Network discovery
   calc # Simple calculator
   tree # display files as tree

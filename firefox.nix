@@ -7,7 +7,6 @@ let
   user-agent-switcher = pkgs.callPackage ./own-pkgs/user-agent-switcher {};
   dark-reader = pkgs.callPackage ./own-pkgs/dark-reader {};
   tree_style_tabs = pkgs.callPackage ./own-pkgs/tree-tab {};
-  tridacyl = pkgs.callPackage ./own-pkgs/tridacyl {};
 
 #  userjs-hardened = pkgs.callPackage ./own-pkgs/userjs-hardenend {};
 
@@ -15,7 +14,6 @@ let
     hardenedFirefox= wrapper pkgs.unstable.firefox-unwrapped {
 
     extraExtensions = [
-      tridacyl
       ublock-origin
       dark-reader
     ];

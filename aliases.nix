@@ -40,7 +40,7 @@ let
     if [ "$?" = "0" ]; then
         echo "$(readlink "$WH" | xargs dirname)/.."
     else
-      DRV=$(nix-instantiate '<nixpkgs>' -A "$1" --quiet --quiet 2>/dev/null)
+      DRV=$(nix-instantiate '<nixpkgs>' -A "$1" --quiet --quiet --quiet | sed 's/!dev$//g')
 
       if [ "$?" = "0" ]; then
         OUT=$(nix show-derivation "$DRV" | jq -r ".[\"$DRV\"].env.out")
@@ -67,7 +67,7 @@ let
     if [ "$?" = "0" ]; then
         cd "$(readlink "$WH" | xargs dirname)/.."
     else
-      DRV=$(nix-instantiate '<nixpkgs>' -A "$1" --quiet --quiet 2>/dev/null)
+      DRV=$(nix-instantiate '<nixpkgs>' -A "$1" --quiet --quiet --quiet | sed 's/!dev$//g')
 
       if [ "$?" = "0" ]; then
         OUT=$(nix show-derivation "$DRV" | jq -r ".[\"$DRV\"].env.out")
