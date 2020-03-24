@@ -48,7 +48,8 @@ touch_scroll_multiplier 5.0
 touch_scroll_multiplier 4.0
 
 copy_on_select yes
-draw_minimal_borders yes
+draw_minimal_borders no
+repaint_delay 0
 window_padding_width 0.1
 inactive_text_alpha 0.8
 

@@ -68,7 +68,6 @@ gitUser = "Luis Hebendanz";
 
 programs.wireshark.enable = true;
 
-
 environment.systemPackages = with pkgs; [
 
   ############################
@@ -76,10 +75,14 @@ environment.systemPackages = with pkgs; [
   #   ONLY FREE PACKAGES     #
   #                          #
   ############################
+
+  wineWowPackages.stable
+  
   man-pages
   posix_man_pages # Use the posix standarized manpages with `man p <keyword>`
 
   ranger
+  pciutils
   wget
   git
   curl

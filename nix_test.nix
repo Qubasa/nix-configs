@@ -6,7 +6,7 @@ let
      VM=$(/run/current-system/sw/bin/nixos-rebuild --fast build-vm 2>&1 | ${pkgs.coreutils}/bin/tail -n1 | ${pkgs.gawk}/bin/awk '{ print $10 }')
      echo "$VM"
      # Use 4G RAM and 8 cores and 256M video RAM
-     "$VM" -m 4G -smp 8 -device VGA,vgamem_mb=256  -object input-linux,id=kbd1,evdev=/dev/myCherry,grab_all=on,repeat=on -device virtio-keyboard-pci "$@"
+     "$VM" -m 4G -smp 8 -device VGA,vgamem_mb=250  -object input-linux,id=kbd1,evdev=/dev/myCherry,grab_all=on,repeat=on -device virtio-keyboard-pci "$@"
   '';
 
 in

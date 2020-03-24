@@ -17,6 +17,15 @@ let
 
     '';
 
+  stopwatch = pkgs.writeScriptBin "stopwatch" ''
+    #!/bin/sh
+
+    now=$(date +%s)sec
+    while true; do
+       printf "%s\r" $(TZ=UTC date --date now-$now +%H:%M:%S.%N)
+       sleep 0.1
+    done
+  '';
 
   disks = pkgs.writeScriptBin "disks" ''
     #!/bin/sh
@@ -143,6 +152,7 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    stopwatch
     x11-spawn
     disks
     screenshot

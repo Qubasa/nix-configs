@@ -263,4 +263,13 @@ man configuration.nix
 ```
 Or go to: [Nixos Options](https://nixos.org/nixos/options.html#)
 
+## Getting building environment of a package
+```
+nix-shell '<nixpkgs>' -A hello
+```
+or the building environment for a x86 package
+```
+nix-shell '<nixpkgs>' -A pkgsi686Linux.hello
+```
+
 

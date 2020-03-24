@@ -19,7 +19,7 @@
   boot.loader.grub.device = "/dev/nvme0n1";
 
   # Tried to get bios working with hdmi output
-  # boot.initrd.availableKernelModules = [ "drm"  ];
+  boot.initrd.availableKernelModules = [ "xhci-hcd" "xhci-pci"  ];
   # boot.loader.grub = {
   #     gfxpayloadBios = "bios";
   #     gfxmodeBios = "auto";
@@ -33,10 +33,15 @@
 
   # This change gives you a hardened 5.3 kernel
   # but it has to be compiled on your machine locally
-  nixpkgs.config.packageOverrides = super: {
-    linuxPackages_latest = pkgs.unstable.pkgs.linuxPackages_5_3;
-  };
+#  nixpkgs.config.packageOverrides = super: {
+#    linuxPackages_latest = pkgs.unstable.pkgs.linuxPackages_5_3;
+#  };
 
+  nixpkgs.config.packageOverrides = super: {
+    linuxPackages_latest = pkgs.linuxPackagesFor (pkgs.unstable.pkgs.linuxPackages_5_3.kernel.override {
+      features.ia32Emulation = true;
+    });
+  };
 
   boot.kernelPackages = pkgs.linuxPackages_latest_hardened;
 
