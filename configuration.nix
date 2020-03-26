@@ -24,7 +24,6 @@ in
       ./general-vpn.nix
       ./aliases.nix
       ./window-manager.nix
-      ./kakoune.nix
       ./gnome-utility.nix
       ./zsh.nix
       ./theme.nix
@@ -51,6 +50,7 @@ in
       ./quasselclient.nix
       ./nur_packages.nix
       ./unstable.nix
+      ./vim.nix
 ];
 ####################
 #                  #
@@ -76,8 +76,6 @@ environment.systemPackages = with pkgs; [
   #                          #
   ############################
 
-  wineWowPackages.stable
-  
   man-pages
   posix_man_pages # Use the posix standarized manpages with `man p <keyword>`
 

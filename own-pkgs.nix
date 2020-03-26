@@ -15,7 +15,6 @@ let
       };
   mySway = callPackage ./own-pkgs/sway { wlroots=myWlroots;  };
 
-
 in {
   # Set sway to unstable package
   nixpkgs.config.packageOverrides = super: {
