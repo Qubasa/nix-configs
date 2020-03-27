@@ -23,7 +23,7 @@
             tagbar #  function overview window
             polyglot # Language pack
             vimPlugins.indentLine
-            vimPlugins.fugitive
+            vimPlugins.fugitive # vim git integration
             ale
             molokai # color scheme
           ];
@@ -55,6 +55,9 @@
     python37Packages.libxml2 # This is Xmllint
     ccls # C/C++ language server
     clang-tools # C++ fixer
+    cargo # rust dependencie management
+    rustfmt # rust formatter
+    rls # rust language server
   ];
 
   environment.etc."pylintrc" = {

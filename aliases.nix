@@ -133,7 +133,7 @@ in {
     search-npm = "nix-env -qaPA 'nixos.nodePackages'";
 
     # Nix aliases
-    nix-rebuild = "nixos-rebuild --fast --show-trace switch";
+    nix-rebuild = "nixos-rebuild --fast --show-trace --cores 7 switch";
     nix-profiles = "nix-env --list-generations";
     nix-delete-old = "nix-collect-garbage -d && journalctl --vacuum-time=2d";
     nix-update = "nix-channel --update && nixos-rebuild switch";
