@@ -76,7 +76,7 @@ color13 #ad7fa8
 color14 #34e2e2
 color15 #eeeeec
 
-enabled_layouts grid, stack
+enabled_layouts *
 
 map ctrl+shift+left resize_window narrower
 map ctrl+plus change_font_size current + 1.0

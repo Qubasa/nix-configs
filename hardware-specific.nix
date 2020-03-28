@@ -11,16 +11,6 @@ let
       url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
       sha256 = "0y58gkzadjwfqfry5568g4w4p2mpx2sw50sk95i07s5va1ly2dd4";
     };
-    kernelPatches = [
-      {
-        name = "fast encryption";
-        patch = ./resources/kernel/0023-Add-DM_CRYPT_FORCE_INLINE-flag-to-dm-crypt-target.patch;
-      }
-      {
-        name = "even faster";
-        patch = ./resources/kernel/0024-Add-xtsproxy-Crypto-API-module.patch;
-      }
-    ];
   };
 
 in {

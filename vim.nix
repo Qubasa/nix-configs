@@ -57,6 +57,7 @@
     clang-tools # C++ fixer
     cargo # rust dependencie management
     rustfmt # rust formatter
+    nodePackages.prettier # Typescript formatter
     rls # rust language server
   ];
 
