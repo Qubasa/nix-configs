@@ -22,7 +22,7 @@
             vim-trailing-whitespace # trailing whitspaces in red
             tagbar #  function overview window
             polyglot # Language pack
-            vimPlugins.indentLine
+            vimPlugins.indentLine # Shows indendation level
             vimPlugins.fugitive # vim git integration
             ale
             molokai # color scheme
@@ -47,12 +47,10 @@
     xxd # Show binary as hex
     nodePackages.jsonlint # json linting
     python3
-    python37Packages.jedi
-    python37Packages.python-language-server # python linting
-    python37Packages.pyls-mypy # Python static type checker
-    python37Packages.pylint # Python linter
-    python37Packages.black # Python code formatter
-    python37Packages.libxml2 # This is Xmllint
+    # Excluding one linter because its buggy
+    (python37Packages.python-language-server.override {
+      providers=["mccabe" "rope" "yapf" "pyflakes"];
+    })
     ccls # C/C++ language server
     clang-tools # C++ fixer
     cargo # rust dependencie management

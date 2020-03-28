@@ -24,7 +24,7 @@ let
 
     noNewProfileOnFFUpdate = true;
     clearDataOnShutdown = false;
-    disableDrmPlugin = true;
+    disableDrmPlugin = false;
     enableDarkDevTools = true;
     disablePocket = true;
     disableFirefoxSync = true;
