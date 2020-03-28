@@ -7,7 +7,7 @@ let
   callPackage = pkgs.lib.callPackageWith (pkgs);
 
   waybar_renderer = callPackage ./own-pkgs/waybar_renderer {};
-  
+
   wallpaper_path = ./resources/wallpapers/pixel_space.jpg;
   lock_wallpaper_path = ./resources/lockscreen.jpg;
 
@@ -16,16 +16,16 @@ let
    export XDG_RUNTIME_DIR="/run/user/${toString config.users.extraUsers.${config.mainUser}.uid}"
     ${wl-clipboard}/bin/wl-copy "$@"
   '';
- 
+
   wl-paste = pkgs.writeScriptBin "wl-paste" ''
     export XDG_RUNTIME_DIR="/run/user/${toString config.users.extraUsers.${config.mainUser}.uid}"
     ${wl-clipboard}/bin/wl-paste "$@"
   '';
- 
+
   lock_screen = pkgs.writeScriptBin "lock_screen" ''
     #!/bin/sh
     ${pkgs.swaylock}/bin/swaylock -f -e -c 000000 -i ${lock_wallpaper_path}
-  
+
    # if [ "$?" != "0" ]; then
    #  kill -9 -1 || shutdown now;
    # fi
@@ -52,8 +52,8 @@ let
 
   sway_dbus = pkgs.writeScript "sway_dbus.sh" ''
     #!/bin/sh
-   
-    ${pkgs.dbus}/bin/dbus-run-session ${pkgs.sway}/bin/sway
+
+    ${pkgs.dbus}/bin/dbus-run-session ${pkgs.sway}/bin/sway -d 2>/tmp/sway.log
 
     if [ "$?" != "0"  ]; then
       kill -9 -1 || shutdown now;
@@ -63,7 +63,7 @@ let
   random_background = pkgs.writeScriptBin "random_background" ''
     #!/bin/sh
     set -xe
-    
+
     IMG=$(ls ${./resources/wallpapers} | shuf -n1)
     IMG_PATH="${./resources/wallpapers}/$IMG"
     echo "Settings background image: $IMG"
@@ -165,7 +165,7 @@ in {
   };
 
   system.activationScripts.copySwayConfig = ''
- 
+
   mkdir -p ${config.mainUserHome}/.config/wofi
   ln -s -f ${./resources/wofi.conf} ${config.mainUserHome}/.config/wofi/config
   chown -h -R ${config.mainUser}: ${config.mainUserHome}/.config/wofi
