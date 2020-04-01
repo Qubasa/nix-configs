@@ -35,7 +35,6 @@
 
     signal send set=term peer=plugin_container,
 
-    deny /dev/ r,
     deny /nix/store/*-glib-*/bin/gio-launch-desktop x,
 
     /dev/video[0-9]* rw,
@@ -48,6 +47,7 @@
     /sys/bus/ r,
     /sys/class/ r,
     /sys/devices/pci*/** r,
+    /dev/ r,
     /tmp/** w,
     @{PROC}/cpuinfo r,
     @{PROC}/devices/pci*/** r,
@@ -82,6 +82,7 @@
     owner @{HOME}/.{firefox,mozilla}/**/*.{db,parentlock,sqlite}* k,
     owner @{HOME}/.{firefox,mozilla}/**/plugins/** mr,
     owner @{HOME}/.{firefox,mozilla}/plugins/** mr,
+    owner @{HOME}/ r,
     owner @{HOME}/Downloads/** rw,
     owner @{HOME}/Public/** r,
     owner @{PROC}/@{pid}/auxv r,
