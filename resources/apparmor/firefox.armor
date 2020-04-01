@@ -1,4 +1,4 @@
-# Last Modified: Mon Mar 16 12:08:30 2020
+# Last Modified: Wed Apr  1 22:59:06 2020
 #include <tunables/global>
 
 # vim:syntax=apparmor
@@ -33,16 +33,22 @@
 
     deny capability sys_admin,
 
-    deny /dev/ r,
+    signal send set=term peer=plugin_container,
 
+    deny /dev/ r,
+    deny /nix/store/*-glib-*/bin/gio-launch-desktop x,
+
+    /dev/video[0-9]* rw,
     /etc/fstab r,
     /etc/machine-id r,
     /etc/mtab r,
     /nix/store/** mr,
     /nix/store/*-firefox-*/lib/firefox/firefox mrix,
+    /nix/store/*-firefox-unwrapped-*/lib/firefox/plugin-container px -> plugin_container,
+    /sys/bus/ r,
+    /sys/class/ r,
     /sys/devices/pci*/** r,
-    /dev/video[0-9]* rw,
-
+    /tmp/** w,
     @{PROC}/cpuinfo r,
     @{PROC}/devices/pci*/** r,
     @{PROC}/filesystems r,
@@ -51,12 +57,16 @@
     @{sys}/devices/system/node/ r,
     @{sys}/devices/system/node/node[0-9]/meminfo r,
     owner /dev/shm/snap.firefox.org.mozilla.ipc.* rw,
+    owner /home/*/.local/share/mime/image/jpeg.xml r,
+    owner /home/*/.local/share/recently-used.xbel w,
+    owner /home/*/.local/share/recently-used.xbel.A8FLI0 w,
+    owner /home/*/.local/share/recently-used.xbel.M47RI0 w,
     owner /run/user/*/mozilla-shared-* rw,
+    owner /run/user/1000/firefox/ w,
     owner /run/user/@{pid}/dconf/user rw,
     owner @{HOME}/.Xauthority r,
-    owner @{HOME}/.local/share/recently-used.xbel r,
     owner @{HOME}/.cache/fontconfig/** rwl,
-    owner @{HOME}/.cache/mozilla/firefox/** krw,
+    owner @{HOME}/.cache/mozilla/firefox/** rwk,
     owner @{HOME}/.config/dconf/user r,
     owner @{HOME}/.config/mimeapps.list r,
     owner @{HOME}/.local/share/applications/ r,
@@ -65,6 +75,7 @@
     owner @{HOME}/.local/share/icons/**/ r,
     owner @{HOME}/.local/share/mime/* r,
     owner @{HOME}/.local/share/mime/mime.cache r,
+    owner @{HOME}/.local/share/recently-used.xbel r,
     owner @{HOME}/.mozilla/**/extensions/** mrix,
     owner @{HOME}/.{firefox,mozilla}/ rw,
     owner @{HOME}/.{firefox,mozilla}/** rw,
@@ -79,13 +90,13 @@
     owner @{PROC}/@{pid}/fd/ r,
     owner @{PROC}/@{pid}/maps r,
     owner @{PROC}/@{pid}/mountinfo r,
+    owner @{PROC}/@{pid}/mounts r,
     owner @{PROC}/@{pid}/net/if_inet6 r,
     owner @{PROC}/@{pid}/net/ipv6_route r,
-    owner @{PROC}/@{pid}/stat r,
-    owner @{PROC}/@{pid}/status r,
     owner @{PROC}/@{pid}/smaps r,
+    owner @{PROC}/@{pid}/stat r,
     owner @{PROC}/@{pid}/statm r,
-    owner @{PROC}/@{pid}/mounts r,
+    owner @{PROC}/@{pid}/status r,
     owner @{PROC}/@{pid}/task/*/stat r,
 
   }

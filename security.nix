@@ -14,7 +14,10 @@ with lib;
 
   security.apparmor = {
    enable = true;
-   profiles = [ /etc/nixos/resources/apparmor/firefox.armor ];
+   profiles = [
+    ./resources/apparmor/firefox.armor
+    ./resources/apparmor/plugin-container.armor
+   ];
    };
 
   # This is done so that we can store our apparmor profiles in
