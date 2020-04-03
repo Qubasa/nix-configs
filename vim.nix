@@ -51,6 +51,7 @@
     (python37Packages.python-language-server.override {
       providers=["mccabe" "rope" "yapf" "pyflakes"];
     })
+    python37Packages.black
     ccls # C/C++ language server
     clang-tools # C++ fixer
     cargo # rust dependencie management
