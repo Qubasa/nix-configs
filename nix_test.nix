@@ -16,10 +16,10 @@ in
   # udevadm info --attribute-walk /dev/input/by-id/usb-Cherry_USB_keyboard-event-kbd
   # For explanation see: man udev
   # To trigger new rule: udevadm control --reload-rules && udevadm trigger
-  services.udev.extraRules = ''
-  SUBSYSTEM=="input", ATTRS{idVendor}=="046a", ATTRS{idProduct}=="b090", SYMLINK+="myCherry"
-   SUBSYSTEMS=="input", ATTRS{idVendor}=="0002", ATTRS{idProduct}=="0007", SYMLINK+="myTouchy"
-  '';
+# services.udev.extraRules = ''
+# SUBSYSTEM=="input", ATTRS{idVendor}=="046a", ATTRS{idProduct}=="b090", SYMLINK+="myCherry"
+#  SUBSYSTEMS=="input", ATTRS{idVendor}=="0002", ATTRS{idProduct}=="0007", SYMLINK+="myTouchy"
+# '';
 
   environment.systemPackages = with pkgs; [
     nix-test

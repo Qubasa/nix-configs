@@ -42,7 +42,7 @@ in {
   # Enable nested virtualisation
   boot.extraModprobeConfig = "options kvm_amd nested=1";
 
-  boot.kernelPackages = (pkgs.hardenedLinuxPackagesFor fast_kernel);
+  boot.kernelPackages = (pkgs.hardenedLinuxPackagesFor pkgs.unstable.pkgs.linuxPackages_5_5.kernel);
 
 
   ####################
