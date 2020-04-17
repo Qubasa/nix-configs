@@ -23,6 +23,7 @@
             tagbar #  function overview window
             polyglot # Language pack
             vimPlugins.indentLine # Shows indendation level
+            fzf-vim
             vimPlugins.fugitive # vim git integration
             ale
             molokai # color scheme

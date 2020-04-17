@@ -83,6 +83,7 @@
     owner @{HOME}/.{firefox,mozilla}/**/plugins/** mr,
     owner @{HOME}/.{firefox,mozilla}/plugins/** mr,
     owner @{HOME}/ r,
+    owner @{HOME}/Downloads r,
     owner @{HOME}/Downloads/** rw,
     owner @{HOME}/Public/** r,
     owner @{PROC}/@{pid}/auxv r,
