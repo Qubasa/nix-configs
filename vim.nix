@@ -58,6 +58,7 @@
     rustfmt # rust formatter
     nodePackages.prettier # Typescript formatter
     rls # rust language server
+    cscope # Interactive c code browser for huge codebases
   ];
 
   environment.etc."pylintrc" = {
