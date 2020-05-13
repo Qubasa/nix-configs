@@ -8,7 +8,7 @@
 
     programs.tmux.enable = true;
 
-    programs.tmux.extraTmuxConf = ''
+    programs.tmux.extraConfig = ''
 
 # 0 is too far from ` ;)
 set -g base-index 1

@@ -17,6 +17,10 @@ networking.firewall.allowedTCPPorts = [ 1234 ];
 # Hostname
 networking.hostName = "qubasa";
 
+# Needed for same origin policy in web dev & debugging
+networking.extraHosts = "127.0.0.1 localhost dev.localhost";
+
+
 # networking.networkmanager.insertNameservers = [ "1.1.1.1" ];
 
 }

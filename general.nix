@@ -13,9 +13,9 @@ services.printing.drivers = [
 hardware.pulseaudio.enable = true;
 
 # Select internationalisation properties.
+console.keyMap = "de";
+console.font = "Monospace";
 i18n = {
-  consoleFont = "Monospace";
-  consoleKeyMap = "de";
   defaultLocale = "en_US.UTF-8";
 };
 

@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
   meta = with stdenv.lib; {
     description = "ublock origin firefox browser addon";
     homepage = https://github.com/gorhill/uBlock;
-    license = licenses.gnu3;
+    license = licenses.gpl3;
     maintainers = [];
     platforms = stdenv.lib.platforms.all;
   };

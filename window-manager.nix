@@ -6,10 +6,9 @@ let
 
   callPackage = pkgs.lib.callPackageWith (pkgs);
 
-  waybar_renderer = callPackage ./own-pkgs/waybar_renderer {};
-
   wallpaper_path = ./resources/wallpapers/pixel_space.jpg;
   lock_wallpaper_path = ./resources/lockscreen.jpg;
+  waybar_renderer = callPackage ./own-pkgs/waybar_renderer {};
 
   # This propagates root clipboard to mainUser clipboard
   wl-copy = pkgs.writeScriptBin "wl-copy" ''
@@ -26,9 +25,6 @@ let
     #!/bin/sh
     ${pkgs.swaylock}/bin/swaylock -f -e -c 000000 -i ${lock_wallpaper_path}
 
-   # if [ "$?" != "0" ]; then
-   #  kill -9 -1 || shutdown now;
-   # fi
     '';
 
   xresources = pkgs.writeText "Xresources" ''
@@ -72,14 +68,11 @@ let
 
 in {
 
-  # Allow users in video group to change brightness
-  hardware.brightnessctl.enable = true;
   programs.sway = {
     enable = true;
     extraPackages = [
       xwayland
       swaybg
-      waybar_renderer
       alsaUtils
       lock_screen
       mako
@@ -106,6 +99,7 @@ in {
     pkgs.unstable.wofi     # Dmenu replacement
     wl-copy
     wl-paste
+	waybar_renderer
     startsway
     random_background
   ];
@@ -136,20 +130,11 @@ in {
     # systemctl --user import-environment in startsway
     environment.PATH = lib.mkForce null;
 
-   # unitConfig = {
-   #   OnFailure="panic-logout.service";
-   # };
     serviceConfig = {
       ExecStart=sway_dbus;
       Type = "simple";
     };
   };
-
- # services.redshift = {
- #   enable = true;
-    # Redshift with wayland support isn't present in nixos-19.09 atm. You have to cherry-pick the commit from https://github.com/NixOS/nixpkgs/pull/68285 to do that.
- #   package = pkgs.redshift-wlr;
- # };
 
   systemd.user.services.kanshi = {
     description = "Kanshi output autoconfig ";

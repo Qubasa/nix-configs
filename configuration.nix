@@ -95,6 +95,7 @@ environment.systemPackages = with pkgs; [
   binutils # Binary inspection
   radare2 # Binary reversing
   unstable.radare2-cutter # QT GUI for radare2
+  ghidra-bin
   nmap # Network discovery
   calc # Simple calculator
   tree # display files as tree
@@ -115,7 +116,6 @@ environment.systemPackages = with pkgs; [
   ncdu # Disk usage
   taskwarrior # Task list
   veracrypt # Disk encryption tool
-  powershell # Powershell for linux
   valgrind # c checker tool
   myMpv # Wayland compatbile mpv
   imv # Wayland compatible image viewer
