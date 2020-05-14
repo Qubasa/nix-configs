@@ -117,6 +117,8 @@ environment.systemPackages = with pkgs; [
   taskwarrior # Task list
   veracrypt # Disk encryption tool
   valgrind # c checker tool
+  rmount # Remote mount utility
+  nixos-generators # Generate nixos images
   myMpv # Wayland compatbile mpv
   imv # Wayland compatible image viewer
   evince # pdf reader

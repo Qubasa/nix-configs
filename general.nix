@@ -20,7 +20,10 @@ i18n = {
 };
 
 time.timeZone = "Europe/Berlin";
-
+programs.gnupg.agent = {
+  pinentryFlavor = "gnome3";
+  enable = true;
+};
 # Can create USB issues
 #powerManagement.powertop.enable = true;
 
