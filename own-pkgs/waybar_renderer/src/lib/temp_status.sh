@@ -1,4 +1,4 @@
 #!/bin/sh
 
-temp=$(sensors -u 2> /dev/null| sed -n 's/_input//p' | head -n 1 | awk '{print int($2)}')
+temp=$(sensors -u 2> /dev/null| grep -A 5 gpu | grep temp1_input | awk '{ print $2 }' | cut -d '.' -f1)
 echo "$temp "
