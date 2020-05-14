@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# How often in seconds the bar gets updated
+REFRESH=1
+
+export PATH=$PATH:lib/
+
+# First time without wifi, because it blocks a long time
+BAR="$(temp_status.sh)"
+BAR+=" | $(avail_disk_status.sh)"
+BAR+=" | $(volume_status.sh)"
+BAR+=" | $(brightness_status.sh)"
+BAR+=" | $(vpn_status.sh)"
+BAR+=" | $(eth_status.sh)"
+BAR+=" | Wifi "
+BAR+=" | $(date_status.sh)"
+BAR+=" | $(battery_status.sh)"
+
+echo "$BAR"
+
+while true; do
+    BAR="$(temp_status.sh)"
+    BAR+=" | $(avail_disk_status.sh)"
+    BAR+=" | $(volume_status.sh)"
+    BAR+=" | $(brightness_status.sh)"
+    BAR+=" | $(vpn_status.sh)"
+    BAR+=" | $(eth_status.sh)"
+    BAR+=" | $(wifi_status.sh)"
+    BAR+=" | $(date_status.sh)"
+    BAR+=" | $(battery_status.sh)"
+
+  echo "$BAR"
+  sleep "$REFRESH"
+done
