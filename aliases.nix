@@ -100,6 +100,18 @@ let
     "$@"
   '';
 
+  start-stream = pkgs.writeScriptBin "start-stream" ''
+    #!/bin/sh
+
+    if [ $# -le 0 ]; then
+      echo "You have to specify the file name"
+      exit 1
+    fi
+
+    pkill swaybar
+    wf-recorder -f "$@"
+    swaymsg reload
+  '';
 
 in {
   environment.shellAliases = {
@@ -155,6 +167,7 @@ in {
   environment.systemPackages = with pkgs; [
     stopwatch
     x11-spawn
+    start-stream
     disks
     screenshot
     kbd_backlight

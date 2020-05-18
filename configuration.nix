@@ -98,6 +98,7 @@ environment.systemPackages = with pkgs; [
   ghidra-bin
   nmap # Network discovery
   calc # Simple calculator
+  chromium
   tree # display files as tree
   gnupg # Email encryption
   ansible # Newest ansible automation tool
@@ -119,6 +120,7 @@ environment.systemPackages = with pkgs; [
   valgrind # c checker tool
   rmount # Remote mount utility
   nixos-generators # Generate nixos images
+  patchelf
   myMpv # Wayland compatbile mpv
   imv # Wayland compatible image viewer
   evince # pdf reader

@@ -48,11 +48,7 @@
     xxd # Show binary as hex
     nodePackages.jsonlint # json linting
     python3
-    python37Packages.python-language-server
     # Excluding one linter because its buggy
-    # (python37Packages.python-language-server.override {
-    #   providers=["mccabe" "rope" "yapf" "pyflakes" ""];
-    # })
     python37Packages.black
     ccls # C/C++ language server
     clang-tools # C++ fixer

@@ -77,6 +77,7 @@ color14 #34e2e2
 color15 #eeeeec
 
 enabled_layouts *
+enable_audio_bell no
 
 map ctrl+shift+left resize_window narrower
 map ctrl+plus change_font_size current + 1.0
