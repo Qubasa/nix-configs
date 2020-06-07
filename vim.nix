@@ -1,6 +1,10 @@
 {pkgs, ...}:
 
-{
+
+let 
+  myUnstable = import <nixos-unstable>{};
+
+in {
  environment.variables = {
     EDITOR = ["nvim"];
     VISUAL = ["nvim"];
@@ -12,21 +16,21 @@
       configure = {
         customRC = builtins.readFile ./resources/vimrc.conf;
 
-        packages.myVimPackage = with pkgs.vimPlugins;
+        packages.myVimPackage =
         {
           # loaded on launch
-          start = [
+          start = with pkgs.vimPlugins; [
             commentary # comment stuff out based on language
             vim-airline-themes # lean & mean status/tabline
             vim-airline # status bar
             vim-trailing-whitespace # trailing whitspaces in red
             tagbar #  function overview window
             polyglot # Language pack
-            vimPlugins.indentLine # Shows indendation level
+            indentLine # Shows indendation level
             fzf-vim
-            vimPlugins.fugitive # vim git integration
-            ale
+            fugitive # vim git integration
             molokai # color scheme
+            myUnstable.vimPlugins.ale # Language server integration
           ];
           # manually loadable by calling `:packadd $plugin-name`
           opt = [];
@@ -50,12 +54,12 @@
     python3
     # Excluding one linter because its buggy
     python37Packages.black
+    pkgs.unstable.pkgs.rust-analyzer
     ccls # C/C++ language server
     clang-tools # C++ fixer
-    cargo # rust dependencie management
-    rustfmt # rust formatter
+    # cargo # rust dependencie management
+    # rustfmt # rust formatter
     nodePackages.prettier # Typescript formatter
-    rls # rust language server
     cscope # Interactive c code browser for huge codebases
   ];
 

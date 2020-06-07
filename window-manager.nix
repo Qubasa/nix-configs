@@ -67,6 +67,7 @@ let
   '';
 
 in {
+  programs.light.enable = true;
 
   programs.sway = {
     enable = true;
@@ -76,7 +77,7 @@ in {
       alsaUtils
       lock_screen
       mako
-      acpilight
+      # acpilight
       swayidle
       random_background
     ];

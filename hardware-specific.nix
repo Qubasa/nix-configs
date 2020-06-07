@@ -5,13 +5,13 @@
 let
   # https://blog.cloudflare.com/speeding-up-linux-disk-encryption/
   # Also pinning the kernel version because unattended kernel upgrades suck
-  fast_kernel = pkgs.unstable.pkgs.linuxPackages_latest.kernel.override rec {
-    version = "5.5.9";
-    src = pkgs.fetchurl {
-      url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
-      sha256 = "0y58gkzadjwfqfry5568g4w4p2mpx2sw50sk95i07s5va1ly2dd4";
-    };
-  };
+  # fast_kernel = pkgs.unstable.pkgs.linuxPackages_latest.kernel.override rec {
+  #   version = "5.5.9";
+  #   src = pkgs.fetchurl {
+  #     url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
+  #     sha256 = "0y58gkzadjwfqfry5568g4w4p2mpx2sw50sk95i07s5va1ly2dd4";
+  #   };
+  # };
 
 in {
 
@@ -54,7 +54,7 @@ in {
   # Enable nested virtualisation
   boot.extraModprobeConfig = "options kvm_amd nested=1";
 
-  boot.kernelPackages = (pkgs.hardenedLinuxPackagesFor pkgs.unstable.pkgs.linuxPackages_5_5.kernel);
+  boot.kernelPackages = pkgs.linuxPackages_hardened; #(pkgs.hardenedLinuxPackagesFor pkgs.unstable.pkgs.linuxPackages_5_5.kernel);
 
   ####################
   #                  #

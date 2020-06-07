@@ -99,10 +99,17 @@ environment.systemPackages = with pkgs; [
   nmap # Network discovery
   calc # Simple calculator
   chromium
+  # (chromium.override {
+  #   useOzone = true;
+  # })
   tree # display files as tree
   gnupg # Email encryption
-  ansible # Newest ansible automation tool
   nix-index # apt-file equivalent
+  ansible
+  docker-compose
+  discord # Centralized chat platform
+  cargo-watch # Rust on demand recompile
+  pkgs.unstable.pkgs.insomnia # REST API client
   powertop # A power management tool
   libreoffice # Opening docs
   gimp # Editing pictures

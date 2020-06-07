@@ -8,8 +8,9 @@ environment.systemPackages = with pkgs; [
 ];
 
 virtualisation.libvirtd.enable = true;
+virtualisation.docker.enable = true;
 
-users.extraUsers.${config.mainUser}.extraGroups = [ "libvirtd" "vboxusers" ];
+users.extraUsers.${config.mainUser}.extraGroups = [ "libvirtd" "vboxusers" "docker"];
 
 
 }
