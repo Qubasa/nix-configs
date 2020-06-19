@@ -15,9 +15,7 @@ hardware.pulseaudio.enable = true;
 # Select internationalisation properties.
 console.keyMap = "de";
 console.font = "Monospace";
-i18n = {
-  defaultLocale = "en_US.UTF-8";
-};
+i18n.defaultLocale = "en_US.UTF-8";
 
 time.timeZone = "Europe/Berlin";
 programs.gnupg.agent = {

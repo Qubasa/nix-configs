@@ -2,14 +2,14 @@
 
 ## various stuff that can be plugged in
 , flashplayer, hal-flash
-, MPlayerPlugin, ffmpeg, xorg, libpulseaudio, libcanberra-gtk2, libglvnd
-, jrePlugin, adoptopenjdk-icedtea-web
-, bluejeans, djview4, adobe-reader
-, google_talk_plugin, fribid, gnome3/*.gnome-shell*/
+, ffmpeg, xorg, libpulseaudio, libcanberra-gtk2, libglvnd
+, gnome3/*.gnome-shell*/
 , browserpass, chrome-gnome-shell, uget-integrator, plasma-browser-integration, bukubrow
 , tridactyl-native
+, fx_cast_bridge
 , udev
 , kerberos
+, libva
 }:
 
 ## configurability of the wrapper itself
@@ -63,37 +63,29 @@ let
 
     let
       # If extraExtensions has been set disable manual extensions
-      disableManualExtensions = if lib.count (x: true) extraExtensions > 0 then true else false;
+     disableManualExtensions = if lib.count (x: true) extraExtensions > 0 then true else false;
 
-      enableAdobeFlash = cfg.enableAdobeFlash or false;
-      ffmpegSupport = browser.ffmpegSupport or false;
-      gssSupport = browser.gssSupport or false;
-      jre = cfg.jre or false;
-      icedtea = cfg.icedtea or false;
-      supportsJDK =
-        stdenv.hostPlatform.system == "i686-linux" ||
-        stdenv.hostPlatform.system == "x86_64-linux" ||
-        stdenv.hostPlatform.system == "armv7l-linux" ||
-        stdenv.hostPlatform.system == "aarch64-linux";
+     enableAdobeFlash = cfg.enableAdobeFlash or false;
+     ffmpegSupport = browser.ffmpegSupport or false;
+     gssSupport = browser.gssSupport or false;
 
-      plugins =
-        assert !(jre && icedtea);
-        if builtins.hasAttr "enableVLC" cfg
-        then throw "The option \"${browserName}.enableVLC\" has been removed since Firefox no longer supports npapi plugins"
-        else
-        ([ ]
-          ++ lib.optional enableAdobeFlash flashplayer
-          ++ lib.optional (cfg.enableDjvu or false) (djview4)
-          ++ lib.optional (cfg.enableMPlayer or false) (MPlayerPlugin browser)
-          ++ lib.optional (supportsJDK && jre && jrePlugin ? mozillaPlugin) jrePlugin
-          ++ lib.optional icedtea adoptopenjdk-icedtea-web
-          ++ lib.optional (cfg.enableGoogleTalkPlugin or false) google_talk_plugin
-          ++ lib.optional (cfg.enableFriBIDPlugin or false) fribid
-          ++ lib.optional (cfg.enableGnomeExtensions or false) gnome3.gnome-shell
-          ++ lib.optional (cfg.enableBluejeans or false) bluejeans
-          ++ lib.optional (cfg.enableAdobeReader or false) adobe-reader
-          ++ extraPlugins
-        );
+     plugins =
+        let
+          removed = lib.filter (a: builtins.hasAttr a cfg) [
+            "enableVLC"
+            "enableDjvu"
+            "enableMPlayer"
+            "jre"
+            "icedtea"
+            "enableGoogleTalkPlugin"
+            "enableFriBIDPlugin"
+            "enableBluejeans"
+            "enableAdobeReader"
+          ];
+        in if removed != []
+           then throw "Your configuration mentions ${lib.concatMapStringsSep ", " (p: browserName + "." + p) removed}. All plugin related options, except for the adobe flash player, have been removed, since Firefox from version 52 onwards no longer supports npapi plugins (see https://support.mozilla.org/en-US/kb/npapi-plugins)."
+           else lib.optional enableAdobeFlash flashplayer;
+
       nativeMessagingHosts =
         ([ ]
           ++ lib.optional (cfg.enableBrowserpass or false) (lib.getBin browserpass)
@@ -102,9 +94,10 @@ let
           ++ lib.optional (cfg.enableGnomeExtensions or false) chrome-gnome-shell
           ++ lib.optional (cfg.enableUgetIntegrator or false) uget-integrator
           ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma-browser-integration
+          ++ lib.optional (cfg.enableFXCastBridge or false) fx_cast_bridge
           ++ extraNativeMessagingHosts
         );
-      libs =   lib.optional stdenv.isLinux udev
+      libs =   lib.optionals stdenv.isLinux [ udev libva ]
             ++ lib.optional ffmpegSupport ffmpeg
             ++ lib.optional gssSupport kerberos
             ++ lib.optional gdkWayland libglvnd
@@ -113,6 +106,7 @@ let
             ++ lib.optional (enableAdobeFlash && (cfg.enableAdobeFlashDRM or false)) hal-flash
             ++ lib.optional (config.pulseaudio or true) libpulseaudio;
       gtk_modules = [ libcanberra-gtk2 ];
+
 
       enterprisePolicies =
       {

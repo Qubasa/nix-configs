@@ -10,7 +10,8 @@ let
 
 #  userjs-hardened = pkgs.callPackage ./own-pkgs/userjs-hardenend {};
 
-  wrapper = pkgs.callPackage ./overlays/firefox-with-config.nix {};
+  wrapper = pkgs.callPackage ./overlays/firefox-with-config.nix { fx_cast_bridge=pkgs.unstable.pkgs.fx_cast_bridge; };
+
     hardenedFirefox= wrapper pkgs.unstable.firefox-unwrapped {
 
     extraExtensions = [

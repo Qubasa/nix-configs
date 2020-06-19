@@ -53,11 +53,9 @@ $ nixos-generate-config --root /mnt
 Your generated configurations now are at /mnt/etc/nixos.
 Edit the configuration.nix and uncomment the following lines:
 ```
-i18n = {
-  consoleFont = "Lat2-Terminus16";
-  consoleKeyMap = "de";
-  defaultLocale = "en_US.UTF-8";
-};
+console.keyMap = "de";
+console.font = "Monospace";
+i18n.defaultLocale = "en_US.UTF-8";
 ```
 Change the 'consoleKeyMap' option to the keymap you set at the beginning. This is important or your password may be differently typed at bootup.
 
@@ -134,11 +132,9 @@ $ nixos-generate-config --root /mnt
 Your generated configurations now are at /mnt/etc/nixos.
 Edit the configuration.nix and uncomment the following lines:
 ```
-i18n = {
-  consoleFont = "Lat2-Terminus16";
-  consoleKeyMap = "de";
-  defaultLocale = "en_US.UTF-8";
-};
+console.keyMap = "de";
+console.font = "Monospace";
+i18n.defaultLocale = "en_US.UTF-8";
 ```
 Change the 'consoleKeyMap' option to the keymap you set at the beginning. This is important or your password may be differently typed at bootup.
 
