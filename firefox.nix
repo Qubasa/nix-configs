@@ -1,12 +1,6 @@
 { config, pkgs, ... }:
 
 let
-  # Firefox addons
-  https-everywhere = pkgs.callPackage ./own-pkgs/https-everywhere {};
-  ublock-origin = pkgs.callPackage ./own-pkgs/ublock-origin {};
-  user-agent-switcher = pkgs.callPackage ./own-pkgs/user-agent-switcher {};
-  dark-reader = pkgs.callPackage ./own-pkgs/dark-reader {};
-  tree_style_tabs = pkgs.callPackage ./own-pkgs/tree-tab {};
 
   wrapper = pkgs.callPackage ./overlays/wrapper.nix { fx_cast_bridge=pkgs.unstable.pkgs.fx_cast_bridge; };
 
@@ -24,7 +18,25 @@ let
       }
     ];
 
-  #   Newline on copy problem: https://bugzilla.mozilla.org/show_bug.cgi?id=1547595
+    extraPolicies = {
+      CaptivePortal = false;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisableTelemetry = true;
+      DisableFirefoxAccounts = true;
+    };
+
+    extraPrefs = ''
+      // Show more ssl cert infos
+      lockPref("security.identityblock.show_extended_validation", true);
+
+      // Enable userchrome css
+      lockPref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+
+      // Enable dark dev tools
+      lockPref("devtools.theme","dark");
+    '';
+
     gdkWayland = true;
   };
 
@@ -33,7 +45,6 @@ in {
 environment.variables = {
   BROWSER = ["firefox"];
 };
-
 
 environment.systemPackages = with pkgs; [
   hardenedFirefox

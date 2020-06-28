@@ -32,9 +32,13 @@ let
     , cfg ? config.${browserName} or {}
 
     ## Following options are needed for extra prefs & policies
+    # For more information about anti tracking (german website)
+    # vist https://wiki.kairaven.de/open/app/firefo
     , extraPrefs ? ""
+    # For more information about policies visit
+    # https://github.com/mozilla/policy-templates#enterprisepoliciesenabled
     , extraPolicies ? {}
-    , firefoxLibName ? "firefox"
+    , firefoxLibName ? "firefox" # Important for tor package or the like
     , extraExtensions ? [ ]
     }:
 
