@@ -94,16 +94,10 @@ let
       extensions = builtins.map (a:
         if ! (builtins.hasAttr "name" a) || ! (builtins.isString a.name) then
           throw "Firefox addon needs a name attribute"
-        # else if ! (builtins.hasAttr "extid" a) || ! (builtins.isString a.extid) then
-        #   throw "Addon ${a.pname} needs a string attribute 'extid'"
         else if ! (builtins.hasAttr "url" a) || ! (builtins.isString a.url) then
           throw "Addon ${a.pname} needs an url"
         else if ! (builtins.hasAttr "sha256" a) || ! (builtins.isString a.sha256) then
           throw "Addon ${a.pname} needs an sha256 checksum"
-        # if ! (builtins.hasAttr "signed" a) || ! (builtins.isBool a.signed) then
-        #   throw "Addon ${a.pname} needs boolean attribute 'signed' "
-        # else if a.signed == false && !allowNonSigned then
-        #   throw "Disable signature checking in firefox if you want ${a.pname} addon"
         else stdenv.mkDerivation rec {
           pname = a.name;
           version = "1.0";
