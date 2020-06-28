@@ -122,7 +122,7 @@ let
             UUID="${extid}"
             mkdir -p "$out/$UUID"
             unzip -q ${src} -d "$out/$UUID"
-            NEW_MANIFEST=$(jq '. + {"browser_specific_settings":{"gecko":{"id": "${extid}"}}}' "$out/$UUID/manifest.json")
+            NEW_MANIFEST=$(jq '. + {"applications": { "gecko": { "id": "${extid}" }}, "browser_specific_settings":{"gecko":{"id": "${extid}"}}}' "$out/$UUID/manifest.json")
             echo "$NEW_MANIFEST" > "$out/$UUID/manifest.json"
             cd "$out/$UUID"
             zip -r -q -FS "$out/$UUID.xpi" *
@@ -134,7 +134,7 @@ let
       enterprisePolicies =
       {
         policies = {
-          DisableAppUpdate = false;
+          DisableAppUpdate = true;
         } //
         {
           ExtensionSettings = {
