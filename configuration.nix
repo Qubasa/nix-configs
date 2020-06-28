@@ -150,6 +150,7 @@ environment.systemPackages = with pkgs; [
   wf-recorder# Screen capturing
   ffmpeg-full # Convert video formats
 
+  google-cloud-sdk
   ## Rmount dependencies
   jq # Json parsing in shell
   cifs-utils # Samba mount

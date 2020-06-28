@@ -13,7 +13,7 @@ with lib;
   disabledModules = [ "security/apparmor.nix"  ];
 
   security.apparmor = {
-   enable = true;
+   enable = false;
    profiles = [
     ./resources/apparmor/firefox.armor
     ./resources/apparmor/plugin-container.armor
@@ -23,16 +23,16 @@ with lib;
   # This is done so that we can store our apparmor profiles in
   # resources but we can still use aa-logprof to automatically
   # update our profiles
-  system.activationScripts.copyApparmor = ''
-    FOLD="/etc/nixos/resources/apparmor"
-    if [ ! -d "$FOLD"  ]; then
-      echo "Missing folder $FOLD"
-      exit -1
-    fi
+  # system.activationScripts.copyApparmor = ''
+  #   FOLD="/etc/nixos/resources/apparmor"
+  #   if [ ! -d "$FOLD"  ]; then
+  #     echo "Missing folder $FOLD"
+  #     exit -1
+  #   fi
 
-    cp -r /etc/apparmor.d/abstractions /etc/nixos/resources/apparmor/
-    cp -r /etc/apparmor.d/tunables /etc/nixos/resources/apparmor/
-  '';
+  #   cp -r /etc/apparmor.d/abstractions /etc/nixos/resources/apparmor/
+  #   cp -r /etc/apparmor.d/tunables /etc/nixos/resources/apparmor/
+  # '';
 
   # Disable this if you have problems with
   # drivers that do not load
