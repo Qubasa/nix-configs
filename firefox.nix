@@ -16,7 +16,6 @@ let
   hardenedFirefox= wrapper pkgs.firefox-unwrapped {
     extraExtensions = [
       {
-        extid = "uBlock0@raymondhill.net";
         name = "ublock";
         url = "https://addons.mozilla.org/firefox/downloads/file/3452970/ublock_origin-1.24.2-an+fx.xpi";
         sha256 = "0kjjwi91ri958gsj4l2j3xqwj4jgkcj4mlqahqd1rz9z886sd9dy";

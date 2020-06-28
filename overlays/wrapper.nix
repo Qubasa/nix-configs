@@ -1,4 +1,6 @@
-{ stdenv, lib, makeDesktopItem, makeWrapper, lndir, config, replace, fetchurl
+{ stdenv, lib, makeDesktopItem, makeWrapper, lndir, config,
+
+replace, fetchurl, zip, unzip, jq
 
 ## various stuff that can be plugged in
 , flashplayer, hal-flash
@@ -34,7 +36,6 @@ let
     , extraPolicies ? {}
     , firefoxLibName ? "firefox"
     , extraExtensions ? [ ]
-    , allowNonSigned ? false
     }:
 
     assert gdkWayland -> (browser ? gtk3); # Can only use the wayland backend if gtk3 is being used
@@ -93,8 +94,8 @@ let
       extensions = builtins.map (a:
         if ! (builtins.hasAttr "name" a) || ! (builtins.isString a.name) then
           throw "Firefox addon needs a name attribute"
-        else if ! (builtins.hasAttr "extid" a) || ! (builtins.isString a.extid) then
-          throw "Addon ${a.pname} needs a string attribute 'extid'"
+        # else if ! (builtins.hasAttr "extid" a) || ! (builtins.isString a.extid) then
+        #   throw "Addon ${a.pname} needs a string attribute 'extid'"
         else if ! (builtins.hasAttr "url" a) || ! (builtins.isString a.url) then
           throw "Addon ${a.pname} needs an url"
         else if ! (builtins.hasAttr "sha256" a) || ! (builtins.isString a.sha256) then
@@ -105,25 +106,35 @@ let
         #   throw "Disable signature checking in firefox if you want ${a.pname} addon"
         else stdenv.mkDerivation rec {
           pname = a.name;
-          version = "1.24.2";
+          version = "1.0";
           src = fetchurl {
             url = a.url;
             sha256 = a.sha256;
           };
 
-          phases = [ "installPhase" ];
-          installPhase = ''
-            install -D ${src} "$out/${a.extid}.xpi"
+          phases = [ "buildPhase" ];
+
+          extid = "${a.sha256}@${a.name}";
+
+          buildInputs = [ zip unzip jq ];
+
+          buildPhase = ''
+            UUID="${extid}"
+            mkdir -p "$out/$UUID"
+            unzip -q ${src} -d "$out/$UUID"
+            NEW_MANIFEST=$(jq '. + {"browser_specific_settings":{"gecko":{"id": "${extid}"}}}' "$out/$UUID/manifest.json")
+            echo "$NEW_MANIFEST" > "$out/$UUID/manifest.json"
+            cd "$out/$UUID"
+            zip -r -q -FS "$out/$UUID.xpi" *
+            rm -r "$out/$UUID"
             '';
-        }
+              }
       ) extraExtensions;
 
       enterprisePolicies =
       {
         policies = {
           DisableAppUpdate = false;
-          DisablePocket = true;
-          DisableFirefoxAccounts = true;
         } //
         {
           ExtensionSettings = {
@@ -138,7 +149,7 @@ let
                   installation_mode = "allowed";
                 };
               }
-            ) {} extraExtensions;
+            ) {} extensions;
         }
         // extraPolicies;
       };
@@ -146,6 +157,11 @@ let
       mozillaCfg = builtins.toFile "mozilla.cfg" ''
 // First line must be a comment
 
+        // Disables addon signature checking
+        // to be able to install addons that do not have an extid
+        // Security is maintained because only user whitelisted addons
+        // with a checksum can be installed
+        lockPref("xpinstall.signatures.required", false);
         ${extraPrefs}
       '';
 
@@ -250,13 +266,8 @@ let
             echo "cannot find executable file \`${browser}${browser.execdir or "/bin"}/${browserName}'"
             exit 1
         fi
-        #############################
-        #                           #
-        #   END EXTRA PREF CHANGES  #
-        #                           #
-        #############################
 
-        makeWrapper "$(readlink -v --canonicalize-existing "${browser}${browser.execdir or "/bin"}/${browserName}")" \
+        makeWrapper "$oldExe" \
           "$out${browser.execdir or "/bin"}/${browserName}${nameSuffix}" \
             --suffix-each MOZ_PLUGIN_PATH ':' "$plugins" \
             --suffix LD_LIBRARY_PATH ':' "$libs" \
@@ -276,6 +287,11 @@ let
                   --suffix XDG_DATA_DIRS : '${gnome3.adwaita-icon-theme}/share'
                 ''
             }
+        #############################
+        #                           #
+        #   END EXTRA PREF CHANGES  #
+        #                           #
+        #############################
 
         if [ -e "${browser}/share/icons" ]; then
             mkdir -p "$out/share"

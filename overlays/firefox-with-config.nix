@@ -1,4 +1,4 @@
-{ stdenv, lib, makeDesktopItem, makeWrapper, lndir, config, replace
+{ stdenv, lib, makeDesktopItem, makeWrapper, lndir, config, replace, fetchurl
 
 ## various stuff that can be plugged in
 , flashplayer, hal-flash
@@ -17,59 +17,33 @@
 browser:
 
 let
-  wrapper = {
-    browserName ? "firefox"
-  , firefoxLibName ? "firefox"
-  , pname ? browserName
-  , version ? lib.getVersion browser
-  , desktopName ? # browserName with first letter capitalized
-    (lib.toUpper (lib.substring 0 1 browserName) + lib.substring 1 (-1) browserName)
-  , nameSuffix ? ""
-  , icon ? browserName
-  , extraPlugins ? []
-  , extraNativeMessagingHosts ? []
-  , gdkWayland ? false
-  , cfg ? config.${browserName} or {}
+  wrapper =
+    { browserName ? browser.browserName or (lib.getName browser)
+    , pname ? browserName
+    , version ? lib.getVersion browser
+    , desktopName ? # browserName with first letter capitalized
+      (lib.toUpper (lib.substring 0 1 browserName) + lib.substring 1 (-1) browserName)
+    , nameSuffix ? ""
+    , icon ? browserName
+    , extraNativeMessagingHosts ? []
+    , gdkWayland ? false
+    , cfg ? config.${browserName} or {}
 
-  , extraPrefs ? ""
-  , extraExtensions ? [ ]
-  , noNewProfileOnFFUpdate ? false
-  , allowNonSigned ? false
-  , disablePocket ? false
-  , disableTelemetry ? true
-  , disableDrmPlugin ? false
-  , showPunycodeUrls ? true
-  , enableUserchromeCSS ? false
-  , disableFirefoxStudies ? true
-  , disableFirefoxSync ? false
-  , disableFirefoxUpdatePage ? true
-  , useSystemCertificates ? true
-  , dontCheckDefaultBrowser ? false
-  # For more information about anti tracking (german website)
-  # vist https://wiki.kairaven.de/open/app/firefox
-  , activateAntiTracking ? true
-  , disableFeedbackCommands ? true
-  , disableDNSOverHTTPS ? true
-  , disableGoogleSafebrowsing ? true
-  , clearDataOnShutdown ? false
-  , homepage ? "about:home"
-  , enableDarkDevTools ? false
-  # For more information about policies visit
-  # https://github.com/mozilla/policy-templates#enterprisepoliciesenabled
-  , extraPolicies ? {}
-  }:
+    ## Following options are needed for extra prefs & policies
+    , extraPrefs ? ""
+    , extraPolicies ? {}
+    , firefoxLibName ? "firefox"
+    , extraExtensions ? [ ]
+    }:
 
-    assert gdkWayland -> (browser ? gtk3); # Can only use the wayland backend if gtk3 is being used
+  assert gdkWayland -> (browser ? gtk3); # Can only use the wayland backend if gtk3 is being used
 
     let
-      # If extraExtensions has been set disable manual extensions
-     disableManualExtensions = if lib.count (x: true) extraExtensions > 0 then true else false;
+      enableAdobeFlash = cfg.enableAdobeFlash or false;
+      ffmpegSupport = browser.ffmpegSupport or false;
+      gssSupport = browser.gssSupport or false;
 
-     enableAdobeFlash = cfg.enableAdobeFlash or false;
-     ffmpegSupport = browser.ffmpegSupport or false;
-     gssSupport = browser.gssSupport or false;
-
-     plugins =
+      plugins =
         let
           removed = lib.filter (a: builtins.hasAttr a cfg) [
             "enableVLC"
@@ -107,12 +81,45 @@ let
             ++ lib.optional (config.pulseaudio or true) libpulseaudio;
       gtk_modules = [ libcanberra-gtk2 ];
 
+      #########################
+      #                       #
+      #   EXTRA PREF CHANGES  #
+      #                       #
+      #########################
+      policiesJson = builtins.toFile "policies.json"
+        (builtins.toJSON enterprisePolicies);
+
+      extensions = builtins.map (a:
+        if ! (builtins.hasAttr "name" a) || ! (builtins.isString a.name) then
+          throw "Firefox addon needs a name attribute"
+        # else if ! (builtins.hasAttr "extid" a) || ! (builtins.isString a.extid) then
+        #   throw "Addon ${a.pname} needs a string attribute 'extid'"
+        else if ! (builtins.hasAttr "url" a) || ! (builtins.isString a.url) then
+          throw "Addon ${a.pname} needs an url"
+        else if ! (builtins.hasAttr "sha256" a) || ! (builtins.isString a.sha256) then
+          throw "Addon ${a.pname} needs an sha256 checksum"
+        else stdenv.mkDerivation rec {
+          pname = a.name;
+          version = "1.24.2";
+          src = fetchurl {
+            url = a.url;
+            sha256 = a.sha256;
+          };
+
+          phases = [ "installPhase" ];
+          installPhase = ''
+            install -D ${src} "$out/${a.extid}.xpi"
+            '';
+        }
+      ) extraExtensions;
 
       enterprisePolicies =
       {
         policies = {
-          DisableAppUpdate = true;
-        } // lib.optionalAttrs disableManualExtensions (
+          DisableAppUpdate = false;
+          DisablePocket = true;
+          DisableFirefoxAccounts = true;
+        } //
         {
           ExtensionSettings = {
             "*" = {
@@ -127,243 +134,26 @@ let
                 };
               }
             ) {} extraExtensions;
-          }
-      ) // lib.optionalAttrs noNewProfileOnFFUpdate (
-        {
-          LegacyProfiles = true;
         }
-      ) // lib.optionalAttrs disableFirefoxUpdatePage (
-        {
-          OverridePostUpdatePage = "";
-        }
-      ) // lib.optionalAttrs disablePocket (
-        {
-          DisablePocket = true;
-        }
-      ) // lib.optionalAttrs disableTelemetry (
-        {
-          DisableTelemetry = true;
-        }
-      ) // lib.optionalAttrs disableFirefoxStudies (
-        {
-          DisableFirefoxStudies = true;
-        }
-      ) // lib.optionalAttrs disableFirefoxSync (
-        {
-          DisableFirefoxAccounts = true;
-        }
-      ) // lib.optionalAttrs useSystemCertificates (
-        {
-          # Disable useless firefox certificate store
-          Certificates = {
-            ImportEnterpriseRoots = true;
-          };
-        }
-      ) // lib.optionalAttrs (
-        if lib.count (x: true) extraExtensions > 0 then true else false) (
-        {
-          # Don't try to update nix installed addons
-          DisableSystemAddonUpdate = true;
-
-          # But update manually installed addons
-          ExtensionUpdate = false;
-        }
-      ) // lib.optionalAttrs dontCheckDefaultBrowser (
-        {
-          DontCheckDefaultBrowser = true;
-        }
-      )// lib.optionalAttrs disableDNSOverHTTPS (
-        {
-          DNSOverHTTPS = {
-            Enabled = false;
-          };
-        }
-      ) // lib.optionalAttrs clearDataOnShutdown (
-        {
-          SanitizeOnShutdown = true;
-        }
-      ) // lib.optionalAttrs disableFeedbackCommands (
-        {
-          DisableFeedbackCommands = true;
-        }
-      ) // lib.optionalAttrs ( if homepage == "" then false else true) (
-        {
-          Homepage = {
-            URL = homepage;
-            Locked = true;
-          };
-        }
-      ) // extraPolicies ;} ;
-
-
-      extensions = builtins.map (a:
-        if ! (builtins.hasAttr "signed" a) || ! (builtins.isBool a.signed) then
-          throw "Addon ${a.pname} needs boolean attribute 'signed' "
-        else if ! (builtins.hasAttr "extid" a) || ! (builtins.isString a.extid) then
-          throw "Addon ${a.pname} needs a string attribute 'extid'"
-        else if a.signed == false && !allowNonSigned then
-          throw "Disable signature checking in firefox if you want ${a.pname} addon"
-        else  a
-      ) extraExtensions;
-
-      policiesJson = builtins.toFile "policies.json"
-        (builtins.toJSON enterprisePolicies);
+        // extraPolicies;
+      };
 
       mozillaCfg = builtins.toFile "mozilla.cfg" ''
-// First line must be a comment
-
-        // Remove default top sites
-        lockPref("browser.newtabpage.pinned", "");
-        lockPref("browser.newtabpage.activity-stream.default.sites", "");
-
-        // Deactivate first run homepage
-        lockPref("browser.startup.firstrunSkipsHomepage", false);
-
-        // Disable welcome popup (does not work)
-        lockPref("trailhead.firstrun.didSeeAboutWelcome", true);
-        lockPref("startup.homepage_welcome_url", "about:home");
-
-        // If true, don't show the privacy policy tab on first run
-        lockPref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);
-
-        // Disable copy and paste event
-        lockPref("dom.event.clipboardevents.enabled", true);
-
-        // Show more ssl cert infos
-        lockPref("security.identityblock.show_extended_validation", true);
-
-        // More secure hsts
-        lockPref("security.cert_pinning.enforcement_level", 2);
-        ${
-          if enableUserchromeCSS == true then
-          ''
-            lockPref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-          ''
-          else
-          ""
-        }
-
-        ${
-          if enableDarkDevTools == true then
-          ''
-            //TODO: activeThemeID does not work. Enterprise Policies seem to
-            // have an option for that
-            // lockPref("extensions.activeThemeID","firefox-compact-dark@mozilla.org");
-            lockPref("devtools.theme","dark");
-          ''
-          else
-            ""
-        }
-
-        ${
-          if allowNonSigned == true then
-          ''
-            lockPref("xpinstall.signatures.required", false);
-          ''
-          else
-            ""
-        }
-
-       ${
-        if showPunycodeUrls == true then
-          ''
-            lockPref("network.IDN_show_punycode", true);
-          ''
-          else
-            ""
-        }
-
-        ${
-          if disableManualExtensions == true then
-          ''
-            lockPref("extensions.getAddons.showPane", false);
-            lockPref("extensions.htmlaboutaddons.recommendations.enabled", false);
-            lockPref("app.update.auto", false);
-            ''
-          else
-            ""
-        }
-
-        ${
-          if disableDrmPlugin == true then
-          ''
-            lockPref("media.gmp-gmpopenh264.enabled", false);
-            lockPref("media.gmp-widevinecdm.enabled", false);
-            ''
-          else
-            ""
-        }
-
-        ${
-          if activateAntiTracking == true then
-            ''
-              // Tracking
-              lockPref("beacon.enabled", false);
-              lockPref("browser.send_pings", false);
-              lockPref("browser.send_pings.require_same_host", true);
-              lockPref("network.dns.disablePrefetch", true);
-              lockPref("browser.contentblocking.trackingprotection.control-center.ui.enabled", false);
-              lockPref("browser.search.geoip.url", "");
-              lockPref("privacy.firstparty.isolate",  true);
-              lockPref("privacy.userContext.enabled", true);
-              lockPref("privacy.userContext.ui.enabled", true);
-              lockPref("privacy.firstparty.isolate.restrict_opener_access", false);
-              lockPref("network.http.referer.XOriginPolicy", 1);
-              lockPref("network.http.referer.hideOnionSource", true);
-              lockPref(" privacy.spoof_english", false);
-
-              //lockPref("browser.display.use_document_fonts", 0);
-              lockPref("font.blacklist.underline_offset", "");
-              lockPref("gfx.downloadable_fonts.enabled", true);
-
-              // This option is currently not usable because of bug:
-              // https://bugzilla.mozilla.org/show_bug.cgi?id=1557620
-              // lockPref("privacy.resistFingerprinting", true);
-            ''
-            else ""
-        }
-        ${
-          if disableTelemetry == true then
-            ''
-              // Telemetry
-              lockPref("browser.newtabpage.activity-stream.feeds.telemetry", false);
-              lockPref("browser.ping-centre.telemetry", false);
-              lockPref("devtools.onboarding.telemetry.logged", false);
-              lockPref("toolkit.telemetry.archive.enabled", false);
-              lockPref("toolkit.telemetry.bhrPing.enabled", false);
-              lockPref("toolkit.telemetry.enabled", false);
-              lockPref("toolkit.telemetry.firstShutdownPing.enabled", false);
-              lockPref("toolkit.telemetry.hybridContent.enabled", false);
-              lockPref("toolkit.telemetry.newProfilePing.enabled", false);
-              lockPref("toolkit.telemetry.shutdownPingSender.enabled", false);
-              lockPref("toolkit.telemetry.reportingpolicy.firstRun", false);
-              lockPref("dom.push.enabled", false);
-              lockPref("browser.newtabpage.activity-stream.feeds.snippets", false);
-              lockPref("security.ssl.errorReporting.enabled", false);
-            ''
-          else ""
-        }
-
-       ${
-          if disableGoogleSafebrowsing == true then
-          ''
-            // Google data sharing
-            lockPref("browser.safebrowsing.blockedURIs.enabled", false);
-            lockPref("browser.safebrowsing.downloads.enabled", false);
-            lockPref("browser.safebrowsing.malware.enabled", false);
-            lockPref("browser.safebrowsing.passwords.enabled", false);
-            lockPref("browser.safebrowsing.provider.google4.dataSharing.enabled", false);
-            lockPref("browser.safebrowsing.malware.enabled", false);
-            lockPref("browser.safebrowsing.phishing.enabled", false);
-            lockPref("browser.safebrowsing.provider.mozilla.gethashURL", "");
-            lockPref("browser.safebrowsing.provider.mozilla.updateURL", "");
-          ''
-          else ""
-       }
-
-        // User customization
+        // First line must be a comment
+        // Disables addon signature checking
+        // to be able to install addons that do not have an extid
+        // Security is maintained because only user whitelisted addons
+        // with a checksum can be installed
+        lockPref("xpinstall.signatures.required", false);
         ${extraPrefs}
       '';
+
+      #############################
+      #                           #
+      #   END EXTRA PREF CHANGES  #
+      #                           #
+      #############################
+
     in stdenv.mkDerivation {
       inherit pname version;
 
