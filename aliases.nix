@@ -40,6 +40,28 @@ let
 
   '';
 
+  patchelf-all = pkgs.writeScriptBin "patchelf-all" ''
+    #!/usr/bin/env bash
+
+    export PATH=$PATH:${pkgs.nix}/bin:${pkgs.jq}/bin:${pkgs.coreutils}/bin:${pkgs.patchelf}/bin
+
+    DRV=$(nix-instantiate '<nixpkgs>' -A glibc --quiet --quiet --quiet)
+    GLIB=$(nix show-derivation "$DRV" | jq -r ".[\"$DRV\"].env.out")
+    INTERPRETER="$GLIB/lib/ld-linux-x86-64.so.2"
+
+    echo "Setting to interpreter $INTERPRETER"
+
+    for bin in "$@"; do
+        file "$bin" | grep -i elf &>/dev/null
+        if [ "$?" = "1"  ]; then
+            echo -e "\e[31mERROR: File $bin is not an ELF file!\e[0m"
+            exit 1
+        fi
+        echo "Patching $bin"
+        patchelf --set-interpreter "$INTERPRETER" "$bin"
+    done
+    '';
+
   where = pkgs.writeScript "where.sh" ''
     #!/bin/sh
 
@@ -171,5 +193,6 @@ in {
     disks
     screenshot
     kbd_backlight
+    patchelf-all
   ];
 }

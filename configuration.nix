@@ -163,8 +163,18 @@ environment.systemPackages = with pkgs; [
   ############################
 ];
 
+
 # Exfat support
 boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
+boot.supportedFilesystems = [ "ntfs" ];
+
+#fileSystems."/home/lhebendanz/ntfs-mnt" =
+#  { device = "/dev/sda";
+#    fsType = "ntfs";
+#    options = [ "rw" "uid=lhebendanz"];
+#  };
+
+
 # This value determines the NixOS release with which your system is to be
 # compatible, in order to avoid breaking some software such as database
 # servers. You should change this only after NixOS release notes say you

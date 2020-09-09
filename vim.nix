@@ -52,8 +52,8 @@ in {
     xxd # Show binary as hex
     nodePackages.jsonlint # json linting
     python3
-    # Excluding one linter because its buggy
     python37Packages.black
+    python37Packages.python-language-server
     pkgs.unstable.pkgs.rust-analyzer
     ccls # C/C++ language server
     clang-tools # C++ fixer

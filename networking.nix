@@ -21,6 +21,6 @@ networking.hostName = "qubasa";
 networking.extraHosts = "127.0.0.1 localhost dev.localhost";
 
 
-# networking.networkmanager.insertNameservers = [ "1.1.1.1" ];
+networking.networkmanager.insertNameservers = [ "1.1.1.1" ];
 
 }
