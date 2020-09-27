@@ -47,7 +47,6 @@ in
       ./font-config.nix
       ./tinc.nix
       ./terminal.nix
-      ./quasselclient.nix
       ./nur_packages.nix
       ./unstable.nix
       ./vim.nix
@@ -135,13 +134,16 @@ environment.systemPackages = with pkgs; [
   sqlite-interactive # Sqlite cli
   godot # Game engine
   mitmproxy # Great to debug https traffic
+  weechat
 
   # Network debugging
   traceroute
   tcpdump
   wireshark
+  netcat-gnu
 
   remmina # Remote Desktop application
+  okular
 
   # Check internet speed
   #  speedtest-cli
@@ -150,6 +152,7 @@ environment.systemPackages = with pkgs; [
   wf-recorder# Screen capturing
   ffmpeg-full # Convert video formats
 
+  mumble # Voice chat
   google-cloud-sdk
   ## Rmount dependencies
   jq # Json parsing in shell

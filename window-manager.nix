@@ -27,6 +27,11 @@ let
 
     '';
 
+  weechat-connect = pkgs.writeScriptBin "weechat-connect" ''
+    #!/bin/sh
+    kitty --class "weechat" --name "weechat" --title "weechat" sh -c "ssh weechat -t 'tmux a; bash -l'"
+  '';
+
   xresources = pkgs.writeText "Xresources" ''
     Xcursor.size: 16
     '';
@@ -102,6 +107,7 @@ in {
     wl-paste
 	waybar_renderer
     startsway
+    weechat-connect
     random_background
   ];
 
