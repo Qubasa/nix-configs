@@ -134,7 +134,6 @@ environment.systemPackages = with pkgs; [
   sqlite-interactive # Sqlite cli
   godot # Game engine
   mitmproxy # Great to debug https traffic
-  weechat
 
   # Network debugging
   traceroute
