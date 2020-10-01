@@ -20,7 +20,7 @@ networking.hostName = "qubasa";
 # Needed for same origin policy in web dev & debugging
 networking.extraHosts = "127.0.0.1 localhost dev.localhost";
 
-networking.networkmanager.dns = "unbound";
-networking.networkmanager.insertNameservers = [ "95.217.152.95" ];
+networking.networkmanager.dns = "systemd-resolved";
+networking.networkmanager.insertNameservers = [ "95.216.223.74" ];
 
 }

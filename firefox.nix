@@ -16,6 +16,11 @@ let
         url = "https://addons.mozilla.org/firefox/downloads/file/3574076/https_everywhere-2020.5.20-an+fx.xpi?src=search";
         sha256 = "10wjimk9wrdfja6f73pppm7pmb1jl838p7siwh4vzlw1sjszr57c";
       }
+      {
+        name = "certificate-pinner";
+        url = "https://addons.mozilla.org/firefox/downloads/file/3599612/certificate_pinner-0.17.10-an+fx.xpi";
+        sha256 = "15qyjqca252pf28vv636fwya28pj3nnbywpkpm6cwmj1m64pmdsl";
+      }
     ];
 
     extraPolicies = {

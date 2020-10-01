@@ -158,7 +158,7 @@ in {
     img = "imv";
     logout = "kill -9 -1";
     pdf = "evince";
-    e = "nvim";
+    vim = "nvim";
 
 
     # Search aliases
