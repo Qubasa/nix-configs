@@ -39,17 +39,8 @@ in {
   # Enable closed source firmware
   hardware.enableRedistributableFirmware = true;
 
-  # Fixing IPv6 bug
-  networking.networkmanager.dispatcherScripts = [{
-    source = pkgs.writeText "upHook" ''
-      if [ "$2" != "up" ]; then
-        logger "exit: event $2 != up"
-        exit
-      fi
-      echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
-    '';
-    type = "basic";
-  }];
+  # Disable IPv6
+  boot.kernelParams = ["ipv6.disable=1"];
 
   # Enable nested virtualisation
   boot.extraModprobeConfig = "options kvm_amd nested=1";

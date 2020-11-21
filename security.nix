@@ -8,7 +8,6 @@ with lib;
   # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/profiles/hardened.nix
   imports = [
     <nixpkgs/nixos/modules/profiles/hardened.nix>
-    ./modules/apparmor.nix
   ];
   disabledModules = [ "security/apparmor.nix"  ];
 

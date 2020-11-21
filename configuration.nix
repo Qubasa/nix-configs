@@ -50,6 +50,7 @@ in
       ./nur_packages.nix
       ./unstable.nix
       ./vim.nix
+      ./gdb.nix
 ];
 ####################
 #                  #
@@ -117,7 +118,7 @@ environment.systemPackages = with pkgs; [
   thunderbird
   # close it with strg+a & strg+q
   dos2unix # Convert win newlines to unix ones
-  gdb # elf debugging
+  rr # reverse execute and debug elfs
   moc # cli music streaming
   grim # Wayland screenshot tool
   ncdu # Disk usage
@@ -134,6 +135,7 @@ environment.systemPackages = with pkgs; [
   sqlite-interactive # Sqlite cli
   godot # Game engine
   mitmproxy # Great to debug https traffic
+  picocom
 
   # Network debugging
   traceroute
@@ -147,6 +149,7 @@ environment.systemPackages = with pkgs; [
   # Check internet speed
   #  speedtest-cli
 
+  pkgs.unstable.pkgs.openjdk14
   # Media
   wf-recorder# Screen capturing
   ffmpeg-full # Convert video formats
@@ -170,11 +173,8 @@ environment.systemPackages = with pkgs; [
 boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
 boot.supportedFilesystems = [ "ntfs" ];
 
-#fileSystems."/home/lhebendanz/ntfs-mnt" =
-#  { device = "/dev/sda";
-#    fsType = "ntfs";
-#    options = [ "rw" "uid=lhebendanz"];
-#  };
+
+services.udev.extraRules = lib.readFile ./99-jlink.rules;
 
 
 # This value determines the NixOS release with which your system is to be

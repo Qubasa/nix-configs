@@ -1,7 +1,7 @@
 {pkgs, ...}:
 
 
-let 
+let
   myUnstable = import <nixos-unstable>{};
 
 in {
@@ -51,9 +51,14 @@ in {
     unzip # To vim into unzipped files
     xxd # Show binary as hex
     nodePackages.jsonlint # json linting
-    python3
-    python37Packages.black
-    python37Packages.python-language-server
+    (python3.withPackages (pypkgs: with pkgs.python37Packages; [
+      black
+      # requests
+      python-language-server
+      # capstone how to fix gef?
+      # ropper
+      # unicorn
+    ]))
     pkgs.unstable.pkgs.rust-analyzer
     ccls # C/C++ language server
     clang-tools # C++ fixer

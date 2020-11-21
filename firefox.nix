@@ -52,6 +52,7 @@ environment.variables = {
 };
 
 environment.systemPackages = with pkgs; [
+  # firefox
   hardenedFirefox
 ];
 
