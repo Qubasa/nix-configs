@@ -96,37 +96,10 @@ let
         (builtins.toJSON enterprisePolicies);
 
       extensions = builtins.map (a:
-        if ! (builtins.hasAttr "name" a) || ! (builtins.isString a.name) then
-          throw "Firefox addon needs a name attribute"
-        else if ! (builtins.hasAttr "url" a) || ! (builtins.isString a.url) then
-          throw "Addon ${a.pname} needs an url"
-        else if ! (builtins.hasAttr "sha256" a) || ! (builtins.isString a.sha256) then
-          throw "Addon ${a.pname} needs an sha256 checksum"
-        else stdenv.mkDerivation rec {
-          pname = a.name;
-          version = "1.0";
-          src = fetchurl {
-            url = a.url;
-            sha256 = a.sha256;
-          };
-
-          phases = [ "buildPhase" ];
-
-          extid = "${a.sha256}@${a.name}";
-
-          buildInputs = [ zip unzip jq ];
-
-          buildPhase = ''
-            UUID="${extid}"
-            mkdir -p "$out/$UUID"
-            unzip -q ${src} -d "$out/$UUID"
-            NEW_MANIFEST=$(jq '. + {"applications": { "gecko": { "id": "${extid}" }}, "browser_specific_settings":{"gecko":{"id": "${extid}"}}}' "$out/$UUID/manifest.json")
-            echo "$NEW_MANIFEST" > "$out/$UUID/manifest.json"
-            cd "$out/$UUID"
-            zip -r -q -FS "$out/$UUID.xpi" *
-            rm -r "$out/$UUID"
-            '';
-              }
+        if ! (builtins.hasAttr "extid" a) then
+        throw "extraExtensions has an invalid entry. Missing extid attribute. Please use fetchfirefoxaddon"
+        else
+        a
       ) extraExtensions;
 
       enterprisePolicies =
@@ -134,7 +107,7 @@ let
         policies = {
           DisableAppUpdate = true;
         } //
-        {
+        lib.optionalAttrs (builtins.length extensions > 0) {
           ExtensionSettings = {
             "*" = {
                 blocked_install_message = "You can't have manual extension mixed with nix extensions";

@@ -6,18 +6,18 @@ with lib;
   # Import hardening profile here
   # override some changes down below
   # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/profiles/hardened.nix
-  imports = [
-    <nixpkgs/nixos/modules/profiles/hardened.nix>
-  ];
-  disabledModules = [ "security/apparmor.nix"  ];
+  # imports = [
+  #   <nixpkgs/nixos/modules/profiles/hardened.nix>
+  # ];
+  # disabledModules = [ "security/apparmor.nix"  ];
 
-  security.apparmor = {
-   enable = false;
-   profiles = [
-    ./resources/apparmor/firefox.armor
-    ./resources/apparmor/plugin-container.armor
-   ];
-   };
+  # security.apparmor = {
+  #  enable = false;
+  #  profiles = [
+  #   ./resources/apparmor/firefox.armor
+  #   ./resources/apparmor/plugin-container.armor
+  #  ];
+  #  };
 
   # This is done so that we can store our apparmor profiles in
   # resources but we can still use aa-logprof to automatically
@@ -33,17 +33,17 @@ with lib;
   #   cp -r /etc/apparmor.d/tunables /etc/nixos/resources/apparmor/
   # '';
 
-  # Disable this if you have problems with
-  # drivers that do not load
-  security.lockKernelModules = false;
+  # # Disable this if you have problems with
+  # # drivers that do not load
+  # security.lockKernelModules = false;
 
-  # if disabled you loose 30% of cpu power
-  security.allowSimultaneousMultithreading = true;
+  # # if disabled you loose 30% of cpu power
+  # security.allowSimultaneousMultithreading = true;
 
-  # Clearing cache makes your cpu veery slow
-  security.virtualisation.flushL1DataCache = "never";
+  # # Clearing cache makes your cpu veery slow
+  # security.virtualisation.flushL1DataCache = "never";
 
-  security.allowUserNamespaces = true;
+  # security.allowUserNamespaces = true;
 
   # Auto upgrade
   system.autoUpgrade.enable = true;

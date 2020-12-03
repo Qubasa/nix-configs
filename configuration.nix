@@ -6,14 +6,6 @@
 
 let
 
-myMpv = pkgs.mpv.override {
-    waylandSupport = true;
-    x11Support = false;
-    xineramaSupport = false;
-    xvSupport = false;
-    vulkanSupport = true;
-  };
-
 in
   {
     imports = [
@@ -128,7 +120,7 @@ environment.systemPackages = with pkgs; [
   rmount # Remote mount utility
   nixos-generators # Generate nixos images
   patchelf
-  myMpv # Wayland compatbile mpv
+  mpv # Wayland compatbile mpv
   imv # Wayland compatible image viewer
   evince # pdf reader
   pavucontrol # audio device switcher per programm!
