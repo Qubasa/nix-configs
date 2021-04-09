@@ -30,7 +30,6 @@ in
       ./general.nix
       ./pass.nix
       ./restic.nix
-      ./hackedswitch.nix
       ./home-vpn.nix
       ./git.nix
       ./htop.nix
@@ -58,7 +57,7 @@ gitEmail = "luis.nixos@gmail.com";
 gitUser = "Luis Hebendanz";
 
 
-programs.wireshark.enable = true;
+# programs.wireshark.enable = true;
 
 environment.systemPackages = with pkgs; [
 
@@ -78,7 +77,7 @@ environment.systemPackages = with pkgs; [
   curl
   pwgen # generates passwords
   file
-  nix-prefetch # Sha256sum a link for nixos
+  pkgs.unstable.pkgs.nix-prefetch # Sha256sum a link for nixos
   ldns  # DNS tool
   alsaUtils # Console volume settings with alsamixer
   p7zip # Console archive tool
@@ -86,8 +85,7 @@ environment.systemPackages = with pkgs; [
   fzf # fuzzy finder
   binutils # Binary inspection
   radare2 # Binary reversing
-  unstable.radare2-cutter # QT GUI for radare2
-  ghidra-bin
+  unstable.pkgs.ghidra-bin
   nmap # Network discovery
   calc # Simple calculator
   chromium
@@ -98,10 +96,9 @@ environment.systemPackages = with pkgs; [
   gnupg # Email encryption
   nix-index # apt-file equivalent
   ansible
-  docker-compose
-  discord # Centralized chat platform
   cargo-watch # Rust on demand recompile
-  pkgs.unstable.pkgs.insomnia # REST API client
+  # jetbrains.idea-community # gui code editor
+  # pkgs.unstable.pkgs.insomnia # REST API client
   powertop # A power management tool
   libreoffice # Opening docs
   gimp # Editing pictures
@@ -114,6 +111,7 @@ environment.systemPackages = with pkgs; [
   moc # cli music streaming
   grim # Wayland screenshot tool
   ncdu # Disk usage
+  niv # NixOS project creator
   taskwarrior # Task list
   veracrypt # Disk encryption tool
   valgrind # c checker tool
@@ -126,28 +124,30 @@ environment.systemPackages = with pkgs; [
   pavucontrol # audio device switcher per programm!
   sqlite-interactive # Sqlite cli
   godot # Game engine
-  mitmproxy # Great to debug https traffic
-  picocom
+  # mitmproxy # Great to debug https traffic
+  picocom # good uart reader
+
+  heimdall # Open source android flashing tool
+  smartmontools # ssd health check
+  signal-desktop
 
   # Network debugging
   traceroute
   tcpdump
-  wireshark
+  # wireshark
   netcat-gnu
 
   remmina # Remote Desktop application
-  okular
+  okular # Pdf reader with bookmarks
 
   # Check internet speed
   #  speedtest-cli
 
-  pkgs.unstable.pkgs.openjdk14
   # Media
   wf-recorder# Screen capturing
   ffmpeg-full # Convert video formats
 
   mumble # Voice chat
-  google-cloud-sdk
   ## Rmount dependencies
   jq # Json parsing in shell
   cifs-utils # Samba mount
@@ -165,8 +165,6 @@ environment.systemPackages = with pkgs; [
 boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
 boot.supportedFilesystems = [ "ntfs" ];
 
-
-services.udev.extraRules = lib.readFile ./99-jlink.rules;
 
 
 # This value determines the NixOS release with which your system is to be

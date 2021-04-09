@@ -131,8 +131,9 @@ let
     fi
 
     pkill swaybar
-    wf-recorder -f "$@"
+    wf-recorder -a -f "$@"
     swaymsg reload
+    systemctl --user restart kanshi.service
   '';
 
 in {

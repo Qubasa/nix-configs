@@ -101,6 +101,9 @@ in {
     };
   };
 
+  # Needed for screen sharing over browser to work
+  services.pipewire.enable = true;
+
   environment.systemPackages = with pkgs; [
     pkgs.unstable.wofi     # Dmenu replacement
     wl-copy

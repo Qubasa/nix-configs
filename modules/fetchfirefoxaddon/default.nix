@@ -14,7 +14,7 @@ in
 stdenv.mkDerivation rec {
 
   inherit name;
-  extid = "${src.outputHash}@${name}";
+  extid = "12345@${name}";
   passthru = {
     exitd=extid;
   };

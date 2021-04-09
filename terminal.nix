@@ -20,8 +20,6 @@ handle_result.no_ui = True
 
 default_session = pkgs.writeText "default_session" ''
 
-launch fish
-
 '';
 
 # terminal.sexy tartan color scheme
@@ -49,7 +47,10 @@ touch_scroll_multiplier 4.0
 
 copy_on_select yes
 draw_minimal_borders no
-repaint_delay 0
+repaint_delay 10
+input_delay 3
+resize_draw_strategy static
+sync_to_monitor yes
 window_padding_width 0.1
 inactive_text_alpha 0.8
 

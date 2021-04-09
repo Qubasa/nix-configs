@@ -40,7 +40,7 @@ in {
   hardware.enableRedistributableFirmware = true;
 
   # Disable IPv6
-  boot.kernelParams = ["ipv6.disable=1"];
+  # boot.kernelParams = ["ipv6.disable=1"];
 
   # Enable nested virtualisation
   boot.extraModprobeConfig = "options kvm_amd nested=1";

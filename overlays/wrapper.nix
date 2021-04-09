@@ -1,17 +1,17 @@
-{ stdenv, lib, makeDesktopItem, makeWrapper, lndir, config,
-
-replace, fetchurl, zip, unzip, jq
+{ stdenv, lib, makeDesktopItem, makeWrapper, lndir, config
+, replace, fetchurl, zip, unzip, jq, xdg_utils, writeText
 
 ## various stuff that can be plugged in
 , flashplayer, hal-flash
-, ffmpeg, xorg, libpulseaudio, libcanberra-gtk2, libglvnd
+, ffmpeg, xorg, alsaLib, libpulseaudio, libcanberra-gtk2, libglvnd
 , gnome3/*.gnome-shell*/
-, browserpass, chrome-gnome-shell, uget-integrator, plasma-browser-integration, bukubrow
+, browserpass, chrome-gnome-shell, uget-integrator, plasma5, bukubrow
 , tridactyl-native
 , fx_cast_bridge
 , udev
 , kerberos
 , libva
+, mesa # firefox wants gbm for drm+dmabuf
 }:
 
 ## configurability of the wrapper itself
@@ -28,26 +28,29 @@ let
     , nameSuffix ? ""
     , icon ? browserName
     , extraNativeMessagingHosts ? []
-    , gdkWayland ? false
+    , pkcs11Modules ? []
+    , forceWayland ? false
+    , useGlvnd ? true
     , cfg ? config.${browserName} or {}
 
     ## Following options are needed for extra prefs & policies
     # For more information about anti tracking (german website)
-    # vist https://wiki.kairaven.de/open/app/firefo
+    # visit https://wiki.kairaven.de/open/app/firefox
     , extraPrefs ? ""
     # For more information about policies visit
     # https://github.com/mozilla/policy-templates#enterprisepoliciesenabled
     , extraPolicies ? {}
     , firefoxLibName ? "firefox" # Important for tor package or the like
-    , extraExtensions ? [ ]
+    , nixExtensions ? null
     }:
 
-    assert gdkWayland -> (browser ? gtk3); # Can only use the wayland backend if gtk3 is being used
+    assert forceWayland -> (browser ? gtk3); # Can only use the wayland backend if gtk3 is being used
 
     let
       enableAdobeFlash = cfg.enableAdobeFlash or false;
       ffmpegSupport = browser.ffmpegSupport or false;
       gssSupport = browser.gssSupport or false;
+      alsaSupport = browser.alsaSupport or false;
 
       plugins =
         let
@@ -73,18 +76,20 @@ let
           ++ lib.optional (cfg.enableTridactylNative or false) tridactyl-native
           ++ lib.optional (cfg.enableGnomeExtensions or false) chrome-gnome-shell
           ++ lib.optional (cfg.enableUgetIntegrator or false) uget-integrator
-          ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma-browser-integration
+          ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma5.plasma-browser-integration
           ++ lib.optional (cfg.enableFXCastBridge or false) fx_cast_bridge
           ++ extraNativeMessagingHosts
         );
-      libs =   lib.optionals stdenv.isLinux [ udev libva ]
+      libs =   lib.optionals stdenv.isLinux [ udev libva mesa ]
             ++ lib.optional ffmpegSupport ffmpeg
             ++ lib.optional gssSupport kerberos
-            ++ lib.optional gdkWayland libglvnd
+            ++ lib.optional useGlvnd libglvnd
             ++ lib.optionals (cfg.enableQuakeLive or false)
             (with xorg; [ stdenv.cc libX11 libXxf86dga libXxf86vm libXext libXt alsaLib zlib ])
             ++ lib.optional (enableAdobeFlash && (cfg.enableAdobeFlashDRM or false)) hal-flash
-            ++ lib.optional (config.pulseaudio or true) libpulseaudio;
+            ++ lib.optional (config.pulseaudio or true) libpulseaudio
+            ++ lib.optional alsaSupport alsaLib
+            ++ pkcs11Modules;
       gtk_modules = [ libcanberra-gtk2 ];
 
       #########################
@@ -92,22 +97,29 @@ let
       #   EXTRA PREF CHANGES  #
       #                       #
       #########################
-      policiesJson = builtins.toFile "policies.json"
-        (builtins.toJSON enterprisePolicies);
+      policiesJson = writeText "policies.json" (builtins.toJSON enterprisePolicies);
 
-      extensions = builtins.map (a:
+      usesNixExtensions = nixExtensions != null;
+
+      nameArray = builtins.map(a: a.name) (if usesNixExtensions then nixExtensions else []);
+
+      # Check that every extension has a unqiue .name attribute
+      # and an extid attribute
+      extensions = if nameArray != (lib.unique nameArray) then
+        throw "Firefox addon name needs to be unique"
+      else builtins.map (a:
         if ! (builtins.hasAttr "extid" a) then
-        throw "extraExtensions has an invalid entry. Missing extid attribute. Please use fetchfirefoxaddon"
+        throw "nixExtensions has an invalid entry. Missing extid attribute. Please use fetchfirefoxaddon"
         else
         a
-      ) extraExtensions;
+      ) (if usesNixExtensions then nixExtensions else []);
 
       enterprisePolicies =
       {
-        policies = {
+        policies = lib.optionalAttrs usesNixExtensions  {
           DisableAppUpdate = true;
         } //
-        lib.optionalAttrs (builtins.length extensions > 0) {
+        lib.optionalAttrs usesNixExtensions {
           ExtensionSettings = {
             "*" = {
                 blocked_install_message = "You can't have manual extension mixed with nix extensions";
@@ -121,18 +133,25 @@ let
                 };
               }
             ) {} extensions;
-        }
+          } //
+          {
+            Extensions = {
+              Install = lib.foldr (e: ret:
+                ret ++ [ "${e.outPath}/${e.extid}.xpi" ]
+                ) [] extensions;
+            };
+          }
         // extraPolicies;
       };
 
-      mozillaCfg = builtins.toFile "mozilla.cfg" ''
-// First line must be a comment
+      mozillaCfg =  writeText "mozilla.cfg" ''
+        // First line must be a comment
 
         // Disables addon signature checking
         // to be able to install addons that do not have an extid
         // Security is maintained because only user whitelisted addons
         // with a checksum can be installed
-        lockPref("xpinstall.signatures.required", false);
+        ${ lib.optionalString usesNixExtensions ''lockPref("xpinstall.signatures.required", false)'' };
         ${extraPrefs}
       '';
 
@@ -150,7 +169,7 @@ let
         exec = "${browserName}${nameSuffix} %U";
         inherit icon;
         comment = "";
-        desktopName = "${desktopName}${nameSuffix}${lib.optionalString gdkWayland " (Wayland)"}";
+        desktopName = "${desktopName}${nameSuffix}${lib.optionalString forceWayland " (Wayland)"}";
         genericName = "Web Browser";
         categories = "Network;WebBrowser;";
         mimeType = stdenv.lib.concatStringsSep ";" [
@@ -244,6 +263,7 @@ let
             --suffix LD_LIBRARY_PATH ':' "$libs" \
             --suffix-each GTK_PATH ':' "$gtk_modules" \
             --suffix-each LD_PRELOAD ':' "$(cat $(filterExisting $(addSuffix /extra-ld-preload $plugins)))" \
+            --prefix PATH ':' "${xdg_utils}/bin" \
             --prefix-contents PATH ':' "$(filterExisting $(addSuffix /extra-bin-path $plugins))" \
             --suffix PATH ':' "$out${browser.execdir or "/bin"}" \
             --set MOZ_APP_LAUNCHER "${browserName}${nameSuffix}" \
@@ -251,8 +271,8 @@ let
             --set SNAP_NAME "firefox" \
             --set MOZ_LEGACY_PROFILES 1 \
             --set MOZ_ALLOW_DOWNGRADE 1 \
-            ${lib.optionalString gdkWayland ''
-              --set GDK_BACKEND "wayland" \
+            ${lib.optionalString forceWayland ''
+              --set MOZ_ENABLE_WAYLAND "1" \
             ''}${lib.optionalString (browser ? gtk3)
                 ''--prefix XDG_DATA_DIRS : "$GSETTINGS_SCHEMAS_PATH" \
                   --suffix XDG_DATA_DIRS : '${gnome3.adwaita-icon-theme}/share'
@@ -284,6 +304,11 @@ let
             ln -sLt $out/lib/mozilla/native-messaging-hosts $ext/lib/mozilla/native-messaging-hosts/*
         done
 
+        mkdir -p $out/lib/mozilla/pkcs11-modules
+        for ext in ${toString pkcs11Modules}; do
+            ln -sLt $out/lib/mozilla/pkcs11-modules $ext/lib/mozilla/pkcs11-modules/*
+        done
+
         # For manpages, in case the program supplies them
         mkdir -p $out/nix-support
         echo ${browser} > $out/nix-support/propagated-user-env-packages
@@ -307,18 +332,13 @@ let
         # preparing for autoconfig
         mkdir -p "$out/lib/${firefoxLibName}/defaults/pref"
 
-        cat > "$out/lib/${firefoxLibName}/defaults/pref/autoconfig.js" <<EOF
-          pref("general.config.filename", "mozilla.cfg");
-          pref("general.config.obscure_value", 0);
-        EOF
+        echo 'pref("general.config.filename", "mozilla.cfg");' > "$out/lib/${firefoxLibName}/defaults/pref/autoconfig.js"
+        echo 'pref("general.config.obscure_value", 0);' >> "$out/lib/${firefoxLibName}/defaults/pref/autoconfig.js"
 
         cat > "$out/lib/${firefoxLibName}/mozilla.cfg" < ${mozillaCfg}
 
         mkdir -p $out/lib/${firefoxLibName}/distribution/extensions
 
-        for i in ${toString extensions}; do
-          ln -s -t $out/lib/${firefoxLibName}/distribution/extensions $i/*
-        done
         #############################
         #                           #
         #   END EXTRA PREF CHANGES  #

@@ -12,6 +12,13 @@ services.printing.drivers = [
 # Activate audio output
 hardware.pulseaudio.enable = true;
 
+
+# Android ADB
+programs.adb.enable = true;
+services.udev.packages = [
+  pkgs.android-udev-rules
+];
+
 # Select internationalisation properties.
 console.keyMap = "de";
 console.font = "Monospace";

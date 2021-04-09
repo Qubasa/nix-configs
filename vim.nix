@@ -11,7 +11,7 @@ in {
   };
 
   nixpkgs.config.packageOverrides = pkgs: with pkgs;{
-    myNeovim = pkgs.neovim.override
+    myNeovim = myUnstable.neovim.override
     {
       configure = {
         customRC = builtins.readFile ./resources/vimrc.conf;
@@ -59,11 +59,8 @@ in {
       # ropper
       # unicorn
     ]))
-    pkgs.unstable.pkgs.rust-analyzer
     ccls # C/C++ language server
     clang-tools # C++ fixer
-    # cargo # rust dependencie management
-    # rustfmt # rust formatter
     nodePackages.prettier # Typescript formatter
     cscope # Interactive c code browser for huge codebases
   ];

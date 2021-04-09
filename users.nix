@@ -7,7 +7,7 @@
     initialPassword = name;
     isNormalUser = true;
     uid = 1000;
-    extraGroups = ["wheel" "networkmanager" "video" "audio" "input" "wireshark" "dialout" "disk"];
+    extraGroups = ["adbuser" "wheel" "networkmanager" "video" "audio" "input" "wireshark" "dialout" "disk"];
   };
 
   users.users.firefox = {
