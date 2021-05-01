@@ -61,6 +61,7 @@ in {
     ]))
     ccls # C/C++ language server
     clang-tools # C++ fixer
+    uncrustify
     nodePackages.prettier # Typescript formatter
     cscope # Interactive c code browser for huge codebases
   ];

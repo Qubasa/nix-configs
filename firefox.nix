@@ -1,11 +1,11 @@
 { config, pkgs, ... }:
 
 let
-  fetchfirefoxaddon=callPackage ./modules/fetchfirefoxaddon {};
-  callPackage = pkgs.lib.callPackageWith (pkgs);
-  wrapper = pkgs.callPackage ./overlays/wrapper.nix { fx_cast_bridge=pkgs.unstable.pkgs.fx_cast_bridge; };
+  fetchfirefoxaddon= callPackage ./modules/fetchfirefoxaddon {};
+  callPackage = pkgs.unstable.pkgs.lib.callPackageWith (pkgs.unstable.pkgs);
+  wrapper =  callPackage ./overlays/wrapper.nix { lndir=pkgs.xorg.lndir; };
 
-  hardenedFirefox= wrapper pkgs.firefox-unwrapped {
+  hardenedFirefox= wrapper pkgs.unstable.pkgs.firefox-unwrapped {
      nixExtensions = [
         (fetchfirefoxaddon {
           name = "ublock";
@@ -44,6 +44,9 @@ let
 
       // Enable dark dev tools
       lockPref("devtools.theme","dark");
+
+      // Disable js in PDFs
+      lockPref("pdfjs.enableScripting", false);
     '';
 
     forceWayland = true;
@@ -56,7 +59,7 @@ environment.variables = {
 };
 
 environment.systemPackages = with pkgs; [
-  # firefox
+  # pkgs.unstable.pkgs.firefox
   hardenedFirefox
 ];
 

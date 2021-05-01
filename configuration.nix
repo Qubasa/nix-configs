@@ -57,7 +57,7 @@ gitEmail = "luis.nixos@gmail.com";
 gitUser = "Luis Hebendanz";
 
 
-# programs.wireshark.enable = true;
+programs.wireshark.enable = true;
 
 environment.systemPackages = with pkgs; [
 
@@ -126,6 +126,7 @@ environment.systemPackages = with pkgs; [
   godot # Game engine
   # mitmproxy # Great to debug https traffic
   picocom # good uart reader
+  entr # Runs command if files changed
 
   heimdall # Open source android flashing tool
   smartmontools # ssd health check
@@ -134,7 +135,7 @@ environment.systemPackages = with pkgs; [
   # Network debugging
   traceroute
   tcpdump
-  # wireshark
+  wireshark
   netcat-gnu
 
   remmina # Remote Desktop application
@@ -146,6 +147,8 @@ environment.systemPackages = with pkgs; [
   # Media
   wf-recorder# Screen capturing
   ffmpeg-full # Convert video formats
+
+  burpsuite
 
   mumble # Voice chat
   ## Rmount dependencies
