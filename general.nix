@@ -10,6 +10,7 @@ services.printing.drivers = [
 
 
 # Activate audio output
+# TODO: Replace with pipewire at some point
 hardware.pulseaudio.enable = true;
 
 

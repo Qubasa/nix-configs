@@ -51,14 +51,14 @@ in {
     unzip # To vim into unzipped files
     xxd # Show binary as hex
     nodePackages.jsonlint # json linting
-    (python3.withPackages (pypkgs: with pkgs.python37Packages; [
-      black
-      # requests
-      python-language-server
-      # capstone how to fix gef?
-      # ropper
-      # unicorn
-    ]))
+    # (python3.withPackages (pypkgs: with pkgs.python37Packages; [
+    #   black
+    #   # requests
+    #   python-language-server
+    #   # capstone how to fix gef?
+    #   # ropper
+    #   # unicorn
+    # ]))
     ccls # C/C++ language server
     clang-tools # C++ fixer
     uncrustify

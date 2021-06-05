@@ -9,6 +9,7 @@ let
 in
   {
     imports = [
+      ./sway.nix
       ./own-pkgs.nix
       ./nix_test.nix
       ./hardware-configuration.nix
@@ -123,6 +124,11 @@ environment.systemPackages = with pkgs; [
   evince # pdf reader
   pavucontrol # audio device switcher per programm!
   sqlite-interactive # Sqlite cli
+  bridge-utils
+  tunctl
+  tmate
+  linuxPackages.bcc
+  docker-compose
   godot # Game engine
   # mitmproxy # Great to debug https traffic
   picocom # good uart reader

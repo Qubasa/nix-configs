@@ -12,7 +12,7 @@ networking.dhcpcd.denyInterfaces = [ "macvtap*" ];
 networking.enableIPv6 = true;
 
 # Allow incomming connections on port 1234 for netcat and sharing stuff
-networking.firewall.allowedTCPPorts = [ 1234 ];
+networking.firewall.allowedTCPPorts = [ 1234 2850 ];
 
 # Hostname
 networking.hostName = "qubasa";

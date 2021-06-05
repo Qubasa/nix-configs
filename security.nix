@@ -61,13 +61,14 @@ with lib;
   # Set sudo timeout to 30 mins
   security.sudo = {
     enable = true;
-    extraConfig = "Defaults        env_reset,timestamp_timeout=30";
+    #extraConfig = "Defaults        env_reset,timestamp_timeout=30";
+    wheelNeedsPassword = false;
   };
 
   # List of users/@groups that are allowed to connect to the Nix daemon
-  nix.allowedUsers = ["${config.mainUser}"];
+  nix.allowedUsers = ["${config.mainUser}" "jorg_test"];
 
-
+  nix.trustedUsers = [ "jorg_test" ];
   # Disabled because usbguard applet has been deprecated: https://github.com/USBGuard/usbguard/issues/334
   # Only allow specific usb devices
   # services.usbguard.enable = true;

@@ -160,7 +160,7 @@ in {
     logout = "kill -9 -1";
     pdf = "evince";
     vim = "nvim";
-
+    readelf = "readelf -W";
 
     # Search aliases
     search-file = ''${pkgs.fzf}/bin/fzf --preview="head -n $LINES {}" '';
