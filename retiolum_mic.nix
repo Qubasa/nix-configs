@@ -7,12 +7,6 @@ let
   cfg = config.networking.retiolum;
 
   retiolum = pkgs.retiolum;
-# retiolum = pkgs.fetchFromGitHub {
-#     owner = "Mic92";
-#     repo = netname;
-#     rev = "78aad0fbeae91bed4d1a0c8c4b4b121eb06ee58b";
-#     sha256 = "sha256:0idd5f7nhz9nw7ivz66jy26p4p318kvh2hb5brfil918snxardzf";
-#   };
 in {
   options = {
     networking.retiolum.ipv4 = mkOption {
@@ -81,7 +75,7 @@ in {
 
     systemd.services."tinc.${netname}" = {
       # Some hosts require VPN for nixos-rebuild, so we don't want to restart it on update
-      reloadIfChanged = true;
+      # reloadIfChanged = true;
       # also in https://github.com/NixOS/nixpkgs/pull/106715
       serviceConfig.ExecReload = "${config.services.tinc.networks.${netname}.package}/bin/tinc -n ${netname} reload";
     };

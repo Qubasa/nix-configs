@@ -15,7 +15,7 @@
     enable = true;
   };
 
-  qt5 = {
+  qt = {
     enable = true;
     platformTheme = "gnome";
     style = "adwaita-dark";
@@ -34,14 +34,12 @@
 
   # Needed for tray icon support. Enable in 'extension' gnome app
   environment.systemPackages = with pkgs.gnomeExtensions; [
-        shu-zhi
-        #forge
         appindicator
-        night-theme-switcher
         tactile
-
   ] ++ (with pkgs; [ gnome.pomodoro fortune ]) ++ (with pkgs.master.pkgs.gnomeExtensions; [
       #timepp
+      night-theme-switcher
+      shu-zhi
   ]);
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
 }

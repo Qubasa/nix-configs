@@ -20,8 +20,8 @@ let
       })
       (fetchFirefoxAddon {
         name = "ublock";
-        url = "https://addons.mozilla.org/firefox/downloads/file/4079064/ublock_origin-1.47.4.xpi";
-        sha256 = "0n3qdsba9sdn3lfk23z3gz9fghjfsyb8qr09zim62x5sb23nqnm3";
+        url = "https://addons.mozilla.org/firefox/downloads/file/4121906/ublock_origin-1.50.0.xpi";
+        sha256 = "sha256-EGGAA+cLUow/F5luNzFG055rFfd3rEyh8hTaL/23pbM=";
       })
       (fetchFirefoxAddon {
         name = "bitwarden";
@@ -30,10 +30,14 @@ let
       })
       (fetchFirefoxAddon {
         name = "bypass-paywalls-clean";
-        url = "https://addons.mozilla.org/firefox/downloads/file/3871257/bypass_paywalls_clean-2.4.5.0-an+fx.xpi";
-        sha256 = "19jvpny60j3ffd55451i04lrvxxwrygwrh75az4nss45y4l2d3dy";
+        url = "https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-3.2.0.0.xpi";
+        sha256 = "sha256-cLpL8/3+4gAc/Qs9iD90xxFJvlNbuOCILy6JdrzPsYs=";
       })
-
+      (fetchFirefoxAddon {
+        name = "activitywatcher";
+        url = "https://addons.mozilla.org/firefox/downloads/file/4114360/aw_watcher_web-0.4.8.xpi";
+        sha256 = "sha256-a+hdl1UBNSClpINcuK4qMofky5wStbr0lXqxA2jdRdI=";
+      })
 
     ];
 

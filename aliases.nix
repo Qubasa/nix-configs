@@ -3,7 +3,7 @@
 let
 
   nix-rebuild = pkgs.writeScriptBin "nix-rebuild" ''
-    sudo nixos-rebuild --fast --cores 7 switch --flake /etc/nixos --impure
+    sudo nixos-rebuild --fast --cores 7 switch --flake /etc/nixos --impure "$@"
   '';
 
   nix-delete-old = pkgs.writeScriptBin "nix-delete-old" ''
@@ -12,7 +12,7 @@ let
 
   chat = pkgs.writeScriptBin "chat" ''
     export MCOOKIE_FILE=${config.mainUserHome}/.config/edge-gpt/cookies.json
-    ${pkgs.nur.repos.mic92.edge-gpt}/bin/edge-gpt --cookie-file $MCOOKIE_FILE "$@"
+    ${pkgs.nur.repos.mic92.edge-gpt}/bin/edge-gpt --cookie-file $MCOOKIE_FILE --style creative "$@"
   '';
 
   nix-bloat = pkgs.writeScriptBin "nix-bloat" ''

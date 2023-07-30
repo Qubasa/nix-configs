@@ -19,7 +19,7 @@
     # My modified nixpkgs
     (with pkgs.luis.pkgs; [
       #uprof # AMD uprof profiler
-     # python39Packages.compdb # To get header files into compile_commands.json
+      #python39Packages.compdb # To get header files into compile_commands.json
       #vtune
     ])
     # Import packages from NUR repository
@@ -30,14 +30,16 @@
     ])
     # Import from master branch
     ++ (with pkgs.master.pkgs; [
-      zoom-us
+      signal-desktop
     ])
     # Import from unstable branch
     ++ (with pkgs.unstable.pkgs; [
       curtail # photo compression gui
-      signal-desktop
+      nixd
+
     ])
     ++ (with pkgs; [
+      zoom-us
       # bash basics
       man-pages
       posix_man_pages # Use the posix standarized manpages with `man p <keyword>`
@@ -61,7 +63,7 @@
 
       zellij # tmux alternative
       bat # Cat with syntax highlighting
-      helix # vim alternative
+
 
 
       cht-sh # cheat sheet for commands
@@ -90,7 +92,7 @@
       imagemagick
       diffoscope # Diffing tool for many file types
       #klee # symbolic execution
-    #  bear # Intercept make commands and generates compile_commands.json
+      # bear # Intercept make commands and generates compile_commands.json
       gnome.gnome-tweaks # Gnome settings
       binutils # Binary inspection
       radare2 # Binary reversing
@@ -115,8 +117,15 @@
       okular # Pdf reader with bookmarks
       pika-backup # Backup tool UI
       calibre # ebook-convert
+      helix
+
+      activitywatch
+      aw-watcher-window
+      aw-watcher-afk
+      aw-qt
 
       audacity # Audio editor
+
       thunderbird
       obs-studio # Screen recording
       texlive.combined.scheme-full # latex
@@ -134,9 +143,10 @@
       bitwarden-cli
       ffmpeg-full # Convert video formats
       vlc # video player
+      olive-editor # video editor
      # glade # gtk designer
       gnome-builder # gtk ides
-
+      pandoc # convert between formats
 
       # hardware inspections
       pciutils
@@ -144,6 +154,7 @@
       gnome-firmware # firmware updater
 
       # Network debugging
+      dropwatch # watch for dropped packets
       networkmanagerapplet
       sipcalc # Calculates network masks from interfaces
       nmap # Network discovery
@@ -154,5 +165,8 @@
       tunctl # to create tap devices
       bridge-utils # to create bridges
       ldns # DNS tool 'drill'
+
     ]);
+
+
 }

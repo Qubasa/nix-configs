@@ -13,7 +13,7 @@
     ./firefox.nix
     ./chromium.nix
     ./packages.nix
-    ./options.nix
+   ./options.nix
     ./networking.nix
     ./display.nix
     ./editor.nix
