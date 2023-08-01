@@ -15,6 +15,6 @@ in
   #services.udev.packages = [ talon ];
   environment.systemPackages = [
    # talon
-    vuescan
+   # vuescan
   ];
 }

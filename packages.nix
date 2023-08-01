@@ -161,6 +161,7 @@
       traceroute # Network discovery cli
       tcpdump # TCP packet sniffer cli
       wireshark # Packet sniffer UI
+      qtwirediff # Wireshark diff tool
       netcat-gnu # nc tool
       tunctl # to create tap devices
       bridge-utils # to create bridges
