@@ -12,9 +12,10 @@
   };
 
 
-  #networking.networkmanager.insertNameservers = [ "95.216.223.74" "2a01:4f9:c010:51cd::2" ];
+  networking.networkmanager.insertNameservers = [ "1.1.1.1" "1.1.1.2" ];
   #networking.networkmanager.insertNameservers = [ "127.0.0.1" "::" ];
 
-  networking.firewall.allowedUDPPorts = [ 1234 ];
+  networking.firewall.allowedUDPPorts = [ 1234 514 ];
+  networking.firewall.allowedTCPPorts = [ 1234 ];
 
 }

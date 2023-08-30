@@ -10,6 +10,11 @@
   networking.retiolum.ipv4 = "10.243.29.175";
   networking.retiolum.nodename = "qubasa";
 
+   programs.ssh.extraConfig = ''
+    Host *.dse.in.tum.de !login.dse.in.tum.de !sarah.dse.in.tum.de !donna.dse.in.tum.de
+      ProxyJump tunnel@login.dse.in.tum.de
+  '';
+
   systemd.services.nix-daemon.environment.SSHAUTHSOCK = "/run/user/1000/gnupg/S.gpg-agent";
   # fileSystems."/mnt/prism" = {
   #   device = "//prism.r/public";

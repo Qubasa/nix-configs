@@ -21,10 +21,10 @@
     platformTheme = "gnome";
   };
 
-  environment.variables = lib.mkForce {
-    # This will become a global environment variable
-    "QT_STYLE_OVERRIDE" = "kvantum";
-  };
+ # environment.variables = {
+ #   # This will become a global environment variable
+ #   "QT_STYLE_OVERRIDE" = lib.mkForce "kvantum";
+ # };
 
   # Fix screen tearing
   #  services.xserver.deviceSection = ''
@@ -45,7 +45,7 @@
     gnome.pomodoro
     ibus
     libsForQt5.qtstyleplugin-kvantum
-    qtstyleplugin-kvantum-qt4
+    #qtstyleplugin-kvantum-qt4
     catppuccin-kvantum
   ]) ++ (with pkgs.master.pkgs.gnomeExtensions; [
     #timepp

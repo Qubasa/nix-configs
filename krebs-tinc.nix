@@ -6,7 +6,7 @@ let
   netname = "retiolum";
   cfg = config.networking.retiolum;
 
-retiolum = pkgs.fetchFromGitHub {
+  retiolum = pkgs.fetchFromGitHub {
     owner = "krebs";
     repo = netname;
     rev = "3fc3147ef4c644b4008f1425fae701f2d371db52";
@@ -25,8 +25,9 @@ retiolum = pkgs.fetchFromGitHub {
       systemctl start "tinc.${netname}"
     fi'';
 
-in {
- options = {
+in
+{
+  options = {
     networking.retiolum.ipv4 = mkOption {
       type = types.str;
       description = ''
@@ -74,9 +75,9 @@ in {
         cp -R ${retiolum}/hosts /etc/tinc/retiolum/ || true
       '';
 
-      after = lib.mkForce [];
-      wantedBy = lib.mkForce [];
-      restartTriggers = lib.mkForce [];
+      after = lib.mkForce [ ];
+      wantedBy = lib.mkForce [ ];
+      restartTriggers = lib.mkForce [ ];
     };
 
     networking.extraHosts = builtins.readFile (toString "${retiolum}/etc.hosts");
@@ -88,7 +89,7 @@ in {
 
     networking.interfaces.retiolum = {
       name = "tinc.${netname}";
-      ipv4.addresses = [ { address="${cfg.ipv4}"; prefixLength = 12; } ];
+      ipv4.addresses = [{ address = "${cfg.ipv4}"; prefixLength = 12; }];
       virtual = true;
       useDHCP = false;
       virtualType = "tun";

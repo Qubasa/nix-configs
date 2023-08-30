@@ -19,6 +19,8 @@ let
     ms-toolsai.jupyter
     valentjn.vscode-ltex
     ms-vsliveshare.vsliveshare
+    bradlc.vscode-tailwindcss
+    esbenp.prettier-vscode
   ]) ++ (with pkgs.unstable.pkgs.vscode-extensions; [
     twxs.cmake
     github.copilot
@@ -34,12 +36,6 @@ let
       publisher = "github";
       version = "0.14.884";
       sha256 = "sha256-44t4qdRjw/sdAmO6uW9CaLzs0hJcK+uQnpalCNB8AdM=";
-    }
-    {
-      name = "aw-watcher-vscode";
-      publisher = "ActivityWatch";
-      version = "0.5.0";
-      sha256 = "sha256-OrdIhgNXpEbLXYVJAx/jpt2c6Qa5jf8FNxqrbu5FfFs=";
     }
     {
       name = "bookmarks";
@@ -117,7 +113,7 @@ let
 in
 {
   environment.variables = {
-    EDITOR = [ "helix" ];
+    EDITOR = [ "hx" ];
     VISUAL = [ "code" ];
   };
 

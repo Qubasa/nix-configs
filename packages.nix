@@ -118,11 +118,7 @@
       pika-backup # Backup tool UI
       calibre # ebook-convert
       helix
-
-      activitywatch
-      aw-watcher-window
-      aw-watcher-afk
-      aw-qt
+      git-absorb # git rebase helper
 
       audacity # Audio editor
 
@@ -147,6 +143,7 @@
      # glade # gtk designer
       gnome-builder # gtk ides
       pandoc # convert between formats
+      obsidian # note taking
 
       # hardware inspections
       pciutils

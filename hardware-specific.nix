@@ -40,7 +40,7 @@
   };
 
   # latest
-  #boot.kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+#  boot.kernelPackages = pkgs.linuxPackages_hardened;
 
   environment.systemPackages =
   with pkgs; [

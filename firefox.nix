@@ -4,6 +4,11 @@ let
   hardenedFirefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
     nixExtensions = with pkgs; [
       (fetchFirefoxAddon {
+        name = "react-dev-tools";
+        url = "https://addons.mozilla.org/firefox/downloads/file/4113335/react_devtools-4.27.8.xpi";
+        sha256 = "sha256-+uHDXnMZhOQ3UwDfDE2O4jPsEM2r5Mr+XPrKCA4GNEY=";
+      })
+      (fetchFirefoxAddon {
         name = "user_agent_switcher";
         url = "https://addons.mozilla.org/firefox/downloads/file/4047133/user_agent_string_switcher-0.4.9.xpi";
         sha256 = "sha256-YXq3JkGfbBrd7ccnrUHcoY9S+940r1ntfUJCXxORKdE=";
@@ -33,12 +38,6 @@ let
         url = "https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-3.2.0.0.xpi";
         sha256 = "sha256-cLpL8/3+4gAc/Qs9iD90xxFJvlNbuOCILy6JdrzPsYs=";
       })
-      (fetchFirefoxAddon {
-        name = "activitywatcher";
-        url = "https://addons.mozilla.org/firefox/downloads/file/4114360/aw_watcher_web-0.4.8.xpi";
-        sha256 = "sha256-a+hdl1UBNSClpINcuK4qMofky5wStbr0lXqxA2jdRdI=";
-      })
-
     ];
 
     extraPolicies = {
