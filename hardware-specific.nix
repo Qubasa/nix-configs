@@ -58,10 +58,7 @@
     logitech-udev-rules
   ];
 
-  # xilinx papilio pro fpga rule
-  services.udev.extraRules = ''
-    SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE="0666", GROUP="plugdev"
-  '';
+
 
   # Enable opengl
   hardware.opengl = {

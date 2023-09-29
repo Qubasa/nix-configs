@@ -18,15 +18,12 @@
 
     # My modified nixpkgs
     (with pkgs.luis.pkgs; [
-      #uprof # AMD uprof profiler
       #python39Packages.compdb # To get header files into compile_commands.json
-      #vtune
     ])
     # Import packages from NUR repository
     # Package search: https://nur.nix-community.org/repos/mic92/
     ++ (with pkgs.nur.repos.mic92; [
-      #speedscope # To plot perf data in beautiful
-      #edge-gpt
+
     ])
     # Import from master branch
     ++ (with pkgs.master.pkgs; [
@@ -36,10 +33,8 @@
     ++ (with pkgs.unstable.pkgs; [
       curtail # photo compression gui
       nixd
-
     ])
     ++ (with pkgs; [
-      zoom-us
       # bash basics
       man-pages
       posix_man_pages # Use the posix standarized manpages with `man p <keyword>`
@@ -79,6 +74,7 @@
       nixpkgs-fmt # format .nix files
       nixos-generators # Generate nixos images
       patchelf
+      postman # API dev environment
       niv # NixOS project creator
       nix-prefetch # Sha256sum a link for nixos
       nix-index # apt-file equivalent
@@ -90,6 +86,7 @@
       exiftool # metadata viewer
       bitwise # bit calc / viewer
       imagemagick
+      jellyfin-media-player
       diffoscope # Diffing tool for many file types
       #klee # symbolic execution
       # bear # Intercept make commands and generates compile_commands.json
@@ -129,6 +126,7 @@
       #  texlab # Latex language server
       inkscape # latex dependencie for svg
       act # Execute github actions locally
+      gitea-actions-runner 
       gdb # debugger
       elfutils # elf utilities
       usbutils
@@ -141,7 +139,8 @@
       vlc # video player
       olive-editor # video editor
      # glade # gtk designer
-      gnome-builder # gtk ides
+      #gnome-builder # gtk ides
+
       pandoc # convert between formats
       obsidian # note taking
 

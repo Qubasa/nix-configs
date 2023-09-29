@@ -18,7 +18,6 @@
     ./display.nix
     ./editor.nix
     ./virtualisation.nix
-    ./pass.nix
     ./terminal.nix
     ./own-pkgs.nix
     ./aliases.nix
@@ -45,7 +44,7 @@
     initialPassword = name;
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "adbuser" "wheel" "networkmanager" "video" "audio" "input" "wireshark" "dialout" "disk" "scanner" "lp" "plugdev" "hp" ];
+    extraGroups = [ "adbuser" "wheel" "networkmanager" "video" "audio" "input" "wireshark" "dialout" "disk" "scanner" "lp"  "hp" ];
   };
 
   # Language settings

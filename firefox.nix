@@ -25,8 +25,8 @@ let
       })
       (fetchFirefoxAddon {
         name = "ublock";
-        url = "https://addons.mozilla.org/firefox/downloads/file/4121906/ublock_origin-1.50.0.xpi";
-        sha256 = "sha256-EGGAA+cLUow/F5luNzFG055rFfd3rEyh8hTaL/23pbM=";
+        url = "https://addons.mozilla.org/firefox/downloads/file/4164949/ublock_origin-1.52.0.xpi";
+        sha256 = "sha256-OTJQbOTfMG5Np1J9k9YP4EIc8VBFwvTqc1idmgkCJms=";
       })
       (fetchFirefoxAddon {
         name = "bitwarden";

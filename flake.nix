@@ -41,6 +41,13 @@
             ({ ... }: {
               # Set nix-channel to nix flake registry
               nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${self.inputs.nixpkgs}" ];
+              nix.registry = {
+                self.flake = self;
+                nixpkgs = {
+                  from = { id = "nixpkgs"; type = "indirect"; };
+                  flake = nixpkgs;
+                };
+              };
 
               nixpkgs.config = {
                 allowUnfree = true;
