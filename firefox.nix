@@ -80,7 +80,8 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    hardenedFirefox
+    #hardenedFirefox
+    firefox-beta-bin
   ];
 
 }

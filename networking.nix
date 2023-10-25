@@ -12,10 +12,13 @@
   };
 
 
-  networking.networkmanager.insertNameservers = [ "1.1.1.1" "1.1.1.2" ];
-  #networking.networkmanager.insertNameservers = [ "127.0.0.1" "::" ];
+  networking.networkmanager = {
+    insertNameservers = [ "1.1.1.1" "1.1.1.2" ];
+    dns = lib.mkDefault "systemd-resolved";
+  };
 
-  networking.firewall.allowedUDPPorts = [ 1234 514 ];
-  networking.firewall.allowedTCPPorts = [ 1234 ];
-
+  networking.firewall = {
+    allowedTCPPorts = [ 1234  ];
+    allowedUDPPorts = [ 1234 ];
+  };
 }

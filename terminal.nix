@@ -49,6 +49,6 @@
   ];
 
   #environment.variables = {
-  #  TERM = [ "xterm-256color" ];
+  #  TERM = [ "kitty" ];
   #};
 }

@@ -15,6 +15,12 @@
     hplipWithPlugin
   ];
 
+  # hp-check
+  environment.systemPackages = with pkgs; [
+    hplipWithPlugin
+  #  xsane
+  ];
+
   # Printer discovery
   services.avahi.enable = true;
   # Important to resolve .local domains of printers, otherwise you get an error

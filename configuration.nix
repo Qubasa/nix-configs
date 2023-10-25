@@ -26,8 +26,8 @@
     ./envfs.nix
     ./pipewire.nix
     ./printing.nix
-    ./unbound.nix
     ./server_decrypt.nix
+    ./nix-experimental.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

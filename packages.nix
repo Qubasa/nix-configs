@@ -41,7 +41,7 @@
       file
       wget
       git
-      curl
+      curl-impersonate-bin
       tree # display files as tree
       pwgen # generates passwords
       entr # Runs command if files changed
@@ -74,7 +74,6 @@
       nixpkgs-fmt # format .nix files
       nixos-generators # Generate nixos images
       patchelf
-      postman # API dev environment
       niv # NixOS project creator
       nix-prefetch # Sha256sum a link for nixos
       nix-index # apt-file equivalent
@@ -88,7 +87,6 @@
       imagemagick
       jellyfin-media-player
       diffoscope # Diffing tool for many file types
-      #klee # symbolic execution
       # bear # Intercept make commands and generates compile_commands.json
       gnome.gnome-tweaks # Gnome settings
       binutils # Binary inspection
@@ -110,23 +108,22 @@
       mumble # Voice chat
       remmina # Remote Desktop application
       tig # console gui for git
+      ventoy-full # bootable usb creator
       gnupg # Email encryption
       okular # Pdf reader with bookmarks
       pika-backup # Backup tool UI
       calibre # ebook-convert
-      helix
+      helix # vim replacement
       git-absorb # git rebase helper
 
       audacity # Audio editor
 
-      thunderbird
+      thunderbird # email client
       obs-studio # Screen recording
       texlive.combined.scheme-full # latex
       python39Packages.pygments # latex dep for syntax highlighting
-      #  texlab # Latex language server
       inkscape # latex dependencie for svg
       act # Execute github actions locally
-      gitea-actions-runner 
       gdb # debugger
       elfutils # elf utilities
       usbutils

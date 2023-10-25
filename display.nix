@@ -41,14 +41,11 @@
   environment.systemPackages = with pkgs.gnomeExtensions; [
     appindicator
     tactile
+
   ] ++ (with pkgs; [
     gnome.pomodoro
     ibus
-    libsForQt5.qtstyleplugin-kvantum
-    #qtstyleplugin-kvantum-qt4
-    catppuccin-kvantum
   ]) ++ (with pkgs.master.pkgs.gnomeExtensions; [
-    #timepp
     night-theme-switcher
     # shu-zhi
     # gtktitlebar 
