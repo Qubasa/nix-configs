@@ -7,7 +7,7 @@
     wheelNeedsPassword = false;
   };
 
-
+  nix.settings.trusted-users = [ "${config.mainUser}" ];
   # Every user can see perf events
   # Needed for whole system profiling
   boot.kernel.sysctl = {

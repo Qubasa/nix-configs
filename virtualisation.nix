@@ -3,7 +3,7 @@
 {
 
   environment.systemPackages = with pkgs; [
-    virtmanager
+    virt-manager
     virt-viewer
   ];
 

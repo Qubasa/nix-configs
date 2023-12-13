@@ -1,22 +1,35 @@
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 {
-  # Enable flakes
-  nix.settings.experimental-features = [
-    # for container in builds support
-    "auto-allocate-uids"
-    "cgroups"
-    # run builds with network access but without fixed-output checksum
-    "impure-derivations"
-  ] ++ lib.optional (lib.versionOlder (lib.versions.majorMinor config.nix.package.version) "2.18")
-    # allows to drop references from filesystem images
-    "discard-references";
 
-  # no longer need to pre-allocate build users for everything
-  nix.settings.auto-allocate-uids = true;
+  # nix daemon optimizations
+  # fetchtarball ttl set to one week
+  # enabled flakes
+  nix = {
+    settings = {
+      auto-optimise-store = true;
+      auto-allocate-uids = true;
+      system-features = lib.mkDefault [ "uid-range" ];
+      experimental-features = [
+        # for container in builds support
+        "auto-allocate-uids"
+        "flakes"
+        "nix-command"
+        "cgroups"
+        # run builds with network access but without fixed-output checksum
+        "impure-derivations"
+      ];
+    };
+    package = pkgs.nixUnstable;
+    gc.automatic = true;
+    gc.dates = "weekly";
+    gc.options = "--delete-older-than 15d";
 
-  # for container in builds support
-  nix.settings.system-features = lib.mkDefault [ "uid-range" ];
+    # #experimental-features = nix-command flakes
+    extraOptions = ''
+      keep-outputs = true       # Nice for developers
+      tarball-ttl = 4294967295
+    '';
+  };
 
-  nix.settings.trusted-users = [ "${config.mainUser}" ];
 
 }

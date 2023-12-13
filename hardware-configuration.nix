@@ -5,35 +5,36 @@
 
 {
   imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
+    [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
-  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  # Disable spectre mitigations
-  # boot.kernelParams = [ "noibrs" "noibpb" "nopti" "nospectre_v2" "nospectre_v1" "l1tf=off" "nospec_store_bypass_disable" "no_stf_barrier" "mds=off" "tsx=on" "tsx_async_abort=off" "mitigations=off" ];
-
   fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/648a6b81-e1c9-41a9-b448-ce8c37844ce7";
+    { device = "/dev/disk/by-uuid/fe643fbb-0d93-44d2-a6b4-5045f9dda419";
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."nixos-crypt" = {
-    device = "/dev/disk/by-uuid/f5d8351e-4239-4ae7-84e8-37576ea87147";
-    preLVM = false;
-  };
+  boot.initrd.luks.devices."luks-f7600028-9d83-4967-84bc-dd2f498bc486".device = "/dev/disk/by-uuid/f7600028-9d83-4967-84bc-dd2f498bc486";
 
   fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/4253-DE4A";
+    { device = "/dev/disk/by-uuid/7F80-A898";
       fsType = "vfat";
     };
 
   swapDevices = [ ];
 
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp2s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp4s0.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

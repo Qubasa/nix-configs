@@ -3,21 +3,21 @@
 {
 
   # Use swap with random encryption on every reboot
-  swapDevices = [
-    {
-      device = "/dev/nvme0n1p3";
-      randomEncryption = {
-        enable = true;
-      };
-    }
-  ];
+  # swapDevices = [
+    # {
+      # device = "/dev/nvme0n1p3";
+      # randomEncryption = {
+        # enable = true;
+      # };
+    # }
+  # ];
 
   # Enable grub
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/nvme0n1";
+  # boot.loader.grub.enable = true;
+  # boot.loader.grub.device = "/dev/nvme0n1";
 
   # Tried to get initrd working with hdmi output
-  boot.initrd.availableKernelModules = [ "xhci-hcd" "xhci-pci" ];
+  # boot.initrd.availableKernelModules = [ "xhci-hcd" "xhci-pci" ];
 
   # Enable closed source firmware
   hardware.enableRedistributableFirmware = true;
@@ -41,6 +41,7 @@
 
   # latest
 #  boot.kernelPackages = pkgs.linuxPackages_hardened;
+  hardware.bluetooth.enable = true;
 
   environment.systemPackages =
   with pkgs; [

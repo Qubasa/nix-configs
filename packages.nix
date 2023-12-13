@@ -8,11 +8,16 @@
   programs.sysdig.enable = true; # system call debugger
   services.gnome.tracker.enable = true; # file indexer
   services.gnome.tracker-miners.enable = true; # file indexer
+  services.flatpak.enable = true;
 
   # sudo sysdig --list-chisels
   # sysdig -c echo_fds --> get everything written to a fd
   # sysdig -c stderr --> get all stderr from all processes
   # sysdig -c echo_fds proc.pid=732271 --> filter by process id
+
+  nixpkgs.config.permittedInsecurePackages = [
+        "electron-24.8.6"
+  ];
 
   environment.systemPackages =
 
@@ -41,8 +46,9 @@
       file
       wget
       git
-      curl-impersonate-bin
+      #curl-impersonate-bin      
       tree # display files as tree
+      pstree # display processes as tree
       pwgen # generates passwords
       entr # Runs command if files changed
       jq # Json parsing in shell
@@ -51,7 +57,7 @@
       unzip
 
       # Rust Shell Replacements
-      exa # ls in better
+      #exa # ls in better
       zoxide # smart cd
       fd # find replacement
       ripgrep # grep replacement
@@ -135,8 +141,12 @@
       ffmpeg-full # Convert video formats
       vlc # video player
       olive-editor # video editor
-     # glade # gtk designer
-      #gnome-builder # gtk ides
+      gnome-builder # gtk ides
+      flatpak-builder # gnome-builder dep
+      glade # gtk IDE
+      gnucash # accounting
+      nix-init
+
 
       pandoc # convert between formats
       obsidian # note taking
@@ -155,7 +165,7 @@
       tcpdump # TCP packet sniffer cli
       wireshark # Packet sniffer UI
       qtwirediff # Wireshark diff tool
-      netcat-gnu # nc tool
+      netcat-openbsd # nc tool
       tunctl # to create tap devices
       bridge-utils # to create bridges
       ldns # DNS tool 'drill'

@@ -8,12 +8,12 @@
 
   # Local blacklist
   networking.hosts = {
-    #"127.0.0.1" = [ "9gag.com" ];
+    "127.0.0.1" = [ "9gag.com" ];
   };
 
 
   networking.networkmanager = {
-    insertNameservers = [ "1.1.1.1" "1.1.1.2" ];
+   # insertNameservers = [ "1.1.1.1" "1.1.1.2" ];
     dns = lib.mkDefault "systemd-resolved";
   };
 
