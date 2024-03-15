@@ -1,5 +1,6 @@
 {
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+  #inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.chrome-pwa.url = "github:luis-hebendanz/nixos-chrome-pwa";
   inputs.nur.url = github:nix-community/NUR;
 
@@ -9,7 +10,7 @@
   inputs.master.url = "github:NixOS/nixpkgs/master";
   inputs.clan-core = {
     url = "git+https://git.clan.lol/clan/clan-core";
- #   inputs.nixpkgs.follows = "nixpkgs";
+    inputs.nixpkgs.follows = "nixpkgs";
   };
 
 

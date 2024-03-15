@@ -76,7 +76,7 @@ in
 {
 
   environment.variables = {
-    BROWSER = [ "firefox" ];
+    BROWSER = [ "firefox-beta" ];
   };
 
   environment.systemPackages = with pkgs; [

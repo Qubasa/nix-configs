@@ -24,7 +24,7 @@
     dates = "0/3:00:00"; # Check every 3 hours for updates
     flake = "/etc/nixos";
     allowReboot = false;
-    flags = ["--impure" "--recreate-lock-file" "--commit-lock-file" "--cores 2"];
+    flags = ["--impure" "--update-input" "nixpkgs" "--commit-lock-file" "--cores 2"];
   };
 
  # nixPath = [

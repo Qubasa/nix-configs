@@ -28,6 +28,7 @@
       ./printing.nix
       ./server_decrypt.nix
       ./nix-experimental.nix
+      ./zerotier.nix
     ];
 
   # Bootloader.
@@ -50,7 +51,8 @@
   # networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "Europe/Berlin";
+#  time.timeZone = "Asia/Bangkok";
+  time.timeZone = null;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -118,7 +120,7 @@
     initialPassword = name;
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "adbuser" "wheel" "networkmanager" "video" "audio" "input" "wireshark" "dialout" "disk" "scanner" "lp"  "hp" ];
+    extraGroups = [ "adbusers" "wheel" "networkmanager" "video" "audio" "input" "wireshark" "dialout" "disk" "scanner" "lp"  "hp" ];
   };
 
   # Enable automatic login for the user.

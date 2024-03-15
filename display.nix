@@ -2,7 +2,7 @@
 
 {
   services.xserver.enable = true;
-  services.xserver.layout = "de";
+  services.xserver.xkb.layout = "de";
 
   services.xserver.displayManager.gdm = {
     enable = true;

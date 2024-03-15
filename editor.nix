@@ -4,9 +4,8 @@ let
   extensions = (with pkgs.vscode-extensions; [
     jnoortheen.nix-ide
     rust-lang.rust-analyzer
+    eamodio.gitlens
     ms-python.python
-    # ms-azuretools.vscode-docker
-    redhat.java
     yzhang.markdown-all-in-one
     timonwong.shellcheck
     tamasfe.even-better-toml
@@ -21,6 +20,7 @@ let
     ms-vsliveshare.vsliveshare
     bradlc.vscode-tailwindcss
     esbenp.prettier-vscode
+    alefragnani.bookmarks
   ]) ++ (with pkgs.unstable.pkgs.vscode-extensions; [
     twxs.cmake
     github.copilot
@@ -32,28 +32,10 @@ let
       sha256 = "sha256-B0oLZE8wtygTaUX9/qOBg9lJAjUUg2i7B2rfSWJerEU=";
     }
     {
-      name = "copilot-labs";
-      publisher = "github";
-      version = "0.14.884";
-      sha256 = "sha256-44t4qdRjw/sdAmO6uW9CaLzs0hJcK+uQnpalCNB8AdM=";
-    }
-    {
-      name = "bookmarks";
-      publisher = "alefragnani";
-      version = "13.2.2";
-      sha256 = "sha256-pdZi+eWLPuHp94OXpIlOOS29IGgze4dNd4DWlCGa3p0=";
-    }
-    {
       name = "highlight-trailing-white-spaces";
       publisher = "ybaumes";
       version = "0.0.2";
       sha256 = "sha256-wuF4ieegQmH8vjMHcoDYmGmR/qQKdeW5sDW83r7eGAY=";
-    }
-    {
-      name = "vscode-talonscript";
-      publisher = "mrob95";
-      version = "0.3.8";
-      sha256 = "sha256-i22kEWGj8wdpkp+x/kU6vQ/IBQ4solLSIlFUNRRoKMo=";
     }
     {
       name = "linkerscript";
@@ -85,24 +67,6 @@ let
       version = "0.65.6";
       sha256 = "sha256-W+XJgcMjky9fFLEgnk3Jef4HvhwfBonhVoVjCGYJtIo=";
     }
-    # {
-    #   name = "talon";
-    #   publisher = "pokey";
-    #   version = "0.2.0";
-    #   sha256 = "sha256-BPc0jGGoKctANP4m305hoG9dgrhjxZtFdCdkTeWh/Xk=";
-    # }
-    #   {
-    #      name = "command-server";
-    #      publisher = "pokey";
-    #      version = "0.8.2";
-    #      sha256 = "sha256-mVDXn8jygpmshr7Xxve57JV3UMci3oeeLHr5dWirkOw=";
-    #   }
-    #  {
-    #   name = "vscode-coverage-gutters";
-    #   publisher = "ryanluker";
-    #   version = "2.8.2";
-    #   sha256 = "sha256-gMzFI0Z9b7I7MH9v/UC7dXCqllmXcqHVJU7xMozmMJc=";
-    # }
   ];
   vscode-with-extensions = pkgs.vscode-with-extensions.override {
     vscode = pkgs.vscode;

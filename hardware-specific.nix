@@ -57,6 +57,7 @@
   services.udev.packages = with pkgs; [
     solaar # logitech device support
     logitech-udev-rules
+    android-udev-rules
   ];
 
 

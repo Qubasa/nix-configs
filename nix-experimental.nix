@@ -1,33 +1,31 @@
 { lib, config, pkgs, ... }:
 {
 
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "nix-2.16.2"
+  ];
+
   # nix daemon optimizations
   # fetchtarball ttl set to one week
   # enabled flakes
   nix = {
     settings = {
       auto-optimise-store = true;
-      auto-allocate-uids = true;
-      system-features = lib.mkDefault [ "uid-range" ];
+      sandbox = "relaxed";
       experimental-features = [
-        # for container in builds support
-        "auto-allocate-uids"
         "flakes"
         "nix-command"
-        "cgroups"
-        # run builds with network access but without fixed-output checksum
-        "impure-derivations"
       ];
     };
     package = pkgs.nixUnstable;
     gc.automatic = true;
     gc.dates = "weekly";
-    gc.options = "--delete-older-than 15d";
+    gc.options = "--delete-older-than 40d";
 
     # #experimental-features = nix-command flakes
     extraOptions = ''
       keep-outputs = true       # Nice for developers
-      tarball-ttl = 4294967295
     '';
   };
 

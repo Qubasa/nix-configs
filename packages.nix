@@ -8,6 +8,7 @@
   programs.sysdig.enable = true; # system call debugger
   services.gnome.tracker.enable = true; # file indexer
   services.gnome.tracker-miners.enable = true; # file indexer
+  programs.adb.enable = true;
   services.flatpak.enable = true;
 
   # sudo sysdig --list-chisels
@@ -16,7 +17,7 @@
   # sysdig -c echo_fds proc.pid=732271 --> filter by process id
 
   nixpkgs.config.permittedInsecurePackages = [
-        "electron-24.8.6"
+    "electron-25.9.0"
   ];
 
   environment.systemPackages =
@@ -67,7 +68,11 @@
 
 
 
+      ssh-to-age
+      age
+      sops
       cht-sh # cheat sheet for commands
+      moonlight-qt
       tldr # short examples of commands
       btop # htop in better
       calc # Simple calculator
@@ -77,8 +82,10 @@
       kondo # Save disk space by cleaning unneeded files
 
       # Nixos specific
+      mosh
       nixpkgs-fmt # format .nix files
       nixos-generators # Generate nixos images
+      nixos-anywhere # deploy complete machines
       patchelf
       niv # NixOS project creator
       nix-prefetch # Sha256sum a link for nixos
@@ -109,7 +116,7 @@
       linuxPackages.perf # profiling utilities
       sysprof # gnome profiler UI
       docker-compose # docker helper tool
-      mitmproxy # Great to debug https traffic
+      #mitmproxy # Great to debug https traffic
       picocom # good uart reader
       mumble # Voice chat
       remmina # Remote Desktop application
@@ -120,6 +127,7 @@
       pika-backup # Backup tool UI
       calibre # ebook-convert
       helix # vim replacement
+      xsel # dep of helix for copy to clipboard
       git-absorb # git rebase helper
 
       audacity # Audio editor
@@ -133,7 +141,8 @@
       gdb # debugger
       elfutils # elf utilities
       usbutils
-      dfeet # dbus explorer
+      d-spy # dbus explorer
+      gnome.devhelp # gnome dev manual
       gnome.dconf-editor # gnome settings editor
       pdfarranger # pdf editor
       bitwarden # password manager
@@ -141,12 +150,9 @@
       ffmpeg-full # Convert video formats
       vlc # video player
       olive-editor # video editor
-      gnome-builder # gtk ides
       flatpak-builder # gnome-builder dep
-      glade # gtk IDE
-      gnucash # accounting
-      nix-init
-
+      nix-init # quickly generate packages from github links
+      
 
       pandoc # convert between formats
       obsidian # note taking
@@ -157,7 +163,6 @@
       gnome-firmware # firmware updater
 
       # Network debugging
-      dropwatch # watch for dropped packets
       networkmanagerapplet
       sipcalc # Calculates network masks from interfaces
       nmap # Network discovery
