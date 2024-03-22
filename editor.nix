@@ -1,11 +1,10 @@
-{ pkgs, ... }:
+{ stable, pkgs, ... }:
 
 let
   extensions = (with pkgs.vscode-extensions; [
     jnoortheen.nix-ide
     rust-lang.rust-analyzer
     eamodio.gitlens
-    ms-python.python
     yzhang.markdown-all-in-one
     timonwong.shellcheck
     tamasfe.even-better-toml
@@ -15,15 +14,18 @@ let
     github.github-vscode-theme
     james-yu.latex-workshop
     llvm-vs-code-extensions.vscode-clangd
-    ms-toolsai.jupyter
     valentjn.vscode-ltex
     ms-vsliveshare.vsliveshare
     bradlc.vscode-tailwindcss
     esbenp.prettier-vscode
     alefragnani.bookmarks
-  ]) ++ (with pkgs.unstable.pkgs.vscode-extensions; [
     twxs.cmake
     github.copilot
+
+  # Extensions that are broken on unstable
+  ])++ (with stable.pkgs.vscode-extensions; [
+    # ms-python.python
+    # ms-toolsai.jupyter
   ]) ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
     {
       name = "cargo";

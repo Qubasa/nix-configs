@@ -45,11 +45,8 @@
 
   ] ++ (with pkgs; [
     gnome.pomodoro
-    ibus
-  ]) ++ (with pkgs.master.pkgs.gnomeExtensions; [
     night-theme-switcher
-    # shu-zhi
-    # gtktitlebar 
+    ibus
   ]);
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
 }

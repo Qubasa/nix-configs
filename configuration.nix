@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./hardware-specific.nix
       ./security.nix
@@ -22,14 +23,13 @@
       ./own-pkgs.nix
       ./aliases.nix
       ./restic.nix
-      ./retiolum_vpn.nix
       ./envfs.nix
       ./pipewire.nix
       ./printing.nix
       ./server_decrypt.nix
       ./nix-experimental.nix
-      ./zerotier.nix
     ];
+
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

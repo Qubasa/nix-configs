@@ -10,11 +10,6 @@ let
     sudo nix-collect-garbage --delete-older-than 2d && sudo journalctl --vacuum-time=2d
   '';
 
-  chat = pkgs.writeScriptBin "chat" ''
-    export MCOOKIE_FILE=${config.mainUserHome}/.config/edge-gpt/cookies.json
-    ${pkgs.nur.repos.mic92.edge-gpt}/bin/edge-gpt --cookie-file $MCOOKIE_FILE --style creative "$@"
-  '';
-
   nix-bloat = pkgs.writeScriptBin "nix-bloat" ''
     nix-store --gc --print-roots | egrep -v "^(/nix/var|/run/\w+-system|\{memory|/proc)"
   '';
@@ -75,9 +70,9 @@ let
     ${pkgs.rsync}/bin/rsync -Pav -e "ssh -i ${config.mainUserHome}/.ssh/id_rsa -F ${config.mainUserHome}/.ssh/config" "$@"
   '';
 
-  share-dir = pkgs.writeScriptBin "share-dir" ''
-    ${pkgs.python3}/bin/python3 -m http.server 1234
-  '';
+  # share-dir = pkgs.writeScriptBin "share-dir" ''
+  #   ${pkgs.python3}/bin/python3 -m http.server 1234
+  # '';
 
   logout = pkgs.writeScriptBin "logout" ''
     kill -9 -1
@@ -115,9 +110,8 @@ in
     nix-delete-old
     where
     rsync
-    share-dir
+    # share-dir
     logout
-    chat
     nix-bloat
   ];
 }

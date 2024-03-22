@@ -2,9 +2,6 @@
 {
 
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "nix-2.16.2"
-  ];
 
   # nix daemon optimizations
   # fetchtarball ttl set to one week

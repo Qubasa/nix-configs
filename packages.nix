@@ -16,31 +16,12 @@
   # sysdig -c stderr --> get all stderr from all processes
   # sysdig -c echo_fds proc.pid=732271 --> filter by process id
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0"
-  ];
-
   environment.systemPackages =
-
-    # My modified nixpkgs
-    (with pkgs.luis.pkgs; [
-      #python39Packages.compdb # To get header files into compile_commands.json
-    ])
-    # Import packages from NUR repository
-    # Package search: https://nur.nix-community.org/repos/mic92/
-    ++ (with pkgs.nur.repos.mic92; [
-
-    ])
-    # Import from master branch
-    ++ (with pkgs.master.pkgs; [
+    (with pkgs; [
       signal-desktop
-    ])
-    # Import from unstable branch
-    ++ (with pkgs.unstable.pkgs; [
       curtail # photo compression gui
       nixd
-    ])
-    ++ (with pkgs; [
+
       # bash basics
       man-pages
       posix_man_pages # Use the posix standarized manpages with `man p <keyword>`
@@ -91,15 +72,14 @@
       nix-prefetch # Sha256sum a link for nixos
       nix-index # apt-file equivalent
       nixpkgs-review # For reviewing pull requests
-      pkgs.unstable.pkgs.nix-direnv-flakes
-      direnv
+      nix-direnv-flakes
       nix-doc # https://github.com/lf-/nix-doc
       cntr # linux container debugger
       exiftool # metadata viewer
       bitwise # bit calc / viewer
       imagemagick
       jellyfin-media-player
-      diffoscope # Diffing tool for many file types
+      diffoscopeMinimal # Diffing tool for many file types
       # bear # Intercept make commands and generates compile_commands.json
       gnome.gnome-tweaks # Gnome settings
       binutils # Binary inspection
