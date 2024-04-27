@@ -1,4 +1,4 @@
-{ stable, pkgs, ... }:
+{ stablepkgs, pkgs, ... }:
 
 let
   extensions = (with pkgs.vscode-extensions; [
@@ -23,9 +23,9 @@ let
     github.copilot
 
   # Extensions that are broken on unstable
-  ])++ (with stable.pkgs.vscode-extensions; [
-    # ms-python.python
-    # ms-toolsai.jupyter
+  ])++ (with stablepkgs.vscode-extensions; [
+    ms-python.python
+    ms-toolsai.jupyter
   ]) ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
     {
       name = "cargo";

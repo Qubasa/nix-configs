@@ -10,6 +10,7 @@
   services.gnome.tracker-miners.enable = true; # file indexer
   programs.adb.enable = true;
   services.flatpak.enable = true;
+  services.nixseparatedebuginfod.enable = true; # Downloads and provides debug symbols and source code for nix derivations to gdb
 
   # sudo sysdig --list-chisels
   # sysdig -c echo_fds --> get everything written to a fd
@@ -36,13 +37,14 @@
       jq # Json parsing in shell
       cifs-utils # Samba mount
       sshfs # Mount a filesystem through ssh
+      inotify-tools # Watch for file changes
       unzip
 
       # Rust Shell Replacements
       #exa # ls in better
       zoxide # smart cd
       fd # find replacement
-      ripgrep # grep replacement
+      ripgrep-all # grep replacement can also search in pdfs
 
       zellij # tmux alternative
       bat # Cat with syntax highlighting
@@ -118,7 +120,7 @@
       python39Packages.pygments # latex dep for syntax highlighting
       inkscape # latex dependencie for svg
       act # Execute github actions locally
-      gdb # debugger
+      (gdb.override { enableDebuginfod = true; }) # debugger
       elfutils # elf utilities
       usbutils
       d-spy # dbus explorer
@@ -132,8 +134,6 @@
       olive-editor # video editor
       flatpak-builder # gnome-builder dep
       nix-init # quickly generate packages from github links
-      
-
       pandoc # convert between formats
       obsidian # note taking
 

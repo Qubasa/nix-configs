@@ -51,6 +51,7 @@
     clinfo
     glxinfo
     vulkan-tools
+    rocmPackages.clr
     config.boot.kernelPackages.turbostat
   ];
 
@@ -61,6 +62,19 @@
   ];
 
 
+  systemd.tmpfiles.rules = 
+  let
+    rocmEnv = pkgs.symlinkJoin {
+      name = "rocm-combined";
+      paths = with pkgs.rocmPackages; [
+        rocblas
+        hipblas
+        clr
+      ];
+    };
+  in [
+    "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
+  ];
 
   # Enable opengl
   hardware.opengl = {
@@ -68,6 +82,7 @@
     driSupport32Bit = true;
     extraPackages = with pkgs; [
       amdvlk
+      rocmPackages.clr.icd
       rocm-opencl-icd
       rocm-opencl-runtime
     ];
@@ -75,8 +90,8 @@
       driversi686Linux.amdvlk
     ];
   };
-  environment.variables.VK_ICD_FILENAMES =
-  "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
+  # environment.variables.VK_ICD_FILENAMES =
+  # "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
   services.xserver.videoDrivers = [ "amdgpu" ];
 
   ####################

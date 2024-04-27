@@ -3,7 +3,7 @@
 let
 
   nix-rebuild = pkgs.writeScriptBin "nix-rebuild" ''
-    sudo nixos-rebuild --fast --cores 7 switch --flake /etc/nixos --impure "$@"
+    sudo nixos-rebuild --fast --cores 7 switch --flake /etc/nixos --impure -L "$@"
   '';
 
   nix-delete-old = pkgs.writeScriptBin "nix-delete-old" ''

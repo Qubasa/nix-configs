@@ -11,18 +11,20 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  inputs.stable.url = "github:NixOS/nixpkgs/nixos-23.11";
+  inputs.stable.url = "github:NixOS/nixpkgs/nixos-23.05";
 
   outputs = inputs @ { self, nur, stable, chrome-pwa, nixpkgs, clan-core, ... }: 
   let
     clan = clan-core.lib.buildClan {
         specialArgs = {
-            inherit stable;
+          # inherit stable;
+          stablepkgs = stable.legacyPackages.x86_64-linux;
         };
         clanName = "qubasaClan";
+
         directory = self;
-        # replace 'qubasa-desktop' with your hostname here.
         machines = {
+          # replace 'qubasa-desktop' with your hostname here.
           qubasa-desktop = {
             nixpkgs.hostPlatform = "x86_64-linux";
             imports = [
@@ -48,13 +50,6 @@
                     allowUnfree = true;
                     packageOverrides = pkgs:
                     {
-                      stable = import stable
-                      {
-                        system = "x86_64-linux";
-                        config = {
-                          allowUnfree = true;
-                        };
-                      };
                     };
                 };
               })

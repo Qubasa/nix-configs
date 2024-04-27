@@ -27,6 +27,7 @@
       ./pipewire.nix
       ./printing.nix
       ./server_decrypt.nix
+      ./proxychains.nix
       ./nix-experimental.nix
     ];
 
@@ -124,8 +125,10 @@
   };
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "lhebendanz";
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "lhebendanz"; 
+  };
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;
