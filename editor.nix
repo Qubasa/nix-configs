@@ -6,27 +6,26 @@ let
     rust-lang.rust-analyzer
     eamodio.gitlens
     yzhang.markdown-all-in-one
-    timonwong.shellcheck
-    tamasfe.even-better-toml
     serayuzgur.crates
     ms-vscode-remote.remote-ssh
     vadimcn.vscode-lldb
     github.github-vscode-theme
     james-yu.latex-workshop
     llvm-vs-code-extensions.vscode-clangd
-    valentjn.vscode-ltex
+    valentjn.vscode-ltex # spell checker
     ms-vsliveshare.vsliveshare
-    bradlc.vscode-tailwindcss
-    esbenp.prettier-vscode
-    alefragnani.bookmarks
     twxs.cmake
-    github.copilot
-
   # Extensions that are broken on unstable
   ])++ (with stablepkgs.vscode-extensions; [
     ms-python.python
     ms-toolsai.jupyter
   ]) ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+    {
+      name = "weaudit";
+      publisher = "trailofbits";
+      version = "1.1.0";
+      sha256 = "sha256-XHif6JzZJvQiToIn3mnBznp9ct8wlWOyBVncHU4ZDgo=";
+    }
     {
       name = "cargo";
       publisher = "panicbit";
@@ -60,14 +59,14 @@ let
     {
       name = "vscode-fileutils";
       publisher = "sleistner";
-      version = "3.4.5";
-      sha256 = "sha256-ZzqYt9rkpeKKLhruyK5MQFlBaCZFnv2NYQvBM0YEtjg=";
+      version = "3.10.3";
+      sha256 = "sha256-v9oyoqqBcbFSOOyhPa4dUXjA2IVXlCTORs4nrFGSHzE=";
     }
     {
       name = "remote-ssh-edit";
       publisher = "ms-vscode-remote";
-      version = "0.65.6";
-      sha256 = "sha256-W+XJgcMjky9fFLEgnk3Jef4HvhwfBonhVoVjCGYJtIo=";
+      version = "0.86.0";
+      sha256 = "sha256-JsbaoIekUo2nKCu+fNbGlh5d1Tt/QJGUuXUGP04TsDI=";
     }
   ];
   vscode-with-extensions = pkgs.vscode-with-extensions.override {
